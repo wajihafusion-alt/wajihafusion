@@ -1,0 +1,7 @@
+১) Supabase Dashboard > SQL Editor খুলে ORDERS_SETUP.sql-এর সব SQL Run করুন।
+২) এই ZIP-এর সব ফাইল আগের Website-এর একই deploy/folder-এ upload করে পুরোনো app.js replace করুন।
+৩) Invoice app খুলুন: /invoice.html
+৪) আগের Admin Panel-এর একই Admin email/password দিয়ে Login করুন।
+৫) Website-এ নতুন অর্ডার হলে Database-এ সেভ হবে এবং Invoice App-এ দেখা যাবে।
+৬) Invoice > Print / PDF দিয়ে PDF save করুন।
+গুরুত্বপূর্ণ: পুরোনো WhatsApp-only অর্ডারগুলো Database-এ নেই; নতুন অর্ডার থেকেই Auto Invoice হবে।
