@@ -1,0 +1,13 @@
+WAJIHA FUSION ADMIN PWA — বাংলা নির্দেশনা
+
+এই ZIP-এ Admin Panel PWA, Banner DELETE button এবং persistent 10% discount headline fix একসাথে আছে।
+
+1. ZIP Extract করুন।
+2. সব ফাইল এবং icons ফোল্ডার একসাথে Cloudflare-এ upload করুন।
+3. আগের Worker-এর deployment update করুন; নতুন Worker তৈরি করবেন না।
+4. Deploy শেষে /admin.html খুলে Admin Login করুন।
+5. Banner ছবির নিচে DELETE চাপুন, তারপর SAVE BANNER চাপুন।
+6. Chrome menu থেকে Install app / Add to Home screen করুন।
+
+শুধু ৫টি ফাইল upload করবেন না। ZIP-এর সব ফাইল ও icons ফোল্ডার লাগবে।
+setup.sql বা ADD_MULTIPLE_BANNERS.sql Supabase-এ আবার চালাবেন না।
