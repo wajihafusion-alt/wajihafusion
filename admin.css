@@ -41,3 +41,13 @@
 .admin-toast{background:#d4b16e;color:#111;border-radius:2px;box-shadow:0 8px 28px #0008}.banner-delete-btn{border-radius:2px}
 .error,.order-error{color:#ff9999}
 @media(max-width:700px){.admin-wrap{margin:25px auto;padding:0 14px 65px}.admin-login{margin:6vh 8px;padding:28px 22px}.admin-heading{align-items:flex-start;flex-direction:column}.admin-card{padding:19px 15px}.admin-tabs{margin-top:20px}.tab{padding:13px 14px;font-size:11px}.admin-product-row{padding:12px 2px;gap:10px}}
+
+
+/* Keep every admin navigation tab visible, including Orders */
+.admin-tabs{display:flex!important;flex-wrap:nowrap!important;align-items:stretch;overflow-x:auto!important;overflow-y:hidden;white-space:nowrap;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.admin-tabs .tab{display:block!important;flex:0 0 auto!important;visibility:visible!important;opacity:1!important}
+#ordersTab{min-width:0}
+#ordersTab.hidden{display:none!important}
+#ordersTab:not(.hidden){display:block}
+.admin-orders-list{display:grid;gap:12px;min-width:0}
+@media(max-width:700px){.admin-tabs{width:100%;padding-bottom:2px}.admin-tabs .tab{padding:13px 12px;font-size:10px}}
