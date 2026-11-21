@@ -1,3 +1,2 @@
 # wajihafusion-
-E-commerce website and automatic invoice management system for Wajiha Fusion.
-Deployment update
+E-commerce website and automatic invoice management system for Wajiha Fusion
