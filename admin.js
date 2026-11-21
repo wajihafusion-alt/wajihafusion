@@ -62,35 +62,35 @@
  async function refresh(){await Promise.all([loadCats(),loadProducts(),loadBanner()])}
  async function loadCats(){const {data,error}=await db.from('categories').select('*').order('sort_order');if(error){notify('Category load failed: '+error.message);return}cats=data||[];const opts=cats.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');$('#pCategory').innerHTML=opts;$('#parentCategory').innerHTML='<option value="">Main category</option>'+cats.filter(c=>!c.parent_id).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');$('#categoryList').innerHTML=cats.map(c=>`<div class="category-admin-row"><div>${esc(c.name)}<small>${c.parent_id?'Subcategory':'Main category'} · Sizes: ${(c.sizes||[]).map(esc).join(', ')||'Not set'}</small></div><button data-cat-delete="${c.id}">DELETE</button></div>`).join('');$('#categoryList').querySelectorAll('[data-cat-delete]').forEach(b=>b.addEventListener('click',()=>deleteCategory(b.dataset.catDelete)))}
  async function loadProducts(){const {data,error}=await db.from('products').select('*').order('created_at',{ascending:false});if(error){$('#adminProductList').textContent=error.message;return}products=data||[];renderAdminProducts()}
- function renderAdminProducts(){const q=($('#productSearch')?.value||'').trim().toLowerCase();const shown=products.filter(p=>!q||`${p.name||''} ${p.product_code||''}`.toLowerCase().includes(q));$('#adminProductList').innerHTML=shown.map(p=>{const image=(p.product_images||[])[0]||p.image_url||'https://placehold.co/100x120/171717/c8a45d?text=WF';return `<div class="admin-product-row"><img src="${esc(image)}"><div><strong>${esc(p.name)}</strong><small>Code: ${esc(p.product_code||'No code')} · ${money(p.special_price||p.regular_price)} · ${(p.colors||[]).length} colors · ${(p.sizes||[]).length} sizes</small></div><span class="price-cell">${p.is_active?'Active':'Hidden'}</span><div class="row-actions"><button data-edit="${p.id}">EDIT</button><button class="delete" data-delete="${p.id}">DELETE</button></div></div>`}).join('')||'<p class="muted">No matching products found.</p>';$('#adminProductList').querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>editProduct(b.dataset.edit)));$('#adminProductList').querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>deleteProduct(b.dataset.delete)))} function renderExistingPhotos(){
+ function renderAdminProducts(){const q=($('#productSearch')?.value||'').trim().toLowerCase();const shown=products.filter(p=>!q||`${p.name||''} ${p.product_code||''}`.toLowerCase().includes(q));$('#adminProductList').innerHTML=shown.map(p=>{const image=(p.product_images||[])[0]||p.image_url||'https://placehold.co/100x120/171717/c8a45d?text=WF';return `<div class="admin-product-row"><img src="${esc(image)}"><div><strong>${esc(p.name)}</strong><small>Code: ${esc(p.product_code||'No code')} · ${money(p.special_price||p.regular_price)} · ${(p.colors||[]).length} colors · ${(p.sizes||[]).length} sizes</small></div><span class="price-cell">${p.is_active?'Active':'Hidden'}</span><div class="row-actions"><button data-edit="${p.id}">EDIT</button><button class="delete" data-delete="${p.id}">DELETE</button></div></div>`}).join('')||'<p class="muted">No matching products found.</p>';$('#adminProductList').querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>editProduct(b.dataset.edit)));$('#adminProductList').querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>deleteProduct(b.dataset.delete)))}
+ $('#newProductBtn').addEventListener('click',()=>{resetProduct();$('#productForm').classList.remove('hidden')});$('#cancelProductBtn').addEventListener('click',()=>$('#productForm').classList.add('hidden'));
+
+ function renderExistingPhotos(){
    const host=$('#existingPhotos');
    if(!host)return;
    host.innerHTML=currentProductPhotos.map((u,i)=>`
-     <div class="product-photo-item" style="display:inline-flex;flex-direction:column;gap:6px;vertical-align:top;margin:6px;padding:7px;border:1px solid #80601f;border-radius:9px;background:#17130b">
-       <img src="${esc(u)}" alt="Product photo ${i+1}" style="width:88px;height:105px;object-fit:cover;border-radius:6px">
-       <span style="font-size:11px;color:#e9c65f;text-align:center">${i===0?'★ MAIN PHOTO':'PHOTO '+(i+1)}</span>
-       <button type="button" data-photo-main="${i}" ${i===0?'disabled':''} style="border:0;border-radius:5px;padding:6px;background:#b58a2b;color:#17120a;cursor:pointer;opacity:${i===0?'.5':'1'}">MAKE MAIN</button>
-       <button type="button" data-photo-delete="${i}" style="border:0;border-radius:5px;padding:6px;background:#9d2424;color:white;cursor:pointer">🗑 DELETE</button>
-     </div>
-   `).join('') || '<p class="muted">No saved photos. Add photos below.</p>';
+     <div style="display:inline-flex;flex-direction:column;gap:5px;margin:6px;padding:6px;border:1px solid #9b792e;border-radius:8px">
+       <img src="${esc(u)}" style="width:85px;height:105px;object-fit:cover;border-radius:5px">
+       <small style="color:#d9b64c;text-align:center">${i===0?'★ MAIN PHOTO':'PHOTO '+(i+1)}</small>
+       <button type="button" data-main-photo="${i}" ${i===0?'disabled':''}>MAKE MAIN</button>
+       <button type="button" data-delete-photo="${i}" style="background:#9b2424;color:white">DELETE</button>
+     </div>`).join('')||'<p class="muted">No saved photos.</p>';
 
-   host.querySelectorAll('[data-photo-main]').forEach(b=>b.addEventListener('click',()=>{
-     const i=Number(b.dataset.photoMain);
-     if(!Number.isInteger(i)||i<0||i>=currentProductPhotos.length)return;
-     const [chosen]=currentProductPhotos.splice(i,1);
-     currentProductPhotos.unshift(chosen);
+   host.querySelectorAll('[data-main-photo]').forEach(b=>b.addEventListener('click',()=>{
+     const i=Number(b.dataset.mainPhoto);
+     if(i<0||i>=currentProductPhotos.length)return;
+     const photo=currentProductPhotos.splice(i,1)[0];
+     currentProductPhotos.unshift(photo);
      renderExistingPhotos();
-     setStatus('#productStatus','Main photo changed. Press SAVE PRODUCT to keep the change.');
    }));
 
-   host.querySelectorAll('[data-photo-delete]').forEach(b=>b.addEventListener('click',()=>{
-     const i=Number(b.dataset.photoDelete);
-     if(!Number.isInteger(i)||i<0||i>=currentProductPhotos.length)return;
+   host.querySelectorAll('[data-delete-photo]').forEach(b=>b.addEventListener('click',()=>{
+     const i=Number(b.dataset.deletePhoto);
+     if(i<0||i>=currentProductPhotos.length)return;
      if(!confirm('এই Product Photo মুছে ফেলবেন?'))return;
-     const [removed]=currentProductPhotos.splice(i,1);
-     if(removed&&!removedProductPhotos.includes(removed))removedProductPhotos.push(removed);
+     const photo=currentProductPhotos.splice(i,1)[0];
+     if(photo&&!removedProductPhotos.includes(photo))removedProductPhotos.push(photo);
      renderExistingPhotos();
-     setStatus('#productStatus','ছবি সরানো হয়েছে। পরিবর্তন রাখতে SAVE PRODUCT চাপুন।');
    }));
  }
 
@@ -102,9 +102,7 @@
    removedProductPhotos=[];
    $('#existingPhotos').innerHTML='';
    setStatus('#productStatus','');
- }
-
- function editProduct(id){
+      } function editProduct(id){
    const p=products.find(x=>x.id===id);
    if(!p)return;
    $('#productForm').classList.remove('hidden');
@@ -118,14 +116,26 @@
    $('#pColors').value=(p.colors||[]).join(', ');
    $('#pSizes').value=(p.sizes||[]).join(', ');
    currentProductPhotos=(Array.isArray(p.product_images)&&p.product_images.length)
-     ? p.product_images.slice()
-     : (p.image_url?[p.image_url]:[]);
+     ?p.product_images.slice()
+     :(p.image_url?[p.image_url]:[]);
    removedProductPhotos=[];
    renderExistingPhotos();
-   setStatus('#productStatus','');
    $('#productForm').scrollIntoView({behavior:'smooth'});
  }
- async function uploadFiles(files,folder){let urls=[];for(const f of files){const safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');const path=`${folder}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safe}`;const {error}=await db.storage.from('product-images').upload(path,f,{upsert:false,contentType:f.type});if(error)throw error;const {data}=db.storage.from('product-images').getPublicUrl(path);urls.push(data.publicUrl)}return urls}
+
+ async function uploadFiles(files,folder){
+   let urls=[];
+   for(const f of files){
+     const safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+     const path=`${folder}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safe}`;
+     const {error}=await db.storage.from('product-images').upload(path,f,{upsert:false,contentType:f.type});
+     if(error)throw error;
+     const {data}=db.storage.from('product-images').getPublicUrl(path);
+     urls.push(data.publicUrl);
+   }
+   return urls;
+ }
+
  function getProductStoragePath(url){
    const marker='/storage/v1/object/public/product-images/';
    const at=String(url||'').indexOf(marker);
@@ -162,18 +172,17 @@
      if(enteredCode)payload.product_code=enteredCode;
 
      const res=id
-       ? await db.from('products').update(payload).eq('id',id)
-       : await db.from('products').insert(payload);
+       ?await db.from('products').update(payload).eq('id',id)
+       :await db.from('products').insert(payload);
      if(res.error)throw res.error;
 
-     let storageWarning='';
      const paths=[...new Set(removedProductPhotos.map(getProductStoragePath).filter(Boolean))];
      if(paths.length){
        const {error:storageError}=await db.storage.from('product-images').remove(paths);
-       if(storageError)storageWarning=' Product data saved, but Storage could not delete old image file(s): '+storageError.message;
+       if(storageError)notify('Product saved, but photo file deletion failed: '+storageError.message);
      }
 
-     notify(storageWarning?'Product saved; '+storageWarning:'Product saved');
+     if(!paths.length||!removedProductPhotos.length)notify('Product saved successfully');
      $('#productForm').classList.add('hidden');
      resetProduct();
      await loadProducts();
@@ -182,7 +191,9 @@
    }finally{
      if(btn)btn.disabled=false;
    }
- }); async function deleteProduct(id){if(!confirm('Delete this product?'))return;const {error}=await db.from('products').delete().eq('id',id);if(error)return notify(error.message);notify('Product deleted');await loadProducts()}
+ });
+
+ async function deleteProduct(id){if(!confirm('Delete this product?'))return;const {error}=await db.from('products').delete().eq('id',id);if(error)return notify(error.message);notify('Product deleted');await loadProducts()}
  $('#categoryForm').addEventListener('submit',async e=>{e.preventDefault();const name=$('#categoryName').value.trim(),parent=$('#parentCategory').value||null,sizes=$('#categorySizes').value.split(',').map(x=>x.trim()).filter(Boolean);const {error}=await db.from('categories').insert({name,parent_id:parent,sizes,is_active:true,sort_order:cats.length});if(error)return notify(error.message);$('#categoryForm').reset();notify('Category added');await loadCats()});
  async function deleteCategory(id){if(!confirm('Delete category? Products assigned to it may need reassignment.'))return;const {error}=await db.from('categories').delete().eq('id',id);if(error)return notify(error.message);notify('Category deleted');await loadCats()}
  function renderBannerPreview(){const pending=[...$('#bannerPhoto').files];$('#bannerPreview').innerHTML=bannerImages.map((u,i)=>`<div class="banner-preview-item"><img src="${esc(u)}" alt="Banner ${i+1}"><button type="button" class="banner-delete-btn" data-banner-delete="${i}">🗑 DELETE</button></div>`).join('')+pending.map(f=>`<span class="muted">${esc(f.name)} (not uploaded yet)</span>`).join('');$('#bannerPreview').querySelectorAll('[data-banner-delete]').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.bannerDelete);if(!Number.isInteger(i)||i<0||i>=bannerImages.length)return;if(!confirm('এই Banner ছবিটি মুছে ফেলবেন?'))return;bannerImages.splice(i,1);bannerImage=bannerImages[0]||'';renderBannerPreview();setStatus('#bannerStatus','ছবিটি সরানো হয়েছে। স্থায়ী করতে SAVE BANNER চাপুন।')}))}
@@ -215,19 +226,18 @@
      const found=orders.find(o=>o.id===el.dataset.orderStatus);if(found)found.status=el.value;notify('Order status updated');renderOrders();
    }));
    $('#adminOrdersList').querySelectorAll('[data-order-invoice]').forEach(b=>b.addEventListener('click',()=>printOrderInvoice(b.dataset.orderInvoice)));
- }
- $('#newProductBtn').addEventListener('click',()=>{resetProduct();$('#productForm').classList.remove('hidden')});$('#cancelProductBtn').addEventListener function printOrderInvoice(id){
+  } function printOrderInvoice(id){
    const o=orders.find(x=>x.id===id);if(!o)return;
    const items=Array.isArray(o.items)?o.items:[];
    const itemRows=items.map((x,i)=>{const linkedProduct=products.find(p=>(x.product_code&&p.product_code===x.product_code)||(x.name&&p.name===x.name)||(x.product_name&&p.name===x.product_name));const image=x.image_url||x.image||x.product_image||x.photo||linkedProduct?.image_url||(linkedProduct?.product_images||[])[0]||'';const qty=Number(x.quantity||x.qty||1);const price=Number(x.price||x.unit_price||0);const line=Number(x.total||x.line_total||price*qty);return `<tr><td class="num">${i+1}</td><td><div class="inv-product">${image?`<img src="${orderEsc(image)}" alt="">`:''}<div><b>${orderEsc(x.name||x.product_name||'Product')}</b><small>${orderEsc(x.product_code||'')}${x.color?' · '+orderEsc(x.color):''}${x.size?' · '+orderEsc(x.size):''}</small></div></div></td><td>${qty}</td><td>${money(price)}</td><td class="right">${money(line)}</td></tr>`}).join('');
    const address=[o.address,o.thana,o.district,o.delivery_area].filter(Boolean).join(', ');
    const date=o.created_at?new Date(o.created_at).toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}):'—';
    const html=`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${orderEsc(o.order_number)} | Wajiha Fusion Invoice</title><style>
-   *{box-sizing:border-box}body{margin:0;background:#090909;color:#f7f2e8;font:14px Arial,sans-serif;padding:28px}.invoice{max-width:850px;margin:0 auto;border:1px solid #b99135;background:radial-gradient(ellipse at top right,#29200e 0,#090909 48%);padding:34px;position:relative;overflow:hidden}.invoice:before,.invoice:after{content:"";position:absolute;width:260px;height:2px;background:linear-gradient(90deg,transparent,#f6cf62,transparent);transform:rotate(-24deg);right:-50px;top:35px}.invoice:after{top:auto;right:auto;left:-80px;bottom:50px}.brand{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #8f6b24;padding-bottom:20px}.logo{display:flex;align-items:center;gap:15px}.crown{font-size:48px;color:#f5ca55;line-height:1}.brand h1{margin:0;color:#f6d16a;font: bold 30px Georgia,serif;letter-spacing:1px}.brand p{margin:5px 0 0;color:#c8b783;font-style:italic}.tag{border:1px solid #bd9135;color:#f6d16a;border-radius:30px;padding:9px 14px;font-size:11px;letter-spacing:1px}.hero{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center;margin:24px 0}.hero h2{font: bold 43px Georgia,serif;color:#f3c85b;margin:0}.hero p{color:#c9b77f;margin:5px 0}.meta{border:1px solid #9d762a;border-radius:12px;padding:15px}.meta b{display:block;color:#f3ce69;margin-bottom:6px}.meta span{font-size:16px;overflow-wrap:anywhere}.info{display:grid;grid-template-columns:1fr 1fr;border:1px solid #80601f;border-radius:12px;padding:17px;margin:20px 0}.info h3{color:#f1c85c;margin:0 0 10px}.info p{margin:6px 0;color:#eee}.info>div+div{border-left:1px solid #80601f;padding-left:22px}.items{width:100%;border-collapse:collapse;margin:20px 0}.items th{background:linear-gradient(90deg,#d8a936,#f8dc83);color:#15110a;text-align:left;padding:13px 10px}.items td{padding:13px 10px;border-bottom:1px solid #59451d}.num{color:#e9c65f}.right{text-align:right}.inv-product{display:flex;align-items:center;gap:10px}.inv-product img{width:48px;height:55px;object-fit:cover;border-radius:6px;background:#222;border:1px solid #80601f}.inv-product small{display:block;color:#b9aa82;margin-top:5px}.bottom{display:grid;grid-template-columns:1fr 300px;gap:25px;align-items:start;margin-top:22px}.thanks{font:italic 36px Georgia,serif;color:#f3c85b;margin:5px 0}.thanks-note{color:#cfc6b0;line-height:1.6}.totals{border:1px solid #b38a32;border-radius:12px;padding:14px}.totals div{display:flex;justify-content:space-between;padding:8px 4px;border-bottom:1px solid #49391b}.totals .grand{background:linear-gradient(90deg,#d5a22e,#f8d979);color:#17120a;font-size:18px;font-weight:bold;margin:8px -14px -14px;padding:14px;border-radius:0 0 12px 12px}.footer{border-top:1px solid #80601f;margin-top:28px;padding-top:18px;display:flex;justify-content:space-between;gap:15px;color:#d9c78f;font-size:12px}.footer strong{color:#f4d06c}.actions{text-align:center;margin:24px}.print{background:linear-gradient(90deg,#c99523,#f8d875);border:0;border-radius:7px;padding:13px 26px;font-weight:bold;color:#17120a;cursor:pointer}@media(max-width:620px){body{padding:8px}.invoice{padding:17px}.brand h1{font-size:22px}.tag{display:none}.hero{grid-template-columns:1fr}.hero h2{font-size:34px}.info{grid-template-columns:1fr;gap:12px}.info>div+div{border-left:0;border-top:1px solid #80601f;padding:12px 0 0}.bottom{grid-template-columns:1fr}.items{font-size:11px}.items th,.items td{padding:8px 5px}.inv-product img{width:35px;height:42px}.footer{flex-direction:column}}@media print{body{padding:0;background:#090909!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.invoice{border:0;max-width:none;min-height:100vh}.actions{display:none}}
+   *{box-sizing:border-box}body{margin:0;background:#090909;color:#f7f2e8;font:14px Arial,sans-serif;padding:28px}.invoice{max-width:850px;margin:0 auto;border:1px solid #b99135;background:radial-gradient(ellipse at top right,#29200e 0,#090909 48%);padding:34px;position:relative;overflow:hidden}.invoice:before,.invoice:after{content:"";position:absolute;width:260px;height:2px;background:linear-gradient(90deg,transparent,#f6cf62,transparent);transform:rotate(-24deg);right:-50px;top:35px}.invoice:after{top:auto;right:auto;left:-80px;bottom:50px}.brand{display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #8f6b24;padding-bottom:20px}.logo{display:flex;align-items:center;gap:15px}.crown{font-size:48px;color:#f5ca55;line-height:1}.brand h1{margin:0;color:#f6d16a;font:bold 30px Georgia,serif;letter-spacing:1px}.brand p{margin:5px 0 0;color:#c8b783;font-style:italic}.tag{border:1px solid #bd9135;color:#f6d16a;border-radius:30px;padding:9px 14px;font-size:11px;letter-spacing:1px}.hero{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:center;margin:24px 0}.hero h2{font:bold 43px Georgia,serif;color:#f3c85b;margin:0}.hero p{color:#c9b77f;margin:5px 0}.meta{border:1px solid #9d762a;border-radius:12px;padding:15px}.meta b{display:block;color:#f3ce69;margin-bottom:6px}.meta span{font-size:16px;overflow-wrap:anywhere}.info{display:grid;grid-template-columns:1fr 1fr;border:1px solid #80601f;border-radius:12px;padding:17px;margin:20px 0}.info h3{color:#f1c85c;margin:0 0 10px}.info p{margin:6px 0;color:#eee}.info>div+div{border-left:1px solid #80601f;padding-left:22px}.items{width:100%;border-collapse:collapse;margin:20px 0}.items th{background:linear-gradient(90deg,#d8a936,#f8dc83);color:#15110a;text-align:left;padding:13px 10px}.items td{padding:13px 10px;border-bottom:1px solid #59451d}.num{color:#e9c65f}.right{text-align:right}.inv-product{display:flex;align-items:center;gap:10px}.inv-product img{width:48px;height:55px;object-fit:cover;border-radius:6px;background:#222;border:1px solid #80601f}.inv-product small{display:block;color:#b9aa82;margin-top:5px}.bottom{display:grid;grid-template-columns:1fr 300px;gap:25px;align-items:start;margin-top:22px}.thanks{font:italic 36px Georgia,serif;color:#f3c85b;margin:5px 0}.thanks-note{color:#cfc6b0;line-height:1.6}.totals{border:1px solid #b38a32;border-radius:12px;padding:14px}.totals div{display:flex;justify-content:space-between;padding:8px 4px;border-bottom:1px solid #49391b}.totals .grand{background:linear-gradient(90deg,#d5a22e,#f8d979);color:#17120a;font-size:18px;font-weight:bold;margin:8px -14px -14px;padding:14px;border-radius:0 0 12px 12px}.footer{border-top:1px solid #80601f;margin-top:28px;padding-top:18px;display:flex;justify-content:space-between;gap:15px;color:#d9c78f;font-size:12px}.footer strong{color:#f4d06c}.actions{text-align:center;margin:24px}.print{background:linear-gradient(90deg,#c99523,#f8d875);border:0;border-radius:7px;padding:13px 26px;font-weight:bold;color:#17120a;cursor:pointer}@media(max-width:620px){body{padding:8px}.invoice{padding:17px}.brand h1{font-size:22px}.tag{display:none}.hero{grid-template-columns:1fr}.hero h2{font-size:34px}.info{grid-template-columns:1fr;gap:12px}.info>div+div{border-left:0;border-top:1px solid #80601f;padding:12px 0 0}.bottom{grid-template-columns:1fr}.items{font-size:11px}.items th,.items td{padding:8px 5px}.inv-product img{width:35px;height:42px}.footer{flex-direction:column}}@media print{body{padding:0;background:#090909!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}.invoice{border:0;max-width:none;min-height:100vh}.actions{display:none}}
    </style></head><body><main class="invoice"><header class="brand"><div class="logo"><div class="crown">♛<br>W</div><div><h1>Wajiha Fusion</h1><p>Wear The Best, Feel The Best</p></div></div><span class="tag">FASHION · STYLE · YOU</span></header><section class="hero"><div><h2>INVOICE</h2><p>Thank you for shopping with us!</p></div><div class="meta"><b>ORDER NUMBER</b><span>${orderEsc(o.order_number||'—')}</span><p><b>ORDER DATE</b><span>${date}</span></p></div></section><section class="info"><div><h3>♟ Customer Information</h3><p><b>Name:</b> ${orderEsc(o.customer_name||'—')}</p><p><b>Phone:</b> ${orderEsc(o.customer_phone||'—')}</p></div><div><h3>⌖ Shipping Address</h3><p>${orderEsc(address||'—')}</p><p><b>Payment:</b> ${orderEsc(o.payment_method||'—')}</p></div></section><table class="items"><thead><tr><th>#</th><th>Product</th><th>Qty</th><th>Unit Price</th><th class="right">Total</th></tr></thead><tbody>${itemRows||'<tr><td colspan="5">No product details provided</td></tr>'}</tbody></table><section class="bottom"><div><div class="thanks">Thank You!</div><p class="thanks-note">For being a part of Wajiha Fusion.<br>Your support inspires us to do better. ♥</p></div><div class="totals"><div><span>Subtotal</span><b>${money(o.subtotal)}</b></div><div><span>Discount</span><b>${money(o.discount)}</b></div><div><span>Delivery</span><b>${money(o.delivery_charge)}</b></div><div class="grand"><span>Total Amount</span><b>${money(o.total)}</b></div></div></section><footer class="footer"><span><strong>WAJIHA FUSION</strong> · Premium Fashion</span><span>Fashion Beyond Boundaries</span></footer></main><div class="actions"><button class="print" onclick="window.print()">PRINT / SAVE AS PDF</button></div></body></html>`;
    const w=window.open('','_blank');if(!w){notify('Allow pop-ups to print invoice');return}w.document.open();w.document.write(html);w.document.close();
  }
  $('#orderSearch').addEventListener('input',renderOrders);
  $('#refreshOrdersBtn').addEventListener('click',loadOrders);
  $('#productSearch').addEventListener('input',renderAdminProducts);adminCheck();
-})();('click',()=>$('#productForm').classList.add('hidden'));
+})();
