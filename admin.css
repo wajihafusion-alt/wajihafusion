@@ -11,3 +11,33 @@
 
 /* Customer order management */
 .admin-orders-list{display:grid;gap:12px}.admin-order-card{border:1px solid var(--line);padding:16px;background:#101010}.admin-order-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.admin-order-head strong,.admin-order-head small{display:block}.admin-order-head strong{color:var(--gold2);font-size:14px}.admin-order-head small{color:var(--muted);margin-top:5px}.admin-order-total{color:var(--gold2);white-space:nowrap}.admin-order-items{margin:14px 0;border-top:1px solid var(--line)}.admin-order-item{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:12px}.admin-order-item small{display:block;color:var(--muted);margin-top:4px}.admin-order-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.admin-order-foot label{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}.admin-order-foot select{background:#0d0d0d;color:var(--cream);border:1px solid #61543b;padding:9px}.admin-order-address{display:block;color:var(--muted);margin-top:12px}.order-error{color:#ff9999;overflow-wrap:anywhere}@media(max-width:520px){.admin-order-head{display:block}.admin-order-total{display:block;margin-top:10px}}
+
+
+/* WAJIHA FUSION — PREMIUM BLACK & GOLD ADMIN */
+.admin-body{background:radial-gradient(ellipse at 50% -15%,rgba(191,153,83,.13),transparent 42%),#080808;color:#f3eee4}
+.admin-top{position:sticky;top:0;z-index:20;height:76px;background:rgba(8,8,8,.95);backdrop-filter:blur(14px);border-bottom:1px solid rgba(194,158,91,.3);box-shadow:0 8px 30px #0005;color:#d9b875;letter-spacing:.19em}
+.admin-top>a:last-child{color:#e1c184;transition:.2s}.admin-top>a:last-child:hover{color:#fff}
+.admin-wrap{max-width:1180px;margin:48px auto;padding:0 24px 90px}
+.admin-login{max-width:440px;margin:9vh auto;padding:42px;background:linear-gradient(145deg,#181818,#0e0e0e);border:1px solid rgba(201,164,98,.4);border-radius:3px;box-shadow:0 24px 75px #0009,inset 0 1px #ffffff09}
+.admin-login h1,.admin-heading h1{color:#f0dfb8;font-size:clamp(30px,4vw,40px);letter-spacing:.015em}
+.admin-login label,.admin-form label,.product-search-label{color:#d8c9a9}
+.admin-login input,.admin-form input,.admin-form textarea,.admin-form select,.inline-form input,.inline-form select,.product-search-label input{background:#090909;border:1px solid #393126;border-radius:2px;color:#f6f0e5;transition:border-color .2s,box-shadow .2s}
+.admin-login input:focus,.admin-form input:focus,.admin-form textarea:focus,.admin-form select:focus,.inline-form input:focus,.inline-form select:focus,.product-search-label input:focus{border-color:#c7a15d;box-shadow:0 0 0 3px #c7a15d1c}
+.admin-heading{gap:18px;margin-bottom:24px}.admin-heading h1{margin:4px 0}
+.admin-tabs{gap:4px;margin:28px 0 20px;padding:0 4px;border-bottom:1px solid #c9a46255;overflow-x:auto;scrollbar-width:thin}
+.tab{white-space:nowrap;padding:15px 20px;color:#928b7e;border-bottom:2px solid transparent;transition:.2s;cursor:pointer}
+.tab:hover{color:#e8d2a5;background:#c9a4620b}.tab.active{color:#e5c27f;border-color:#c9a462;background:linear-gradient(0deg,#c9a46217,transparent)}
+.admin-card{background:linear-gradient(145deg,#191919,#0d0d0d);border:1px solid #c9a46238;border-radius:3px;padding:28px;margin-bottom:22px;box-shadow:0 12px 34px #0004}
+.admin-card h2{color:#ead8b2;font-size:25px}.admin-form{border-color:#c9a46233}.admin-form small,.muted{color:#9d9689}
+.outline-btn,.row-actions button,.category-admin-row button{border:1px solid #80683f;color:#dfbd7d;background:#c9a46209;border-radius:2px;transition:.2s;cursor:pointer}
+.outline-btn:hover,.row-actions button:hover{background:#c9a462;color:#101010;border-color:#c9a462}
+.gold-btn{background:linear-gradient(135deg,#e4c783,#b78b45)!important;color:#111!important;border:1px solid #e4c783!important;border-radius:2px;font-weight:700;letter-spacing:.06em;transition:filter .2s,transform .2s}
+.gold-btn:hover{filter:brightness(1.08);transform:translateY(-1px)}.status{color:#e1c184}
+.admin-product-row,.category-admin-row{border-color:#c9a4622b}.admin-product-row{padding:16px 10px;transition:background .2s}.admin-product-row:hover{background:#c9a4620b}.admin-product-row strong{color:#eee4d1}
+.admin-product-row img,.photo-preview img,.banner-preview img{border:1px solid #c9a46266;border-radius:2px}
+.admin-order-card{background:linear-gradient(145deg,#171717,#101010);border:1px solid #c9a46240;border-radius:3px;box-shadow:0 8px 24px #0004}
+.admin-order-head strong,.admin-order-total{color:#e5c27f}.admin-order-items{border-color:#c9a46230}.admin-order-item{border-color:#c9a46222}
+.admin-order-foot select{background:#090909;border:1px solid #80683f;color:#ead8b2;border-radius:2px}
+.admin-toast{background:#d4b16e;color:#111;border-radius:2px;box-shadow:0 8px 28px #0008}.banner-delete-btn{border-radius:2px}
+.error,.order-error{color:#ff9999}
+@media(max-width:700px){.admin-wrap{margin:25px auto;padding:0 14px 65px}.admin-login{margin:6vh 8px;padding:28px 22px}.admin-heading{align-items:flex-start;flex-direction:column}.admin-card{padding:19px 15px}.admin-tabs{margin-top:20px}.tab{padding:13px 14px;font-size:11px}.admin-product-row{padding:12px 2px;gap:10px}}
