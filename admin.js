@@ -1,5 +1,5 @@
 (() => {
- const cfg=window.WAJIHA_CONFIG||{},db=window.supabase?.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey),$=s=>document.querySelector(s);let cats=[],products=[],orders=[],bannerImage='',bannerImages=[];
+ const cfg=window.WAJIHA_CONFIG||{},db=window.supabase?.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey),$=s=>document.querySelector(s);let cats=[],products=[],orders=[],bannerImage='',bannerImages=[],currentProductPhotos=[],removedProductPhotos=[];
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const money=n=>'৳'+Number(n||0).toLocaleString('en-BD');
  function notify(m){const t=$('#adminToast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
  function setStatus(id,m){$(id).textContent=m}
@@ -62,13 +62,127 @@
  async function refresh(){await Promise.all([loadCats(),loadProducts(),loadBanner()])}
  async function loadCats(){const {data,error}=await db.from('categories').select('*').order('sort_order');if(error){notify('Category load failed: '+error.message);return}cats=data||[];const opts=cats.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');$('#pCategory').innerHTML=opts;$('#parentCategory').innerHTML='<option value="">Main category</option>'+cats.filter(c=>!c.parent_id).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');$('#categoryList').innerHTML=cats.map(c=>`<div class="category-admin-row"><div>${esc(c.name)}<small>${c.parent_id?'Subcategory':'Main category'} · Sizes: ${(c.sizes||[]).map(esc).join(', ')||'Not set'}</small></div><button data-cat-delete="${c.id}">DELETE</button></div>`).join('');$('#categoryList').querySelectorAll('[data-cat-delete]').forEach(b=>b.addEventListener('click',()=>deleteCategory(b.dataset.catDelete)))}
  async function loadProducts(){const {data,error}=await db.from('products').select('*').order('created_at',{ascending:false});if(error){$('#adminProductList').textContent=error.message;return}products=data||[];renderAdminProducts()}
- function renderAdminProducts(){const q=($('#productSearch')?.value||'').trim().toLowerCase();const shown=products.filter(p=>!q||`${p.name||''} ${p.product_code||''}`.toLowerCase().includes(q));$('#adminProductList').innerHTML=shown.map(p=>{const image=(p.product_images||[])[0]||p.image_url||'https://placehold.co/100x120/171717/c8a45d?text=WF';return `<div class="admin-product-row"><img src="${esc(image)}"><div><strong>${esc(p.name)}</strong><small>Code: ${esc(p.product_code||'No code')} · ${money(p.special_price||p.regular_price)} · ${(p.colors||[]).length} colors · ${(p.sizes||[]).length} sizes</small></div><span class="price-cell">${p.is_active?'Active':'Hidden'}</span><div class="row-actions"><button data-edit="${p.id}">EDIT</button><button class="delete" data-delete="${p.id}">DELETE</button></div></div>`}).join('')||'<p class="muted">No matching products found.</p>';$('#adminProductList').querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>editProduct(b.dataset.edit)));$('#adminProductList').querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>deleteProduct(b.dataset.delete)))}
- $('#newProductBtn').addEventListener('click',()=>{resetProduct();$('#productForm').classList.remove('hidden')});$('#cancelProductBtn').addEventListener('click',()=>$('#productForm').classList.add('hidden'));
- function resetProduct(){ $('#productForm').reset();$('#productId').value='';$('#pCode').value='';$('#existingPhotos').innerHTML='';setStatus('#productStatus','') }
- function editProduct(id){const p=products.find(x=>x.id===id);if(!p)return;$('#productForm').classList.remove('hidden');$('#productId').value=p.id;$('#pName').value=p.name;$('#pCode').value=p.product_code||'';$('#pCategory').value=p.category_id||'';$('#pRegular').value=p.regular_price||'';$('#pSpecial').value=p.special_price||'';$('#pDescription').value=p.description||'';$('#pColors').value=(p.colors||[]).join(', ');$('#pSizes').value=(p.sizes||[]).join(', ');$('#existingPhotos').innerHTML=(p.product_images||[]).map(u=>`<img src="${esc(u)}">`).join('');$('#productForm').scrollIntoView({behavior:'smooth'})}
+ function renderAdminProducts(){const q=($('#productSearch')?.value||'').trim().toLowerCase();const shown=products.filter(p=>!q||`${p.name||''} ${p.product_code||''}`.toLowerCase().includes(q));$('#adminProductList').innerHTML=shown.map(p=>{const image=(p.product_images||[])[0]||p.image_url||'https://placehold.co/100x120/171717/c8a45d?text=WF';return `<div class="admin-product-row"><img src="${esc(image)}"><div><strong>${esc(p.name)}</strong><small>Code: ${esc(p.product_code||'No code')} · ${money(p.special_price||p.regular_price)} · ${(p.colors||[]).length} colors · ${(p.sizes||[]).length} sizes</small></div><span class="price-cell">${p.is_active?'Active':'Hidden'}</span><div class="row-actions"><button data-edit="${p.id}">EDIT</button><button class="delete" data-delete="${p.id}">DELETE</button></div></div>`}).join('')||'<p class="muted">No matching products found.</p>';$('#adminProductList').querySelectorAll('[data-edit]').forEach(b=>b.addEventListener('click',()=>editProduct(b.dataset.edit)));$('#adminProductList').querySelectorAll('[data-delete]').forEach(b=>b.addEventListener('click',()=>deleteProduct(b.dataset.delete)))} function renderExistingPhotos(){
+   const host=$('#existingPhotos');
+   if(!host)return;
+   host.innerHTML=currentProductPhotos.map((u,i)=>`
+     <div class="product-photo-item" style="display:inline-flex;flex-direction:column;gap:6px;vertical-align:top;margin:6px;padding:7px;border:1px solid #80601f;border-radius:9px;background:#17130b">
+       <img src="${esc(u)}" alt="Product photo ${i+1}" style="width:88px;height:105px;object-fit:cover;border-radius:6px">
+       <span style="font-size:11px;color:#e9c65f;text-align:center">${i===0?'★ MAIN PHOTO':'PHOTO '+(i+1)}</span>
+       <button type="button" data-photo-main="${i}" ${i===0?'disabled':''} style="border:0;border-radius:5px;padding:6px;background:#b58a2b;color:#17120a;cursor:pointer;opacity:${i===0?'.5':'1'}">MAKE MAIN</button>
+       <button type="button" data-photo-delete="${i}" style="border:0;border-radius:5px;padding:6px;background:#9d2424;color:white;cursor:pointer">🗑 DELETE</button>
+     </div>
+   `).join('') || '<p class="muted">No saved photos. Add photos below.</p>';
+
+   host.querySelectorAll('[data-photo-main]').forEach(b=>b.addEventListener('click',()=>{
+     const i=Number(b.dataset.photoMain);
+     if(!Number.isInteger(i)||i<0||i>=currentProductPhotos.length)return;
+     const [chosen]=currentProductPhotos.splice(i,1);
+     currentProductPhotos.unshift(chosen);
+     renderExistingPhotos();
+     setStatus('#productStatus','Main photo changed. Press SAVE PRODUCT to keep the change.');
+   }));
+
+   host.querySelectorAll('[data-photo-delete]').forEach(b=>b.addEventListener('click',()=>{
+     const i=Number(b.dataset.photoDelete);
+     if(!Number.isInteger(i)||i<0||i>=currentProductPhotos.length)return;
+     if(!confirm('এই Product Photo মুছে ফেলবেন?'))return;
+     const [removed]=currentProductPhotos.splice(i,1);
+     if(removed&&!removedProductPhotos.includes(removed))removedProductPhotos.push(removed);
+     renderExistingPhotos();
+     setStatus('#productStatus','ছবি সরানো হয়েছে। পরিবর্তন রাখতে SAVE PRODUCT চাপুন।');
+   }));
+ }
+
+ function resetProduct(){
+   $('#productForm').reset();
+   $('#productId').value='';
+   $('#pCode').value='';
+   currentProductPhotos=[];
+   removedProductPhotos=[];
+   $('#existingPhotos').innerHTML='';
+   setStatus('#productStatus','');
+ }
+
+ function editProduct(id){
+   const p=products.find(x=>x.id===id);
+   if(!p)return;
+   $('#productForm').classList.remove('hidden');
+   $('#productId').value=p.id;
+   $('#pName').value=p.name;
+   $('#pCode').value=p.product_code||'';
+   $('#pCategory').value=p.category_id||'';
+   $('#pRegular').value=p.regular_price||'';
+   $('#pSpecial').value=p.special_price||'';
+   $('#pDescription').value=p.description||'';
+   $('#pColors').value=(p.colors||[]).join(', ');
+   $('#pSizes').value=(p.sizes||[]).join(', ');
+   currentProductPhotos=(Array.isArray(p.product_images)&&p.product_images.length)
+     ? p.product_images.slice()
+     : (p.image_url?[p.image_url]:[]);
+   removedProductPhotos=[];
+   renderExistingPhotos();
+   setStatus('#productStatus','');
+   $('#productForm').scrollIntoView({behavior:'smooth'});
+ }
  async function uploadFiles(files,folder){let urls=[];for(const f of files){const safe=f.name.replace(/[^a-zA-Z0-9._-]/g,'_');const path=`${folder}/${Date.now()}_${Math.random().toString(36).slice(2,8)}_${safe}`;const {error}=await db.storage.from('product-images').upload(path,f,{upsert:false,contentType:f.type});if(error)throw error;const {data}=db.storage.from('product-images').getPublicUrl(path);urls.push(data.publicUrl)}return urls}
- $('#productForm').addEventListener('submit',async e=>{e.preventDefault();const btn=e.submitter;btn.disabled=true;setStatus('#productStatus','Saving...');try{const id=$('#productId').value,old=products.find(p=>p.id===id),newUrls=await uploadFiles([...$('#pPhotos').files],'products'),imgs=[...(old?.product_images||[]),...newUrls];const category=cats.find(c=>c.id===$('#pCategory').value);const payload={name:$('#pName').value.trim(),category_id:category?.id||null,category:category?.name||'',regular_price:Number($('#pRegular').value),special_price:$('#pSpecial').value?Number($('#pSpecial').value):null,description:$('#pDescription').value.trim(),colors:$('#pColors').value.split(',').map(x=>x.trim()).filter(Boolean),sizes:$('#pSizes').value.split(',').map(x=>x.trim()).filter(Boolean),product_images:imgs,image_url:imgs[0]||old?.image_url||'',is_active:true,updated_at:new Date().toISOString()};const enteredCode=$('#pCode').value.trim();if(enteredCode)payload.product_code=enteredCode;const res=id?await db.from('products').update(payload).eq('id',id):await db.from('products').insert(payload);if(res.error)throw res.error;notify('Product saved');$('#productForm').classList.add('hidden');resetProduct();await loadProducts()}catch(err){setStatus('#productStatus',err.message||'Could not save product');}finally{btn.disabled=false}});
- async function deleteProduct(id){if(!confirm('Delete this product?'))return;const {error}=await db.from('products').delete().eq('id',id);if(error)return notify(error.message);notify('Product deleted');await loadProducts()}
+ function getProductStoragePath(url){
+   const marker='/storage/v1/object/public/product-images/';
+   const at=String(url||'').indexOf(marker);
+   if(at<0)return null;
+   try{return decodeURIComponent(String(url).slice(at+marker.length).split('?')[0]);}
+   catch{return null;}
+ }
+
+ $('#productForm').addEventListener('submit',async e=>{
+   e.preventDefault();
+   const btn=e.submitter||$('#productForm').querySelector('[type="submit"]');
+   if(btn)btn.disabled=true;
+   setStatus('#productStatus','Saving...');
+   try{
+     const id=$('#productId').value;
+     const newUrls=await uploadFiles([...$('#pPhotos').files],'products');
+     const imgs=[...currentProductPhotos,...newUrls];
+     const category=cats.find(c=>c.id===$('#pCategory').value);
+     const payload={
+       name:$('#pName').value.trim(),
+       category_id:category?.id||null,
+       category:category?.name||'',
+       regular_price:Number($('#pRegular').value),
+       special_price:$('#pSpecial').value?Number($('#pSpecial').value):null,
+       description:$('#pDescription').value.trim(),
+       colors:$('#pColors').value.split(',').map(x=>x.trim()).filter(Boolean),
+       sizes:$('#pSizes').value.split(',').map(x=>x.trim()).filter(Boolean),
+       product_images:imgs,
+       image_url:imgs[0]||'',
+       is_active:true,
+       updated_at:new Date().toISOString()
+     };
+     const enteredCode=$('#pCode').value.trim();
+     if(enteredCode)payload.product_code=enteredCode;
+
+     const res=id
+       ? await db.from('products').update(payload).eq('id',id)
+       : await db.from('products').insert(payload);
+     if(res.error)throw res.error;
+
+     let storageWarning='';
+     const paths=[...new Set(removedProductPhotos.map(getProductStoragePath).filter(Boolean))];
+     if(paths.length){
+       const {error:storageError}=await db.storage.from('product-images').remove(paths);
+       if(storageError)storageWarning=' Product data saved, but Storage could not delete old image file(s): '+storageError.message;
+     }
+
+     notify(storageWarning?'Product saved; '+storageWarning:'Product saved');
+     $('#productForm').classList.add('hidden');
+     resetProduct();
+     await loadProducts();
+   }catch(err){
+     setStatus('#productStatus',err.message||'Could not save product');
+   }finally{
+     if(btn)btn.disabled=false;
+   }
+ }); async function deleteProduct(id){if(!confirm('Delete this product?'))return;const {error}=await db.from('products').delete().eq('id',id);if(error)return notify(error.message);notify('Product deleted');await loadProducts()}
  $('#categoryForm').addEventListener('submit',async e=>{e.preventDefault();const name=$('#categoryName').value.trim(),parent=$('#parentCategory').value||null,sizes=$('#categorySizes').value.split(',').map(x=>x.trim()).filter(Boolean);const {error}=await db.from('categories').insert({name,parent_id:parent,sizes,is_active:true,sort_order:cats.length});if(error)return notify(error.message);$('#categoryForm').reset();notify('Category added');await loadCats()});
  async function deleteCategory(id){if(!confirm('Delete category? Products assigned to it may need reassignment.'))return;const {error}=await db.from('categories').delete().eq('id',id);if(error)return notify(error.message);notify('Category deleted');await loadCats()}
  function renderBannerPreview(){const pending=[...$('#bannerPhoto').files];$('#bannerPreview').innerHTML=bannerImages.map((u,i)=>`<div class="banner-preview-item"><img src="${esc(u)}" alt="Banner ${i+1}"><button type="button" class="banner-delete-btn" data-banner-delete="${i}">🗑 DELETE</button></div>`).join('')+pending.map(f=>`<span class="muted">${esc(f.name)} (not uploaded yet)</span>`).join('');$('#bannerPreview').querySelectorAll('[data-banner-delete]').forEach(b=>b.addEventListener('click',()=>{const i=Number(b.dataset.bannerDelete);if(!Number.isInteger(i)||i<0||i>=bannerImages.length)return;if(!confirm('এই Banner ছবিটি মুছে ফেলবেন?'))return;bannerImages.splice(i,1);bannerImage=bannerImages[0]||'';renderBannerPreview();setStatus('#bannerStatus','ছবিটি সরানো হয়েছে। স্থায়ী করতে SAVE BANNER চাপুন।')}))}
@@ -102,7 +216,7 @@
    }));
    $('#adminOrdersList').querySelectorAll('[data-order-invoice]').forEach(b=>b.addEventListener('click',()=>printOrderInvoice(b.dataset.orderInvoice)));
  }
- function printOrderInvoice(id){
+ $('#newProductBtn').addEventListener('click',()=>{resetProduct();$('#productForm').classList.remove('hidden')});$('#cancelProductBtn').addEventListener function printOrderInvoice(id){
    const o=orders.find(x=>x.id===id);if(!o)return;
    const items=Array.isArray(o.items)?o.items:[];
    const itemRows=items.map((x,i)=>{const linkedProduct=products.find(p=>(x.product_code&&p.product_code===x.product_code)||(x.name&&p.name===x.name)||(x.product_name&&p.name===x.product_name));const image=x.image_url||x.image||x.product_image||x.photo||linkedProduct?.image_url||(linkedProduct?.product_images||[])[0]||'';const qty=Number(x.quantity||x.qty||1);const price=Number(x.price||x.unit_price||0);const line=Number(x.total||x.line_total||price*qty);return `<tr><td class="num">${i+1}</td><td><div class="inv-product">${image?`<img src="${orderEsc(image)}" alt="">`:''}<div><b>${orderEsc(x.name||x.product_name||'Product')}</b><small>${orderEsc(x.product_code||'')}${x.color?' · '+orderEsc(x.color):''}${x.size?' · '+orderEsc(x.size):''}</small></div></div></td><td>${qty}</td><td>${money(price)}</td><td class="right">${money(line)}</td></tr>`}).join('');
@@ -116,4 +230,4 @@
  $('#orderSearch').addEventListener('input',renderOrders);
  $('#refreshOrdersBtn').addEventListener('click',loadOrders);
  $('#productSearch').addEventListener('input',renderAdminProducts);adminCheck();
-})();
+})();('click',()=>$('#productForm').classList.add('hidden'));
