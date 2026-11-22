@@ -97,17 +97,34 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 }
 
 
-/* Always-visible advance delivery payment discount notice */
+/* Premium advance delivery discount banner */
 .advance-discount-notice{
+  position:relative;isolation:isolate;overflow:hidden;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;text-align:center;padding:10px 14px;
-  background:#292840;color:#fff;border-bottom:1px solid #dedcfb;
-  font-family:'Manrope',sans-serif;line-height:1.45;
+  gap:7px;padding:15px 18px 16px;text-align:center;
+  color:#292840;background:linear-gradient(110deg,#f0eefb 0%,#fff 48%,#f3efff 100%);
+  border-top:1px solid #e5e0f5;border-bottom:1px solid #e5e0f5;
+  font-family:'Manrope',sans-serif;line-height:1.4;
 }
-.advance-discount-notice strong{font-size:13px;font-weight:800;letter-spacing:.01em}
-.advance-discount-notice span{font-size:11px;color:#dedcfb}
+.advance-discount-notice:before,.advance-discount-notice:after{
+  content:"";position:absolute;z-index:-1;width:150px;height:150px;border:1px solid rgba(164,139,91,.2);
+  border-radius:50%;top:50%;transform:translateY(-50%);
+}
+.advance-discount-notice:before{left:-92px}
+.advance-discount-notice:after{right:-92px}
+.advance-offer-kicker{display:flex;align-items:center;gap:9px;color:#927544;font-size:9px;font-weight:800;letter-spacing:.2em}
+.advance-offer-star{font-size:12px;color:#b08b4e}
+.advance-offer-main{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px}
+.advance-offer-title{font-family:'Playfair Display',serif;font-size:clamp(15px,2.3vw,20px);font-weight:600;color:#292840}
+.advance-offer-discount{display:inline-flex;align-items:center;padding:4px 11px;border-radius:4px;
+  color:#fff;background:linear-gradient(135deg,#a98a54,#80653a);font-size:14px;font-weight:800;letter-spacing:.04em;
+  box-shadow:0 3px 9px rgba(128,101,58,.16)}
+.advance-offer-detail{font-size:11px;font-weight:600;color:#6f6b80}
 @media(max-width:650px){
-  .advance-discount-notice{padding:8px 10px}
-  .advance-discount-notice strong{font-size:11px}
-  .advance-discount-notice span{font-size:9px}
+  .advance-discount-notice{gap:5px;padding:12px 12px 13px}
+  .advance-offer-kicker{font-size:8px;letter-spacing:.15em}
+  .advance-offer-main{gap:6px}
+  .advance-offer-title{font-size:15px}
+  .advance-offer-discount{font-size:12px;padding:3px 8px}
+  .advance-offer-detail{font-size:9px;line-height:1.5}
 }
