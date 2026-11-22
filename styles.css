@@ -191,3 +191,13 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   .advance-offer-english{font-size:11px!important;line-height:1.4!important}
   .advance-offer-note{font-size:10px!important;line-height:1.6!important}
 }
+
+
+/* Responsive supplier product description tables */
+.product-description{min-width:0;max-width:100%;overflow-wrap:anywhere}
+.product-description .description-table-scroll{display:block;width:100%;max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;margin:12px 0 18px;border:1px solid #e5e3ef;border-radius:10px;background:#fff}
+.product-description .description-table-scroll table{width:100%;min-width:520px;border-collapse:collapse;table-layout:auto;margin:0}
+.product-description .description-table-scroll th,.product-description .description-table-scroll td{padding:10px 12px;border:1px solid #e5e3ef;text-align:center;vertical-align:middle;white-space:nowrap;font-size:13px;line-height:1.5}
+.product-description .description-table-scroll th{background:#f0eff9;color:#34334c;font-weight:800}
+.product-description .description-table-scroll td{color:#4c4a63}
+@media(max-width:650px){.product-description .description-table-scroll th,.product-description .description-table-scroll td{padding:9px 11px;font-size:12px}}
