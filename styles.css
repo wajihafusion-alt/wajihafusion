@@ -201,3 +201,15 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .product-description .description-table-scroll th{background:#f0eff9;color:#34334c;font-weight:800}
 .product-description .description-table-scroll td{color:#4c4a63}
 @media(max-width:650px){.product-description .description-table-scroll th,.product-description .description-table-scroll td{padding:9px 11px;font-size:12px}}
+
+
+/* Clean, responsive formatting for Shadamon supplier descriptions only */
+.product-description .supplier-description-content{display:grid;gap:12px;color:#55536d;font-size:13px;line-height:1.85}
+.product-description .supplier-description-content h1,.product-description .supplier-description-content h2,.product-description .supplier-description-content h3,.product-description .supplier-description-content h4,.product-description .supplier-description-content h5,.product-description .supplier-description-content h6{margin:8px 0 2px;color:#45436f;font-family:'Playfair Display','Noto Serif Bengali',serif;font-size:17px;font-weight:700;line-height:1.5}
+.product-description .supplier-description-content p{margin:0;color:#626078;line-height:1.85}
+.product-description .supplier-description-content ul,.product-description .supplier-description-content ol{margin:0;padding-left:22px}
+.product-description .supplier-description-content li{margin:3px 0}
+.product-description .supplier-description-content strong,.product-description .supplier-description-content b{color:#3e3c60}
+.product-description .supplier-description-content hr{border:0;border-top:1px solid #e8e6f2;margin:5px 0}
+.product-description .supplier-description-content .description-table-scroll{margin:6px 0 10px}
+@media(max-width:650px){.product-description .supplier-description-content{font-size:12px;gap:10px}.product-description .supplier-description-content h1,.product-description .supplier-description-content h2,.product-description .supplier-description-content h3,.product-description .supplier-description-content h4,.product-description .supplier-description-content h5,.product-description .supplier-description-content h6{font-size:15px}}
