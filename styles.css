@@ -95,3 +95,19 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   .hero .eyebrow{font-size:7px;letter-spacing:.12em}
   .hero .gold-btn{padding:8px 12px;font-size:7px}
 }
+
+
+/* Always-visible advance delivery payment discount notice */
+.advance-discount-notice{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;text-align:center;padding:10px 14px;
+  background:#292840;color:#fff;border-bottom:1px solid #dedcfb;
+  font-family:'Manrope',sans-serif;line-height:1.45;
+}
+.advance-discount-notice strong{font-size:13px;font-weight:800;letter-spacing:.01em}
+.advance-discount-notice span{font-size:11px;color:#dedcfb}
+@media(max-width:650px){
+  .advance-discount-notice{padding:8px 10px}
+  .advance-discount-notice strong{font-size:11px}
+  .advance-discount-notice span{font-size:9px}
+}
