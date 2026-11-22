@@ -65,7 +65,7 @@
      return `<article class="admin-order-card">
        <div class="admin-order-head"><div><strong>${orderEsc(o.order_number||'No order number')}</strong><small>${orderEsc(o.customer_name)} · ${orderEsc(o.customer_phone)}</small><small>${o.created_at?new Date(o.created_at).toLocaleString():''}</small></div><b class="admin-order-total">${money(o.total)}</b></div>
        <div class="admin-order-items">${lines||'<small>No product details</small>'}</div>
-       <div class="admin-order-foot"><label>Status <select data-order-status="${orderEsc(o.id)}">${['New','Pending','Processing','Shipped','Delivered','Cancelled'].map(s=>`<option value="${s}" ${status.toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('')}</select></label><button type="button" class="outline-btn" data-order-invoice="${orderEsc(o.id)}">INVOICE / PRINT</button></div>
+       <div class="admin-order-foot"><label>Status <select data-order-status="${orderEsc(o.id)}">${['New','Pending','Processing','Shipped','Delivered','Cancelled'].map(s=>`<option value="${s}" ${status.toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('')}</select></label>${items.some(x=>x.product_source==='shadamon'&&x.shadamon_product_id)?(items.some(x=>x.supplier_order_ref)?'<button type="button" class="outline-btn" disabled>SENT TO SHADAMON</button>':'<button type="button" class="gold-btn" data-send-supplier="${orderEsc(o.id)}">SEND TO SHADAMON</button>'):''}<button type="button" class="outline-btn" data-order-invoice="${orderEsc(o.id)}">INVOICE / PRINT</button></div>
        <small class="admin-order-address">${orderEsc([o.address,o.thana,o.district,o.delivery_area].filter(Boolean).join(', '))}</small>
      </article>`;
    }).join('')||'<p class="muted">No orders found.</p>';
@@ -75,6 +75,12 @@
      const found=orders.find(o=>o.id===el.dataset.orderStatus);if(found)found.status=el.value;notify('Order status updated');
    }));
    $('#adminOrdersList').querySelectorAll('[data-order-invoice]').forEach(b=>b.addEventListener('click',()=>printOrderInvoice(b.dataset.orderInvoice)));
+   $('#adminOrdersList').querySelectorAll('[data-send-supplier]').forEach(b=>b.addEventListener('click',async()=>{
+     if(!confirm('এই অর্ডারের Supplier Product Shadamon Shop-এ পাঠাবেন?'))return;
+     b.disabled=true;b.textContent='SENDING...';
+     try{const token=await adminToken(),res=await fetch('/api/shadamon/orders',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({order_id:b.dataset.sendSupplier})});const body=await res.json();if(!res.ok)throw new Error(body.error||'Supplier order failed');notify('Shadamon order sent: '+(body.order_ref||''));await loadOrders()}
+     catch(err){notify(err.message||'Supplier order failed');b.disabled=false;b.textContent='SEND TO SHADAMON'}
+   }));
  }
  function printOrderInvoice(id){
    const o=orders.find(x=>x.id===id);if(!o)return;
