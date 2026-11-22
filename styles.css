@@ -213,3 +213,17 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .product-description .supplier-description-content hr{border:0;border-top:1px solid #e8e6f2;margin:5px 0}
 .product-description .supplier-description-content .description-table-scroll{margin:6px 0 10px}
 @media(max-width:650px){.product-description .supplier-description-content{font-size:12px;gap:10px}.product-description .supplier-description-content h1,.product-description .supplier-description-content h2,.product-description .supplier-description-content h3,.product-description .supplier-description-content h4,.product-description .supplier-description-content h5,.product-description .supplier-description-content h6{font-size:15px}}
+
+
+/* Customer order success confirmation */
+.order-success-panel{max-width:460px!important;text-align:center!important;padding:34px 26px!important;border:1px solid #e7e3f4!important;background:linear-gradient(155deg,#fff 0%,#f7f5ff 100%)!important}
+.order-success-panel .success-check{width:66px;height:66px;margin:5px auto 14px;border-radius:50%;display:grid;place-items:center;background:#e8f6ed;color:#23834c;font-size:38px;font-weight:800}
+.order-success-panel .success-eyebrow{margin:0 0 7px;color:#7772b9;font-size:11px;font-weight:800;letter-spacing:3px}
+.order-success-panel h2{margin:0 0 10px;color:#34334c;font-family:'Noto Serif Bengali',serif;font-size:23px}
+.order-success-panel .success-thanks{margin:0 auto 20px;max-width:340px;color:#66637d;font-size:13px;line-height:1.8}
+.order-success-panel .success-order-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;text-align:left;margin:0 0 16px}
+.order-success-panel .success-order-info>div{padding:12px;border:1px solid #e8e5f3;border-radius:11px;background:#fff;min-width:0}
+.order-success-panel .success-order-info span{display:block;color:#89869b;font-size:11px;margin-bottom:5px}
+.order-success-panel .success-order-info strong{display:block;color:#403d64;font-size:13px;overflow-wrap:anywhere}
+.order-success-panel .success-note{margin:0 0 18px;color:#77758b;font-size:12px;line-height:1.7}
+@media(max-width:480px){.order-success-panel{padding:30px 18px!important}.order-success-panel h2{font-size:20px}.order-success-panel .success-order-info{gap:8px}.order-success-panel .success-order-info>div{padding:10px}}
