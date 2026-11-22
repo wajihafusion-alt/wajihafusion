@@ -10,6 +10,45 @@ async function isAdmin(request){
 }
 export default {async fetch(request,env){
  const url=new URL(request.url);
+ if(url.pathname==="/api/webhooks/dropshipping/dropbazar"&&request.method==="POST"){
+  try{
+   if(!env.DROPBAZAR_WEBHOOK_SECRET||!env.SUPABASE_SERVICE_ROLE_KEY)return json({error:"Webhook is not configured."},503);
+   const rawBody=await request.text();
+   const header=request.headers.get("X-Webhook-Signature")||"";
+   const parts=Object.fromEntries(header.split(",").map(part=>{const i=part.indexOf("=");return i<0?["",""]:[part.slice(0,i).trim(),part.slice(i+1).trim()]}));
+   const timestamp=parts.t||"",given=parts.v1||"";
+   if(!/^\d{1,20}$/.test(timestamp)||! /^[a-f0-9]{64}$/i.test(given))return json({error:"Invalid webhook signature."},401);
+   const key=await crypto.subtle.importKey("raw",new TextEncoder().encode(env.DROPBAZAR_WEBHOOK_SECRET),{name:"HMAC",hash:"SHA-256"},false,["sign"]);
+   const digest=await crypto.subtle.sign("HMAC",key,new TextEncoder().encode(timestamp+"."+rawBody));
+   const expected=[...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("");
+   let mismatch=expected.length^given.length;
+   for(let i=0;i<Math.min(expected.length,given.length);i++)mismatch|=expected.charCodeAt(i)^given.toLowerCase().charCodeAt(i);
+   if(mismatch!==0)return json({error:"Invalid webhook signature."},401);
+   const payload=JSON.parse(rawBody),event=String(payload.event||""),data=payload.data||{};
+   if(event!=="order.status_changed")return json({received:true,ignored:true});
+   const orderNumber=String(data.external_order_id||"").trim();
+   if(!/^WF-[0-9]{10,16}$/.test(orderNumber))return json({error:"Missing or invalid external_order_id."},400);
+   const process=String(data.order_process||"").toLowerCase(),status=String(data.status||"").toLowerCase();
+   const map={
+    accepted:"Processing",collected:"Processing",booked:"Processing",packed:"Processing",
+    courier_pending:"Shipped",delivered:"Delivered",courier_delivered:"Delivered",
+    partial_delivered:"Partially Delivered",courier_returned:"Returned",
+    cancelled:"Cancelled",courier_cancelled:"Cancelled",refunded:"Refunded",
+    pending:"Pending",processing:"Processing",shipped:"Shipped",returned:"Returned"
+   };
+   const nextStatus=map[process]||map[status];
+   if(!nextStatus)return json({received:true,ignored:true,reason:"Unmapped status"});
+   const response=await fetch(SUPABASE_URL+"/rest/v1/customer_orders?order_number=eq."+encodeURIComponent(orderNumber),{
+    method:"PATCH",
+    headers:{"apikey":env.SUPABASE_SERVICE_ROLE_KEY,"Authorization":"Bearer "+env.SUPABASE_SERVICE_ROLE_KEY,"content-type":"application/json","Prefer":"return=representation"},
+    body:JSON.stringify({status:nextStatus})
+   });
+   if(!response.ok)throw new Error("Could not update the store order.");
+   const updated=await response.json();
+   if(!updated.length)return json({error:"Matching Wajiha Fusion order not found."},404);
+   return json({received:true,order_number:orderNumber,status:nextStatus});
+  }catch(e){return json({error:e.message||"Webhook processing failed."},400)}
+ }
  if(url.pathname==="/api/order-status"&&request.method==="POST"){
   try{
    if(!env.SUPABASE_SERVICE_ROLE_KEY)return json({error:"Order lookup is temporarily unavailable."},500);
