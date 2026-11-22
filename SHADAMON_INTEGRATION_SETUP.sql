@@ -7,9 +7,9 @@ ALTER TABLE public.products
   ADD COLUMN IF NOT EXISTS shadamon_min_price numeric,
   ADD COLUMN IF NOT EXISTS shadamon_available boolean NOT NULL DEFAULT true;
 
-CREATE UNIQUE INDEX IF NOT EXISTS products_shadamon_product_id_unique
-  ON public.products (shadamon_product_id)
-  WHERE shadamon_product_id IS NOT NULL;
+DROP INDEX IF EXISTS public.products_shadamon_product_id_unique;
+CREATE UNIQUE INDEX products_shadamon_product_id_unique
+  ON public.products (shadamon_product_id);
 
 ALTER TABLE public.customer_orders
   ADD COLUMN IF NOT EXISTS shadamon_order_number text,
