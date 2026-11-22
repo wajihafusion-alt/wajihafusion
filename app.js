@@ -62,8 +62,9 @@
   function updateWishlistButton(){const b=$('#wishlistToggle');if(!b)return;b.classList.toggle('active',wishlistOnly);$('#wishlistCount').textContent=wishlist.length}
   function toggleWishlist(id){id=String(id);wishlist=wishlist.includes(id)?wishlist.filter(x=>x!==id):[...wishlist,id];localStorage.setItem('wf_wishlist',JSON.stringify(wishlist));updateWishlistButton();renderProducts();toast(wishlist.includes(id)?'Added to wishlist':'Removed from wishlist')}
   $('#wishlistToggle').addEventListener('click',()=>{wishlistOnly=!wishlistOnly;activeCategory='all';activeSub=null;renderCategories();updateWishlistButton();renderProducts();$('#shop').scrollIntoView({behavior:'smooth'})});
-  function safeDescription(value){
-    const template=document.createElement('template');template.innerHTML=String(value||'');
+  function safeDescription(value,isSupplier=false){
+    let source=String(value||'');if(isSupplier)source=source.replace(/সাদামন\\s*শপ/g,'Wajiha Fusion').replace(/Shadamon\\s*Shop/gi,'Wajiha Fusion');
+    const template=document.createElement('template');template.innerHTML=source;
     const allowed=new Set(['H1','H2','H3','H4','H5','H6','P','DIV','SPAN','STRONG','B','EM','I','UL','OL','LI','BR','HR','TABLE','THEAD','TBODY','TR','TH','TD']);
     const clean=node=>{if(node.nodeType===Node.TEXT_NODE)return document.createTextNode(node.textContent);if(node.nodeType!==Node.ELEMENT_NODE)return document.createTextNode('');if(!allowed.has(node.tagName))return document.createTextNode(node.textContent||'');const el=document.createElement(node.tagName.toLowerCase());const cls=node.getAttribute('class');if(cls&&/^[a-zA-Z0-9 _-]{1,120}$/.test(cls))el.className=cls;node.childNodes.forEach(child=>el.appendChild(clean(child)));return el};
     const out=document.createElement('div');if(arguments.length>1&&arguments[1])out.className='supplier-description-content';template.content.childNodes.forEach(node=>out.appendChild(clean(node)));out.querySelectorAll('table').forEach(table=>{const wrap=document.createElement('div');wrap.className='description-table-scroll';table.parentNode.insertBefore(wrap,table);wrap.appendChild(table)});return out.innerHTML;
