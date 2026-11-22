@@ -59,9 +59,6 @@ export default {async fetch(request,env){
    const seen=await supabase("dropbazar_webhook_deliveries?delivery_id=eq."+encodeURIComponent(deliveryId)+"&select=delivery_id",{},env);
    if(!seen.ok)throw new Error("Could not check webhook delivery.");
    if((await seen.json()).length)return json({received:true,duplicate:true});
-   const mark=await supabase("dropbazar_webhook_deliveries",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({delivery_id:deliveryId,event,occurred_at:payload.occurred_at||null})},env);
-   if(mark.status===409)return json({received:true,duplicate:true});
-   if(!mark.ok)throw new Error("Could not record webhook delivery.");
    const orderNumber=String(data.external_order_id||"").trim();
    if(!/^WF-[A-Za-z0-9-]{6,40}$/.test(orderNumber))return json({error:"Missing or invalid external_order_id."},400);
    const process=String(data.order_process||"").toLowerCase(),status=String(data.status||"").toLowerCase();
@@ -72,6 +69,9 @@ export default {async fetch(request,env){
    const response=await supabase(q,{method:"PATCH",headers:{"Prefer":"return=representation"},body:JSON.stringify(patch)},env);
    if(!response.ok)throw new Error("Could not update the matching store order. Check the Supplier migration SQL.");
    const updated=await response.json();if(!updated.length)return json({error:"Matching Wajiha Fusion order not found."},404);
+   const mark=await supabase("dropbazar_webhook_deliveries",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({delivery_id:deliveryId,event,occurred_at:payload.occurred_at||null})},env);
+   if(mark.status===409)return json({received:true,duplicate:true});
+   if(!mark.ok)throw new Error("Could not record webhook delivery.");
    return json({received:true,order_number:orderNumber,event});
   }catch(e){return json({error:e.message||"Webhook processing failed."},500)}
  }
