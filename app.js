@@ -17,7 +17,7 @@
     const [pr,cr,sr]=await Promise.all([db.from('products').select('*').eq('is_active',true).order('created_at',{ascending:false}),db.from('categories').select('*').eq('is_active',true).order('sort_order'),db.from('storefront_settings').select('*').eq('id',1).maybeSingle()]);
     if(cr.error)console.warn('Categories:',cr.error.message);categories=cr.data||[];
     if(pr.error){console.error(pr.error);$('#productGrid').innerHTML='<p class="loading">Products could not be loaded. Check Supabase table permissions.</p>';return}products=pr.data||[];
-    if(sr.data){const s=sr.data;applyStoreTheme(s.theme_config||{});applySiteContent(s.site_content||{});renderHomeSections(s.homepage_sections);$('#announcement').textContent='';$('#announcement').classList.add('hidden')heroImages=(Array.isArray(s.banner_images)?s.banner_images:[]).filter(Boolean);if(!heroImages.length&&s.banner_image_url)heroImages=[s.banner_image_url];if(heroImages.length){setHero(0);if(heroImages.length>1)setInterval(()=>setHero((heroIndex+1)%heroImages.length),5000)}}
+    if(sr.data){const s=sr.data;applyStoreTheme(s.theme_config||{});applySiteContent(s.site_content||{});renderHomeSections(s.homepage_sections);$('#announcement').textContent='';$('#announcement').classList.add('hidden');heroImages=(Array.isArray(s.banner_images)?s.banner_images:[]).filter(Boolean);if(!heroImages.length&&s.banner_image_url)heroImages=[s.banner_image_url];if(heroImages.length){setHero(0);if(heroImages.length>1)setInterval(()=>setHero((heroIndex+1)%heroImages.length),5000)}}
     renderCategories();renderProducts();
   }
   function setHero(i){heroIndex=i;$('#hero').style.backgroundImage=`linear-gradient(90deg,rgba(0,0,0,.65),rgba(0,0,0,.1)),url("${heroImages[i]}")`; }
