@@ -52,3 +52,11 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .product-card{border-radius:12px;overflow:hidden;background:#fff;border:1px solid #efedf5;box-shadow:0 5px 20px rgba(42,40,76,.045)}
 @media(max-width:900px){.category-nav{justify-content:flex-start;overflow-x:auto;scrollbar-width:none}.category-nav::-webkit-scrollbar{display:none}}
 @media(max-width:650px){.category-nav{gap:7px}.category-pill{padding:8px 12px!important;font-size:10px!important}.category-pill .category-emoji{font-size:14px}.wishlist-header{padding:7px 9px}.wishlist-heart{width:34px;height:34px;font-size:22px}.discount-badge{top:9px;left:9px;padding:6px 9px;font-size:10px}.product-info{padding:10px 10px 13px}.quick-view{opacity:1}}
+
+
+/* Place the category selector immediately beneath the hero banner */
+.category-bar-wrap{width:min(1280px,92%);margin:22px auto 10px;padding:0 0 14px;border-bottom:1px solid #e8e5f0}
+.category-bar-wrap .category-nav{display:flex;align-items:center;justify-content:flex-start;gap:10px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:2px 1px 8px}
+.category-bar-wrap .category-nav::-webkit-scrollbar{display:none}
+.category-intro{margin-top:12px}
+@media(max-width:650px){.category-bar-wrap{width:94%;margin:14px auto 8px;padding-bottom:10px}.category-bar-wrap .category-nav{gap:7px}}
