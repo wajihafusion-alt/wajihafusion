@@ -134,3 +134,55 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   .advance-offer-english{font-size:11px;line-height:1.5}
   .advance-offer-note{font-size:9px;line-height:1.7}
 }
+
+
+/* Final compact layout override for advance discount notice */
+.advance-discount-notice{
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:5px!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:14px 18px!important;
+  box-sizing:border-box!important;
+  background:linear-gradient(110deg,#171611 0%,#29251b 50%,#171611 100%)!important;
+  text-align:center!important;
+}
+.advance-discount-notice p{
+  display:block!important;
+  width:100%!important;
+  height:auto!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  line-height:1.45!important;
+}
+.advance-offer-bangla{
+  font-family:'Noto Serif Bengali',serif!important;
+  font-size:clamp(15px,2vw,19px)!important;
+  font-weight:700!important;
+  color:#e4c783!important;
+}
+.advance-offer-english{
+  font-family:'Playfair Display',serif!important;
+  font-size:clamp(13px,1.6vw,16px)!important;
+  font-weight:600!important;
+  color:#d8bb80!important;
+}
+.advance-offer-note{
+  font-family:'Noto Serif Bengali',serif!important;
+  font-size:clamp(11px,1.2vw,13px)!important;
+  font-weight:400!important;
+  color:#eee4d0!important;
+}
+@media(max-width:650px){
+  .advance-discount-notice{gap:4px!important;padding:10px 28px!important}
+  .advance-offer-bangla{font-size:13px!important;line-height:1.6!important}
+  .advance-offer-english{font-size:11px!important;line-height:1.4!important}
+  .advance-offer-note{font-size:10px!important;line-height:1.6!important}
+}
