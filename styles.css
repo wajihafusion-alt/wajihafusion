@@ -97,34 +97,40 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 }
 
 
-/* Premium advance delivery discount banner */
+/* Elegant gold typography for advance delivery discount announcement */
 .advance-discount-notice{
   position:relative;isolation:isolate;overflow:hidden;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:7px;padding:15px 18px 16px;text-align:center;
-  color:#292840;background:linear-gradient(110deg,#f0eefb 0%,#fff 48%,#f3efff 100%);
-  border-top:1px solid #e5e0f5;border-bottom:1px solid #e5e0f5;
-  font-family:'Manrope',sans-serif;line-height:1.4;
+  gap:5px;padding:15px 18px 16px;text-align:center;
+  background:linear-gradient(110deg,#171611 0%,#29251b 50%,#171611 100%);
+  border-top:1px solid #9c7b43;border-bottom:1px solid #9c7b43;
+  line-height:1.5;
 }
 .advance-discount-notice:before,.advance-discount-notice:after{
-  content:"";position:absolute;z-index:-1;width:150px;height:150px;border:1px solid rgba(164,139,91,.2);
-  border-radius:50%;top:50%;transform:translateY(-50%);
+  content:"✦";position:absolute;z-index:-1;top:50%;transform:translateY(-50%);
+  color:rgba(211,177,112,.24);font-size:30px;
 }
-.advance-discount-notice:before{left:-92px}
-.advance-discount-notice:after{right:-92px}
-.advance-offer-kicker{display:flex;align-items:center;gap:9px;color:#927544;font-size:9px;font-weight:800;letter-spacing:.2em}
-.advance-offer-star{font-size:12px;color:#b08b4e}
-.advance-offer-main{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px}
-.advance-offer-title{font-family:'Playfair Display',serif;font-size:clamp(15px,2.3vw,20px);font-weight:600;color:#292840}
-.advance-offer-discount{display:inline-flex;align-items:center;padding:4px 11px;border-radius:4px;
-  color:#fff;background:linear-gradient(135deg,#a98a54,#80653a);font-size:14px;font-weight:800;letter-spacing:.04em;
-  box-shadow:0 3px 9px rgba(128,101,58,.16)}
-.advance-offer-detail{font-size:11px;font-weight:600;color:#6f6b80}
+.advance-discount-notice:before{left:clamp(12px,5vw,64px)}
+.advance-discount-notice:after{right:clamp(12px,5vw,64px)}
+.advance-discount-notice p{margin:0}
+.advance-offer-bangla{
+  color:#e0c181;font-family:'Noto Serif Bengali',serif;
+  font-size:clamp(14px,2.2vw,19px);font-weight:700;letter-spacing:.01em;
+}
+.advance-offer-english{
+  color:#d3b276;font-family:'Playfair Display',serif;
+  font-size:clamp(12px,1.8vw,16px);font-weight:600;letter-spacing:.025em;
+}
+.advance-offer-note{
+  color:#e9dfca;font-family:'Noto Serif Bengali',serif;
+  font-size:clamp(10px,1.35vw,12px);font-weight:400;
+}
 @media(max-width:650px){
-  .advance-discount-notice{gap:5px;padding:12px 12px 13px}
-  .advance-offer-kicker{font-size:8px;letter-spacing:.15em}
-  .advance-offer-main{gap:6px}
-  .advance-offer-title{font-size:15px}
-  .advance-offer-discount{font-size:12px;padding:3px 8px}
-  .advance-offer-detail{font-size:9px;line-height:1.5}
+  .advance-discount-notice{gap:4px;padding:11px 34px 12px}
+  .advance-discount-notice:before,.advance-discount-notice:after{font-size:19px}
+  .advance-discount-notice:before{left:9px}
+  .advance-discount-notice:after{right:9px}
+  .advance-offer-bangla{font-size:13px;line-height:1.7}
+  .advance-offer-english{font-size:11px;line-height:1.5}
+  .advance-offer-note{font-size:9px;line-height:1.7}
 }
