@@ -136,7 +136,7 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 }
 
 
-/* Final compact layout override for advance discount notice */
+/* Final compact lavender theme matching the Wajiha Fusion storefront */
 .advance-discount-notice{
   display:flex!important;
   flex-direction:column!important;
@@ -150,8 +150,13 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   margin:0!important;
   padding:14px 18px!important;
   box-sizing:border-box!important;
-  background:linear-gradient(110deg,#171611 0%,#29251b 50%,#171611 100%)!important;
+  background:linear-gradient(110deg,#f0eff9 0%,#ffffff 50%,#f0eff9 100%)!important;
+  border-top:1px solid #e7e5f3!important;
+  border-bottom:1px solid #e7e5f3!important;
   text-align:center!important;
+}
+.advance-discount-notice:before,.advance-discount-notice:after{
+  color:rgba(119,114,185,.18)!important;
 }
 .advance-discount-notice p{
   display:block!important;
@@ -166,19 +171,19 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   font-family:'Noto Serif Bengali',serif!important;
   font-size:clamp(15px,2vw,19px)!important;
   font-weight:700!important;
-  color:#e4c783!important;
+  color:#34334c!important;
 }
 .advance-offer-english{
   font-family:'Playfair Display',serif!important;
   font-size:clamp(13px,1.6vw,16px)!important;
   font-weight:600!important;
-  color:#d8bb80!important;
+  color:#7772b9!important;
 }
 .advance-offer-note{
   font-family:'Noto Serif Bengali',serif!important;
   font-size:clamp(11px,1.2vw,13px)!important;
   font-weight:400!important;
-  color:#eee4d0!important;
+  color:#77758b!important;
 }
 @media(max-width:650px){
   .advance-discount-notice{gap:4px!important;padding:10px 28px!important}
