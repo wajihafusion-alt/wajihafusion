@@ -22,7 +22,7 @@ async function verifyWebhook(request,env,rawBody){
  let mismatch=expected.length^given.length;for(let i=0;i<Math.min(expected.length,given.length);i++)mismatch|=expected.charCodeAt(i)^given.charCodeAt(i);
  return mismatch===0;
 }
-async function supabase(path,env,options={}){
+async function supabase(path,options={},env){
  return fetch(SUPABASE_URL+"/rest/v1/"+path,{...options,headers:{"apikey":env.SUPABASE_SERVICE_ROLE_KEY,"Authorization":"Bearer "+env.SUPABASE_SERVICE_ROLE_KEY,"content-type":"application/json",...(options.headers||{})}});
 }
 async function handleDropbazar(request,env,url){
@@ -56,9 +56,12 @@ export default {async fetch(request,env){
    const payload=JSON.parse(rawBody),event=String(payload.event||""),data=payload.data||{},deliveryId=String(payload.delivery_id||"");
    if(!["order.placed","order.status_changed","order.payment_status_changed"].includes(event))return json({received:true,ignored:true});
    if(!deliveryId)return json({error:"Missing delivery_id."},400);
-   const mark=await supabase("dropbazar_webhook_deliveries",{method:"POST",headers:{"Prefer":"resolution=ignore-duplicates,return=minimal"},body:JSON.stringify({delivery_id:deliveryId,event,occurred_at:payload.occurred_at||null})},env);
-   if(!mark.ok&&mark.status!==409)throw new Error("Could not record webhook delivery.");
+   const seen=await supabase("dropbazar_webhook_deliveries?delivery_id=eq."+encodeURIComponent(deliveryId)+"&select=delivery_id",{},env);
+   if(!seen.ok)throw new Error("Could not check webhook delivery.");
+   if((await seen.json()).length)return json({received:true,duplicate:true});
+   const mark=await supabase("dropbazar_webhook_deliveries",{method:"POST",headers:{"Prefer":"return=minimal"},body:JSON.stringify({delivery_id:deliveryId,event,occurred_at:payload.occurred_at||null})},env);
    if(mark.status===409)return json({received:true,duplicate:true});
+   if(!mark.ok)throw new Error("Could not record webhook delivery.");
    const orderNumber=String(data.external_order_id||"").trim();
    if(!/^WF-[A-Za-z0-9-]{6,40}$/.test(orderNumber))return json({error:"Missing or invalid external_order_id."},400);
    const process=String(data.order_process||"").toLowerCase(),status=String(data.status||"").toLowerCase();
@@ -78,7 +81,7 @@ export default {async fetch(request,env){
    const input=await request.json().catch(()=>({})),orderNumber=String(input.order_number||"").trim(),phone=String(input.phone||"").trim(),digits=phone.replace(/[^0-9]/g,"");
    if(!/^WF-[0-9]{10,16}$/.test(orderNumber)||digits.length<8||digits.length>15)return json({error:"সঠিক Order ID ও মোবাইল নম্বর দিন।"},400);
    const q=SUPABASE_URL+"/rest/v1/customer_orders?order_number=eq."+encodeURIComponent(orderNumber)+"&customer_phone=eq."+encodeURIComponent(phone)+"&select=order_number,status,total,created_at&limit=1";
-   const r=await fetch(q,{headers:{"apikey":env.SUPABASE_ANON_KEY||SUPABASE_ANON_KEY,"Authorization":"Bearer "+(env.SUPABASE_ANON_KEY||SUPABASE_ANON_KEY)}});
+   const r=await fetch(q,{headers:{"apikey":env.SUPABASE_SERVICE_ROLE_KEY,"Authorization":"Bearer "+env.SUPABASE_SERVICE_ROLE_KEY}});
    if(!r.ok)throw new Error("Order lookup failed.");
    const rows=await r.json();if(!rows.length)return json({error:"এই Order ID ও মোবাইল নম্বর দিয়ে অর্ডার পাওয়া যায়নি।"},404);
    const o=rows[0];return json({order_number:o.order_number,status:o.status||"New",total:o.total,created_at:o.created_at});
