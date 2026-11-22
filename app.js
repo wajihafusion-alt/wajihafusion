@@ -81,7 +81,7 @@
   function cartSubtotal(){return cart.reduce((s,x)=>s+Number(x.price||0),0)}
   function deliveryFee(){return $('#deliveryArea').value==='inside'?80:$('#deliveryArea').value==='outside'?120:0}
   function paymentMethod(){return 'cod'}
-  function updateCheckoutSummary(){const subtotal=cartSubtotal(),advance=paymentMethod()==='advance',fee=deliveryFee();$('#summarySubtotal').textContent=money(subtotal);$('#summaryDiscount').textContent=money(0);$('#discountRow').classList.add('hidden');$('#summaryDelivery').textContent=money(fee);$('#summaryTotal').textContent=money(subtotal+fee);}
+  function updateCheckoutSummary(){const subtotal=cartSubtotal(),fee=deliveryFee();$('#summarySubtotal').textContent=money(subtotal);$('#summaryDelivery').textContent=money(fee);$('#summaryTotal').textContent=money(subtotal+fee);}
   $('#checkoutBtn').addEventListener('click',()=>{if(!cart.length)return toast('Your cart is empty');$('#cartDrawer').classList.add('hidden');checkoutModal.classList.remove('hidden');updateCheckoutSummary()});
   $('#deliveryArea').addEventListener('change',updateCheckoutSummary);checkoutForm.querySelectorAll('[name=paymentMethod]').forEach(r=>r.addEventListener('change',updateCheckoutSummary));
   document.querySelectorAll('[data-close-checkout]').forEach(b=>b.addEventListener('click',()=>checkoutModal.classList.add('hidden')));document.querySelectorAll('[data-close-success]').forEach(b=>b.addEventListener('click',()=>$('#orderSuccessModal').classList.add('hidden')));
