@@ -1,12 +1,12 @@
 (() => {
- const cfg=window.WAJIHA_CONFIG||{},db=window.supabase?.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey),$=s=>document.querySelector(s);let cats=[],products=[],orders=[],bannerImage='',bannerImages=[],supplierProducts=[];let orderPollTimer=null,knownOrderIds=new Set(),unseenOrders=0;
+ const cfg=window.WAJIHA_CONFIG||{},db=window.supabase?.createClient(cfg.supabaseUrl,cfg.supabaseAnonKey),$=s=>document.querySelector(s);let cats=[],products=[],orders=[],bannerImage='',bannerImages=[];let orderPollTimer=null,knownOrderIds=new Set(),unseenOrders=0;
  const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const money=n=>'৳'+Number(n||0).toLocaleString('en-BD');
  function notify(m){const t=$('#adminToast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
  function setStatus(id,m){$(id).textContent=m}
  async function adminCheck(){if(!db)return;const {data:{session}}=await db.auth.getSession();if(!session)return showLogin();const {data,error}=await db.rpc('is_admin');if(error||!data){await db.auth.signOut();return showLogin('This account is not an authorized admin.')}$('#loginPanel').classList.add('hidden');$('#dashboard').classList.remove('hidden');await refresh();await startOrderNotifications()}
  function showLogin(msg=''){$('#dashboard').classList.add('hidden');$('#loginPanel').classList.remove('hidden');$('#loginError').textContent=msg}
  $('#loginForm').addEventListener('submit',async e=>{e.preventDefault();$('#loginError').textContent='Signing in...';const {error}=await db.auth.signInWithPassword({email:$('#email').value,password:$('#password').value});if(error)return $('#loginError').textContent=error.message;await adminCheck()});$('#logoutBtn').addEventListener('click',async()=>{await db.auth.signOut();showLogin()});
- document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['products','categories','banner','orders','supplier'].forEach(k=>$('#'+k+'Tab').classList.toggle('hidden',k!==b.dataset.tab));if(b.dataset.tab==='orders'){unseenOrders=0;unseenOrders=0;updateOrderBadges();loadOrders();}if(b.dataset.tab==='supplier'&&!supplierProducts.length)loadSupplierProducts()}));
+ document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['products','categories','banner','orders'].forEach(k=>$('#'+k+'Tab').classList.toggle('hidden',k!==b.dataset.tab));if(b.dataset.tab==='orders'){unseenOrders=0;updateOrderBadges();loadOrders()}}));
  async function refresh(){await Promise.all([loadCats(),loadProducts(),loadBanner()])}
  async function loadCats(){const {data,error}=await db.from('categories').select('*').order('sort_order');if(error){notify('Category load failed: '+error.message);return}cats=data||[];const opts=cats.map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');$('#pCategory').innerHTML=opts;$('#parentCategory').innerHTML='<option value="">Main category</option>'+cats.filter(c=>!c.parent_id).map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join('');$('#categoryList').innerHTML=cats.map(c=>`<div class="category-admin-row"><div>${esc(c.name)}<small>${c.parent_id?'Subcategory':'Main category'} · Sizes: ${(c.sizes||[]).map(esc).join(', ')||'Not set'}</small></div><button data-cat-delete="${c.id}">DELETE</button></div>`).join('');$('#categoryList').querySelectorAll('[data-cat-delete]').forEach(b=>b.addEventListener('click',()=>deleteCategory(b.dataset.catDelete)))}
  async function loadProducts(){const {data,error}=await db.from('products').select('*').order('created_at',{ascending:false});if(error){$('#adminProductList').textContent=error.message;return}products=data||[];renderAdminProducts()}
@@ -23,30 +23,6 @@
  async function loadBanner(){const {data,error}=await db.from('storefront_settings').select('*').eq('id',1).maybeSingle();if(error){console.warn(error.message);return}if(!data)return;$('#bannerText').value=data.banner_text||'';$('#bannerEnabled').checked=!!data.banner_enabled;bannerImage=data.banner_image_url||'';bannerImages=Array.isArray(data.banner_images)?data.banner_images.slice():[];if(!bannerImages.length&&bannerImage)bannerImages=[bannerImage];renderBannerPreview()}
  $('#bannerPhoto').addEventListener('change',renderBannerPreview);$('#bannerForm').addEventListener('submit',async e=>{e.preventDefault();setStatus('#bannerStatus','Saving...');try{if($('#bannerPhoto').files.length)bannerImages=[...bannerImages,...await uploadFiles([...$('#bannerPhoto').files],'banners')];bannerImage=bannerImages[0]||'';const {error}=await db.from('storefront_settings').upsert({id:1,banner_text:$('#bannerText').value,banner_enabled:$('#bannerEnabled').checked,banner_image_url:bannerImage,banner_images:bannerImages,updated_at:new Date().toISOString()});if(error)throw error;$('#bannerPhoto').value='';setStatus('#bannerStatus','Saved successfully');renderBannerPreview();notify('Banner saved')}catch(err){setStatus('#bannerStatus',err.message)}});
 
-
- async function adminToken(){const {data:{session},error}=await db.auth.getSession();if(error||!session?.access_token)throw new Error('Admin session expired. Please log in again.');return session.access_token}
- async function loadSupplierProducts(){
-   const status=$('#supplierStatus'),host=$('#supplierProductList'),btn=$('#loadSupplierBtn');
-   status.textContent='Loading products from Shadamon...';host.innerHTML='';btn.disabled=true;
-   try{
-     const token=await adminToken(),res=await fetch('/api/shadamon/products',{headers:{Authorization:'Bearer '+token}});
-     const body=await res.json();if(!res.ok)throw new Error(body.error||'Supplier catalog could not be loaded.');
-     supplierProducts=Array.isArray(body.products)?body.products:[];
-     if(!supplierProducts.length){status.textContent='No supplier products were returned.';return}
-     status.textContent=supplierProducts.length+' supplier products found. Select the products you want to import.';
-     host.innerHTML=supplierProducts.map((p,i)=>{const id=String(p.id??p.product_id??'');const name=p.name_bn||p.name||p.title||'Supplier product';const price=Number(p.price||0);const images=Array.isArray(p.images)?p.images:[];const img=typeof images[0]==='string'?images[0]:(images[0]?.url||images[0]?.src||'');const exists=products.some(x=>String(x.shadamon_product_id)===id);return '<label class="admin-product-row supplier-product-row"><input type="checkbox" data-supplier-id="'+esc(id)+'" '+(exists?'disabled checked':'')+'><img src="'+esc(img||'https://placehold.co/100x120?text=Supplier')+'" alt=""><span><strong>'+esc(name)+'</strong><small>Supplier ID: '+esc(id)+' · Minimum price: '+money(price)+' · '+esc(p.category?.name_bn||p.category?.name||'Uncategorized')+(exists?' · Already imported':'')+'</small></span></label>'}).join('');
-     $('#importSupplierBtn').disabled=!supplierProducts.some(p=>!products.some(x=>String(x.shadamon_product_id)===String(p.id??p.product_id??'')));
-   }catch(err){status.textContent=err.message||'Supplier catalog load failed.';notify(status.textContent)}finally{btn.disabled=false}
- }
- $('#loadSupplierBtn').addEventListener('click',loadSupplierProducts);
- $('#supplierProductList').addEventListener('change',()=>{const selected=$('#supplierProductList').querySelectorAll('input[data-supplier-id]:checked:not(:disabled)').length;$('#importSupplierBtn').disabled=selected===0});
- $('#importSupplierBtn').addEventListener('click',async()=>{
-   const ids=[...$('#supplierProductList').querySelectorAll('input[data-supplier-id]:checked:not(:disabled)')].map(x=>x.dataset.supplierId);
-   if(!ids.length)return notify('Select at least one product');
-   const btn=$('#importSupplierBtn');btn.disabled=true;setStatus('#supplierStatus','Importing '+ids.length+' products...');
-   try{const token=await adminToken(),res=await fetch('/api/shadamon/import',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({product_ids:ids})});const body=await res.json();if(!res.ok)throw new Error(body.error||'Import failed');notify((body.imported||0)+' products imported');setStatus('#supplierStatus',(body.imported||0)+' products imported successfully.'+(body.skipped?' '+body.skipped+' skipped.':''));await loadProducts();await loadSupplierProducts()}
-   catch(err){setStatus('#supplierStatus',err.message||'Import failed');notify(err.message||'Import failed')}finally{btn.disabled=false}
- });
 
  const orderEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
  async function loadOrders(){
@@ -65,7 +41,7 @@
      return `<article class="admin-order-card">
        <div class="admin-order-head"><div><strong>${orderEsc(o.order_number||'No order number')}</strong><small>${orderEsc(o.customer_name)} · ${orderEsc(o.customer_phone)}</small><small>${o.created_at?new Date(o.created_at).toLocaleString():''}</small></div><b class="admin-order-total">${money(o.total)}</b></div>
        <div class="admin-order-items">${lines||'<small>No product details</small>'}</div>
-       <div class="admin-order-foot"><label>Status <select data-order-status="${orderEsc(o.id)}">${['New','Pending','Confirmed','Processing','Shipped','Delivered','Cancelled'].map(s=>`<option value="${s}" ${status.toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('')}</select></label>${items.some(x=>x.product_source==='shadamon'&&x.shadamon_product_id)?(items.some(x=>x.supplier_order_ref)?'<button type="button" class="outline-btn" disabled>SENT TO SHADAMON</button>':'<button type="button" class="gold-btn" data-send-supplier="${orderEsc(o.id)}">SEND TO SHADAMON</button>'):''}<button type="button" class="outline-btn" data-order-invoice="${orderEsc(o.id)}">INVOICE / PRINT</button><button type="button" class="delete" data-order-delete="${orderEsc(o.id)}">DELETE</button></div>
+       <div class="admin-order-foot"><label>Status <select data-order-status="${orderEsc(o.id)}">${['New','Pending','Confirmed','Processing','Shipped','Delivered','Cancelled'].map(s=>`<option value="${s}" ${status.toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('')}</select></label><button type="button" class="outline-btn" data-order-invoice="${orderEsc(o.id)}">INVOICE / PRINT</button><button type="button" class="delete" data-order-delete="${orderEsc(o.id)}">DELETE</button></div>
        <small class="admin-order-address">${orderEsc([o.address,o.thana,o.district,o.delivery_area].filter(Boolean).join(', '))}</small>
      </article>`;
    }).join('')||'<p class="muted">No orders found.</p>';
@@ -76,12 +52,7 @@
    }));
    $('#adminOrdersList').querySelectorAll('[data-order-invoice]').forEach(b=>b.addEventListener('click',()=>printOrderInvoice(b.dataset.orderInvoice)));
    $('#adminOrdersList').querySelectorAll('[data-order-delete]').forEach(b=>b.addEventListener('click',async()=>{const id=b.dataset.orderDelete;const order=orders.find(o=>String(o.id)===String(id));if(!order)return;if(!confirm('এই অর্ডারটি স্থায়ীভাবে Delete করবেন?'))return;b.disabled=true;b.textContent='DELETING...';const {error}=await db.from('customer_orders').delete().eq('id',id);if(error){notify('অর্ডার Delete হয়নি: '+error.message);b.disabled=false;b.textContent='DELETE';return}orders=orders.filter(o=>String(o.id)!==String(id));knownOrderIds.delete(String(id));renderOrders();notify('অর্ডার Delete হয়েছে')}));
-   $('#adminOrdersList').querySelectorAll('[data-send-supplier]').forEach(b=>b.addEventListener('click',async()=>{
-     if(!confirm('এই অর্ডারের Supplier Product Shadamon Shop-এ পাঠাবেন?'))return;
-     b.disabled=true;b.textContent='SENDING...';
-     try{const token=await adminToken(),res=await fetch('/api/shadamon/orders',{method:'POST',headers:{Authorization:'Bearer '+token,'Content-Type':'application/json'},body:JSON.stringify({order_id:b.dataset.sendSupplier})});const body=await res.json();if(!res.ok)throw new Error(body.error||'Supplier order failed');notify('Shadamon order sent: '+(body.order_ref||''));await loadOrders()}
-     catch(err){notify(err.message||'Supplier order failed');b.disabled=false;b.textContent='SEND TO SHADAMON'}
-   }));
+   
  }
  function printOrderInvoice(id){
    const o=orders.find(x=>x.id===id);if(!o)return;
