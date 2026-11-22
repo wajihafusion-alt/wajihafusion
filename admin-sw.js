@@ -1,4 +1,4 @@
-const CACHE = 'wajiha-admin-shell-v3';
+const CACHE = 'wajiha-admin-shell-v4';
 const SHELL = ['./admin.html', './admin.css', './styles.css', './admin.js', './config.js', './admin-manifest.webmanifest', './icons/admin-192.png', './icons/admin-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(SHELL)).then(() => self.skipWaiting()));
