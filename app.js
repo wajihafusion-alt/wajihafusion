@@ -35,7 +35,7 @@
         applySiteContent(s.site_content||{});
         renderHomeSections(s.homepage_sections);
         const announcementText=(s.banner_enabled&&s.banner_text)?s.banner_text:'';
-        if(/delivery\s*charge\s*advance.*10\s*%|advance.*10\s*%\s*off/i.test(announcementText)){$('#announcement').textContent='';$('#announcement').classList.add('hidden')}else{$('#announcement').textContent=announcementText;$('#announcement').classList.toggle('hidden',!announcementText)}
+        $('#announcement').textContent=announcementText;$('#announcement').classList.toggle('hidden',!announcementText)
         heroImages=(Array.isArray(s.banner_images)?s.banner_images:[]).filter(Boolean);
         if(!heroImages.length&&s.banner_image_url)heroImages=[s.banner_image_url];
         if(heroImages.length){setHero(0);if(heroImages.length>1)setInterval(()=>setHero((heroIndex+1)%heroImages.length),5000)}
