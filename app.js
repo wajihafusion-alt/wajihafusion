@@ -13,12 +13,43 @@
   function categoryName(p){return p.category||categories.find(c=>c.id===p.category_id)?.name||''}
   const defaultHomeSections=[{eyebrow:'THE NEW SEASON',title:'Refresh Your Wardrobe',button:'EXPLORE THE COLLECTION',link:'#shop',image:'',enabled:true},{eyebrow:'EFFORTLESS STYLE',title:'Everyday Elegance',button:'DISCOVER MORE',link:'#shop',image:'',enabled:true},{eyebrow:'CURATED FOR YOU',title:'Find Your Signature Look',button:'SHOP NOW',link:'#shop',image:'',enabled:true}];
   function renderHomeSections(data){const list=Array.isArray(data)&&data.length?data:defaultHomeSections;const host=document.querySelector('.editorial-banners');if(!host)return;host.innerHTML=list.filter(x=>x.enabled!==false).map((x,i)=>`<a href="${attr(x.link||'#shop')}" class="editorial-card editorial-${['one','two','three'][i]||'one'}" ${x.image?`style="background-image:linear-gradient(90deg,rgba(246,245,252,.94),rgba(246,245,252,.18)),url('${attr(x.image)}')"`:''}><span>${esc(x.eyebrow||'')}</span><strong>${esc(x.title||'').replace(/\n/g,'<br>')}</strong><small>${esc(x.button||'SHOP NOW')} →</small></a>`).join('')}
-  async function load(){if(!db){$('#productGrid').innerHTML='<p class="loading">Store connection is not configured.</p>';return}
-    const [pr,cr,sr]=await Promise.all([db.from('products').select('*').eq('is_active',true).order('created_at',{ascending:false}),db.from('categories').select('*').eq('is_active',true).order('sort_order'),db.from('storefront_settings').select('*').eq('id',1).maybeSingle()]);
-    if(cr.error)console.warn('Categories:',cr.error.message);categories=cr.data||[];
-    if(pr.error){console.error(pr.error);$('#productGrid').innerHTML='<p class="loading">Products could not be loaded. Check Supabase table permissions.</p>';return}products=pr.data||[];
-    if(sr.data){const s=sr.data;applyStoreTheme(s.theme_config||{});applySiteContent(s.site_content||{});renderHomeSections(s.homepage_sections);$('#announcement').textContent=(s.banner_enabled&&s.banner_text)?s.banner_text:'Delivery Charge Advance করলে পণ্যের দামে ১০% OFF';$('#announcement').classList.remove('hidden');heroImages=(Array.isArray(s.banner_images)?s.banner_images:[]).filter(Boolean);if(!heroImages.length&&s.banner_image_url)heroImages=[s.banner_image_url];if(heroImages.length){setHero(0);if(heroImages.length>1)setInterval(()=>setHero((heroIndex+1)%heroImages.length),5000)}}
-    renderCategories();renderProducts();
+  async function load(){
+    const grid=$('#productGrid');
+    if(!db){grid.innerHTML='<p class="loading">Store connection is not configured. Please contact support.</p>';return}
+    grid.innerHTML='<p class="loading">Loading products...</p>';
+    try{
+      const timeout=new Promise((_,reject)=>setTimeout(()=>reject(new Error('Store connection timed out. Please refresh and try again.')),15000));
+      const requests=Promise.all([
+        db.from('products').select('*').eq('is_active',true).order('created_at',{ascending:false}),
+        db.from('categories').select('*').eq('is_active',true).order('sort_order'),
+        db.from('storefront_settings').select('*').eq('id',1).maybeSingle()
+      ]);
+      const [pr,cr,sr]=await Promise.race([requests,timeout]);
+      if(cr.error)console.warn('Categories:',cr.error.message);
+      categories=cr.data||[];
+      if(pr.error)throw new Error('Products could not be loaded: '+pr.error.message);
+      products=pr.data||[];
+      if(sr?.data){
+        const s=sr.data;
+        applyStoreTheme(s.theme_config||{});
+        applySiteContent(s.site_content||{});
+        renderHomeSections(s.homepage_sections);
+        $('#announcement').textContent=(s.banner_enabled&&s.banner_text)?s.banner_text:'Delivery Charge Advance করলে পণ্যের দামে ১০% OFF';
+        $('#announcement').classList.remove('hidden');
+        heroImages=(Array.isArray(s.banner_images)?s.banner_images:[]).filter(Boolean);
+        if(!heroImages.length&&s.banner_image_url)heroImages=[s.banner_image_url];
+        if(heroImages.length){setHero(0);if(heroImages.length>1)setInterval(()=>setHero((heroIndex+1)%heroImages.length),5000)}
+      }else{
+        $('#announcement').textContent='Delivery Charge Advance করলে পণ্যের দামে ১০% OFF';
+        $('#announcement').classList.remove('hidden');
+      }
+      renderCategories();
+      renderProducts();
+    }catch(err){
+      console.error('Store loading failed:',err);
+      grid.innerHTML='<div class="loading store-load-error"><strong>দুঃখিত, পণ্য লোড হয়নি।</strong><p>'+esc(err.message||'Internet connection or store service problem.')+'</p><button type="button" class="gold-btn" id="retryStoreLoad">TRY AGAIN</button></div>';
+      $('#retryStoreLoad')?.addEventListener('click',load);
+    }
   }
   function setHero(i){heroIndex=i;$('#hero').style.backgroundImage=`linear-gradient(90deg,rgba(0,0,0,.65),rgba(0,0,0,.1)),url("${heroImages[i]}")`; }
   function categoryIcon(name){const n=String(name||'').toLowerCase();if(n.includes('dress'))return '👗';if(n.includes('gown'))return '👗';if(n.includes('saree')||n.includes('sari'))return '💃';if(n.includes('kid')||n.includes('baby')||n.includes('child'))return '🧸';if(n.includes('fashion')||n.includes('men'))return '👕';return '✦'}
