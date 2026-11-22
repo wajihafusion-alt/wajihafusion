@@ -11,7 +11,7 @@
   if(!r.ok||body.success===false)throw new Error(body.message||body.error||("Supplier API error: "+r.status));
   return body.data??body;
  }
- function dataArray(x){if(Array.isArray(x))return x;if(Array.isArray(x?.data))return x.data;if(Array.isArray(x?.items))return x.items;return []}
+ function dataArray(x){if(Array.isArray(x))return x;if(Array.isArray(x?.data))return x.data;if(Array.isArray(x?.items))return x.items;if(Array.isArray(x?.categories))return x.categories;if(Array.isArray(x?.products))return x.products;if(Array.isArray(x?.posts))return x.posts;return []}
  async function loadCategories(){
   try{const data=await api("/api/dropbazar/catalog/categories");categories=dataArray(data);const opts=['<option value="">All categories</option>'];const walk=items=>items.forEach(c=>{opts.push('<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>');if(Array.isArray(c.children))walk(c.children)});walk(categories);$("#supplierCategory").innerHTML=opts.join("")}
   catch(e){msg("Category list: "+e.message)}
