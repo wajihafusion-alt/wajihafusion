@@ -41,7 +41,7 @@
      return `<article class="admin-order-card">
        <div class="admin-order-head"><div><strong>${orderEsc(o.order_number||'No order number')}</strong><small>${orderEsc(o.customer_name)} · ${orderEsc(o.customer_phone)}</small><small>${o.created_at?new Date(o.created_at).toLocaleString():''}</small></div><b class="admin-order-total">${money(o.total)}</b></div>
        <div class="admin-order-items">${lines||'<small>No product details</small>'}</div>
-       <div class="admin-order-foot"><label>Status <select data-order-status="${orderEsc(o.id)}">${['New','Pending','Confirmed','Processing','Shipped','Delivered','Cancelled'].map(s=>`<option value="${s}" ${status.toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('')}</select></label><button type="button" class="outline-btn" data-order-invoice="${orderEsc(o.id)}">INVOICE / PRINT</button><button type="button" class="delete" data-order-delete="${orderEsc(o.id)}">DELETE</button></div>
+       <div class="admin-order-foot"><label>Status <select data-order-status="${orderEsc(o.id)}">${['New','Pending','Confirmed','Processing','Shipped','Delivered','Partially Delivered','Returned','Refunded','Cancelled'].map(s=>`<option value="${s}" ${status.toLowerCase()===s.toLowerCase()?'selected':''}>${s}</option>`).join('')}</select></label><button type="button" class="outline-btn" data-order-invoice="${orderEsc(o.id)}">INVOICE / PRINT</button><button type="button" class="delete" data-order-delete="${orderEsc(o.id)}">DELETE</button></div>
        <small class="admin-order-address">${orderEsc([o.address,o.thana,o.district,o.delivery_area].filter(Boolean).join(', '))}</small>
      </article>`;
    }).join('')||'<p class="muted">No orders found.</p>';
