@@ -60,3 +60,9 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .category-bar-wrap .category-nav::-webkit-scrollbar{display:none}
 .category-intro{margin-top:12px}
 @media(max-width:650px){.category-bar-wrap{width:94%;margin:14px auto 8px;padding-bottom:10px}.category-bar-wrap .category-nav{gap:7px}}
+
+
+/* Reference layout: announcement, header, category pills, then hero */
+.category-bar-wrap{margin:10px auto 14px!important;padding:0 0 10px!important;border-bottom:1px solid #e8e5f0}
+.category-bar-wrap .category-nav{position:static!important;top:auto!important;display:flex;justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;gap:10px;padding:2px 1px 8px;background:transparent;border:0}
+@media(max-width:650px){.category-bar-wrap{margin:8px auto 10px!important;padding-bottom:8px!important}.category-bar-wrap .category-nav{position:static!important;top:auto!important;padding:2px 1px 7px;background:transparent}}
