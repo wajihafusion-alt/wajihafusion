@@ -84,7 +84,7 @@ async function handleSupabaseSendSms(request,env){
   const response=await fetch("https://sendmysms.net/api.php",{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded"},body:form.toString()});
   const text=await response.text();let result;try{result=JSON.parse(text)}catch{return json({error:"SMS provider returned an invalid response."},502)}
   if(!response.ok||String(result.status||"").toUpperCase()!=="OK")return json({error:"SMS could not be sent."},502);
-  return new Response(null,{status:200});
+  return json({},200);
  }catch(e){return json({error:"Could not connect to SMS provider."},502)}
 }
 
