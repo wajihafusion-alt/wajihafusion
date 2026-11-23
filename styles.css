@@ -277,3 +277,10 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .account-register-form .gold-btn{margin-top:5px;border-radius:25px}
 .account-register-notice{margin:0;padding:10px 12px;border-radius:9px;background:#f2f0fa;color:#69668a;font:11px/1.7 'Hind Siliguri','Noto Serif Bengali',sans-serif;text-align:center}
 @media(max-width:650px){.header-actions{gap:8px}.account-header-btn{padding:7px 8px;font-size:15px}.account-header-btn span{font-size:8px}.account-panel{padding:30px 20px!important}}
+
+/* Customer account authentication */
+.account-mode-switch{display:flex;gap:8px;margin:0 0 15px;padding:4px;border-radius:24px;background:#f1eff9}
+.account-mode-switch button{flex:1;border:0;border-radius:20px;padding:10px 8px;background:transparent;color:#77758b;font:600 12px 'Hind Siliguri',sans-serif}
+.account-mode-switch button.active{background:#fff;color:#514d86;box-shadow:0 2px 8px #302c5012}
+.account-back-btn{border:0;background:transparent;color:#7772b9;padding:8px;font:600 12px 'Hind Siliguri',sans-serif}
+.account-panel .hidden{display:none!important}
