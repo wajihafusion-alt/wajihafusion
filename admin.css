@@ -162,3 +162,9 @@
 .admin-icon-delete svg,.review-delete-btn svg{display:block;width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .admin-icon-delete{font-size:0!important}
 .admin-review-buttons .review-delete-btn{font-size:0!important}
+
+
+/* Icons8 Material Sharp delete icon and product-list text delete button */
+.admin-icon-delete .delete-icon-image{display:block;width:21px;height:21px;object-fit:contain}
+.product-delete-text{min-height:34px;padding:7px 10px!important;border:1px solid #a65353!important;border-radius:7px!important;background:#351717!important;color:#ffd0d0!important;font:700 10px Arial,sans-serif!important;letter-spacing:.5px;cursor:pointer}
+.product-delete-text:hover{background:#642323!important;border-color:#df7777!important}
