@@ -8,7 +8,11 @@
 
   let products=[],categories=[],activeCategory='all',activeSub=null,cart=JSON.parse(localStorage.getItem('wf_cart')||'[]'),wishlist=JSON.parse(localStorage.getItem('wf_wishlist')||'[]'),wishlistOnly=false,selectedProduct=null,selectedColor='',selectedSize='',heroImages=[],heroIndex=0;
   $('#year').textContent=new Date().getFullYear();
-  function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+  function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}\n  const accountModal=$('#accountModal');
+  $('#accountToggle').addEventListener('click',()=>{accountModal.classList.remove('hidden');$('#accountRegisterNotice').textContent='নিরাপদ OTP verification চালু করার পর অ্যাকাউন্ট তৈরি সম্পন্ন হবে।'});
+  document.querySelectorAll('[data-close-account]').forEach(b=>b.addEventListener('click',()=>accountModal.classList.add('hidden')));
+  $('#accountRegisterForm').addEventListener('submit',e=>{e.preventDefault();const f=new FormData(e.currentTarget),phone=String(f.get('phone')||''),password=String(f.get('password')||''),confirm=String(f.get('confirmPassword')||''),notice=$('#accountRegisterNotice');if(!/^01[0-9]{9}$/.test(phone)){notice.textContent='সঠিক ১১ সংখ্যার বাংলাদেশি মোবাইল নম্বর দিন।';return}if(password.length<8){notice.textContent='পাসওয়ার্ড কমপক্ষে ৮ অক্ষরের হতে হবে।';return}if(password!==confirm){notice.textContent='দুটি পাসওয়ার্ড মিলছে না।';return}notice.textContent='ফর্ম ঠিক আছে। অ্যাকাউন্ট তৈরি চালু করতে এখন নিরাপদ OTP ও account backend যুক্ত করতে হবে।'});
+
   function images(p){let a=Array.isArray(p.product_images)?p.product_images:[];if(!a.length&&p.image_url)a=[p.image_url];return a.filter(Boolean)}
   function categoryName(p){return p.category||categories.find(c=>c.id===p.category_id)?.name||''}
   const defaultHomeSections=[{eyebrow:'THE NEW SEASON',title:'Refresh Your Wardrobe',button:'EXPLORE THE COLLECTION',link:'#shop',image:'',enabled:true},{eyebrow:'EFFORTLESS STYLE',title:'Everyday Elegance',button:'DISCOVER MORE',link:'#shop',image:'',enabled:true},{eyebrow:'CURATED FOR YOU',title:'Find Your Signature Look',button:'SHOP NOW',link:'#shop',image:'',enabled:true}];
