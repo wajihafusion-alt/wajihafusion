@@ -8,7 +8,8 @@
 
   let products=[],categories=[],activeCategory='all',activeSub=null,cart=JSON.parse(localStorage.getItem('wf_cart')||'[]'),wishlist=JSON.parse(localStorage.getItem('wf_wishlist')||'[]'),wishlistOnly=false,selectedProduct=null,selectedColor='',selectedSize='',heroImages=[],heroIndex=0;
   $('#year').textContent=new Date().getFullYear();
-  function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}\n  const accountModal=$('#accountModal'),accountForm=$('#accountAuthForm');
+  function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}
+  const accountModal=$('#accountModal'),accountForm=$('#accountAuthForm');
   let accountMode='register',accountOtpStage=false,accountPendingPhone='';
   function normalizeBdPhone(raw){let p=String(raw||'').replace(/[\s()-]/g,'');if(/^01[3-9]\d{8}$/.test(p))return '+88'+p;if(/^8801[3-9]\d{8}$/.test(p))return '+'+p;if(/^\+8801[3-9]\d{8}$/.test(p))return p;return ''}
   function accountNotice(msg){$('#accountRegisterNotice').textContent=msg}
