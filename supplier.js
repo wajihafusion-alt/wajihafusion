@@ -46,8 +46,10 @@
     const already=await db.from("products").select("id").eq("supplier_source","dropbazarbd").eq("supplier_product_id",product.id).maybeSingle();
     if(already.error)throw new Error("Supplier metadata SQL এখনো চালানো হয়নি। Supabase-এ DROPBAZAR_SUPPLIER_SETUP.sql চালান।");
     if(already.data)continue;
-    const priceText=prompt("Selling Price দিন (৳) — "+(product.title||detail.title)+" | Supplier Cost: "+product.price+" | Suggested: "+(product.suggested_price||detail.suggested_price||"N/A"),String(product.suggested_price||detail.suggested_price||product.price||0));
-    if(priceText===null)return;const selling=Number(priceText);if(!Number.isInteger(selling)||selling<Number(product.price||0))throw new Error("Selling Price অবশ্যই Supplier Cost Price-এর সমান বা বেশি হতে হবে।");
+    const regularText=prompt("Regular Price দিন (৳) — "+(product.title||detail.title)+" | Supplier Cost: "+product.price+" | Suggested: "+(product.suggested_price||detail.suggested_price||"N/A"),String(product.suggested_price||detail.suggested_price||product.price||0));
+    if(regularText===null)return;const regular=Number(regularText);if(!Number.isInteger(regular)||regular<0)throw new Error("সঠিক Regular Price দিন।");
+    const offerText=prompt("Offer Price দিন (৳)। Offer না থাকলে খালি রাখুন।", "");
+    if(offerText===null)return;const offer=offerText.trim()===""?null:Number(offerText);if(offer!==null&&(!Number.isInteger(offer)||offer<0||offer>regular))throw new Error("Offer Price অবশ্যই ০ থেকে Regular Price-এর মধ্যে হতে হবে।");
     const categoryText=prompt("Wajiha Fusion Category Number দিন:\n"+localCats.map((c,i)=>(i+1)+". "+c.name).join("\n"),"1");if(categoryText===null)return;
     const cat=localCats[Number(categoryText)-1];if(!cat)throw new Error("সঠিক Category Number দিন।");
     const variants=Array.isArray(product.variants)?product.variants:[];
@@ -59,7 +61,7 @@
       .split(/\\r?\\n/)
       .filter(line=>!/^\\s*(supplier\\s*:?|supplier\\s*name\\s*:?|supplier\\s*cost\\s*:?|সরবরাহকারী\\s*:?|সরবরাহকারীর\\s*নাম\\s*:?|সাপ্লায়ার\\s*:?|সাপ্লায়ার\\s*কস্ট\\s*:?)/i.test(line))
       .join("\\n").replace(/\\n{3,}/g,"\\n\\n").trim();
-    const payload={name:product.title||detail.title,category_id:cat.id,category:cat.name,regular_price:selling,special_price:null,description:cleanDescription,colors,sizes,product_images:images,image_url:images[0]||"",is_active:true,updated_at:new Date().toISOString(),supplier_source:"dropbazarbd",supplier_product_id:product.id,supplier_group_id:group?.group_id||null,supplier_cost_price:Number(product.price||detail.price||0),supplier_suggested_price:Number(product.suggested_price||detail.suggested_price||0),supplier_variants:variants};
+    const payload={name:product.title||detail.title,category_id:cat.id,category:cat.name,regular_price:regular,special_price:offer,description:cleanDescription,colors,sizes,product_images:images,image_url:images[0]||"",is_active:true,updated_at:new Date().toISOString(),supplier_source:"dropbazarbd",supplier_product_id:product.id,supplier_group_id:group?.group_id||null,supplier_cost_price:Number(product.price||detail.price||0),supplier_suggested_price:Number(product.suggested_price||detail.suggested_price||0),supplier_variants:variants};
     const inserted=await db.from("products").insert(payload);if(inserted.error)throw inserted.error;
    }
    msg("Import সম্পন্ন হয়েছে। Admin Products তালিকা Refresh করুন।");
