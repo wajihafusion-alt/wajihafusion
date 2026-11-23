@@ -247,3 +247,15 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 
 /* Order confirmation actions */
 .order-success-panel .success-actions{display:grid;gap:10px}.order-success-panel .success-copy-btn{width:100%;padding:12px;border:1px solid #dcd8ef;border-radius:25px;background:#fff;color:#55527f;font-weight:700}.order-success-panel .success-dismiss{border:0;background:transparent;color:#77758b;padding:8px;font-size:12px}.order-success-panel .success-copy-btn:active,.order-success-panel .success-actions .gold-btn:active{transform:scale(.99)}
+
+
+/* Order success modal — consistent premium actions and clear spacing */
+.order-success-panel .success-actions{display:flex;flex-direction:column;align-items:stretch;gap:14px;margin-top:6px}
+.order-success-panel .success-actions button{min-height:48px;width:100%;margin:0;font:600 14px 'Hind Siliguri','Noto Serif Bengali',sans-serif;cursor:pointer;transition:transform .18s ease,background .18s ease,border-color .18s ease}
+.order-success-panel .success-actions .success-copy-btn{display:flex;align-items:center;justify-content:center;gap:9px;padding:12px 16px;border:1px solid #dcd8ef;border-radius:14px;background:#fff;color:#55527f;box-shadow:0 3px 12px rgba(75,68,135,.06)}
+.order-success-panel .success-actions #successTrackOrder{border-radius:28px}
+.order-success-panel .success-actions .success-dismiss{align-self:center;width:auto;min-width:132px;min-height:40px;padding:8px 22px;border:1px solid #e5e1f2;border-radius:22px;background:#f7f5ff;color:#7772a8;font-size:13px}
+.order-success-panel .success-actions .success-copy-btn:hover{background:#f8f7ff;border-color:#c9c3e7}
+.order-success-panel .success-actions .success-dismiss:hover{background:#eeecfb}
+.order-success-panel .success-actions button:focus-visible{outline:3px solid rgba(137,132,201,.3);outline-offset:2px}
+@media(max-width:480px){.order-success-panel .success-actions{gap:12px}.order-success-panel .success-actions button{min-height:46px}}
