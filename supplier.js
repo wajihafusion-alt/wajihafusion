@@ -59,7 +59,7 @@
       .split(/\\r?\\n/)
       .filter(line=>!/^\\s*(supplier\\s*:?|supplier\\s*name\\s*:?|supplier\\s*cost\\s*:?|সরবরাহকারী\\s*:?|সরবরাহকারীর\\s*নাম\\s*:?|সাপ্লায়ার\\s*:?|সাপ্লায়ার\\s*কস্ট\\s*:?)/i.test(line))
       .join("\\n").replace(/\\n{3,}/g,"\\n\\n").trim();
-    const payload={name:product.title||detail.title,category_id:cat.id,category:cat.name,regular_price:selling,special_price:null,description:cleanDescription,colors,sizes,product_images:images,image_url:images[0]||"",is_active:true,updated_at:new Date().toISOString(),supplier_source:"dropbazarbd",supplier_name:"DropBazarBD",supplier_product_id:product.id,supplier_group_id:group?.group_id||null,supplier_cost_price:Number(product.price||detail.price||0),supplier_suggested_price:Number(product.suggested_price||detail.suggested_price||0),supplier_variants:variants};
+    const payload={name:product.title||detail.title,category_id:cat.id,category:cat.name,regular_price:selling,special_price:null,description:cleanDescription,colors,sizes,product_images:images,image_url:images[0]||"",is_active:true,updated_at:new Date().toISOString(),supplier_source:"dropbazarbd",supplier_product_id:product.id,supplier_group_id:group?.group_id||null,supplier_cost_price:Number(product.price||detail.price||0),supplier_suggested_price:Number(product.suggested_price||detail.suggested_price||0),supplier_variants:variants};
     const inserted=await db.from("products").insert(payload);if(inserted.error)throw inserted.error;
    }
    msg("Import সম্পন্ন হয়েছে। Admin Products তালিকা Refresh করুন।");
