@@ -259,3 +259,21 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .order-success-panel .success-actions .success-dismiss:hover{background:#eeecfb}
 .order-success-panel .success-actions button:focus-visible{outline:3px solid rgba(137,132,201,.3);outline-offset:2px}
 @media(max-width:480px){.order-success-panel .success-actions{gap:12px}.order-success-panel .success-actions button{min-height:46px}}
+
+
+/* Customer account registration entry and modal */
+.account-header-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 11px;border:1px solid #e5e2ef;border-radius:22px;background:#fff;color:#55527f;font-size:17px;line-height:1}
+.account-header-btn span{font:700 9px 'Manrope',sans-serif;letter-spacing:.08em}
+.account-header-btn:hover{background:#f1effb;border-color:#c9c5e8}
+.account-panel{width:min(440px,100%);padding:34px 28px!important;border-radius:18px;text-align:center}
+.account-brand-mark{font:600 17px 'Playfair Display',serif;letter-spacing:.2em;color:#34334c;margin:4px 0 18px}
+.account-eyebrow{margin:0 0 7px}
+.account-panel h2{margin:0;color:#34334c;font:700 24px 'Hind Siliguri','Noto Serif Bengali',sans-serif}
+.account-intro{margin:9px auto 22px;color:#77758b;font:13px/1.7 'Hind Siliguri','Noto Serif Bengali',sans-serif}
+.account-register-form{display:grid;gap:13px;text-align:left}
+.account-register-form label{display:grid;gap:6px;color:#4c4a63;font:600 12px 'Hind Siliguri','Noto Serif Bengali',sans-serif}
+.account-register-form input{width:100%;padding:12px 13px;border:1px solid #e1dfed;border-radius:9px;background:#fbfaff;color:#292840;font:14px 'Manrope',sans-serif;outline:none}
+.account-register-form input:focus{border-color:#8985c5;box-shadow:0 0 0 3px #8985c51c}
+.account-register-form .gold-btn{margin-top:5px;border-radius:25px}
+.account-register-notice{margin:0;padding:10px 12px;border-radius:9px;background:#f2f0fa;color:#69668a;font:11px/1.7 'Hind Siliguri','Noto Serif Bengali',sans-serif;text-align:center}
+@media(max-width:650px){.header-actions{gap:8px}.account-header-btn{padding:7px 8px;font-size:15px}.account-header-btn span{font-size:8px}.account-panel{padding:30px 20px!important}}
