@@ -103,3 +103,25 @@
 .admin-review-actions small{color:#c5b895;font-size:11px}
 .admin-review-actions .gold-btn{min-height:40px;padding:10px 16px;white-space:normal}
 @media(max-width:650px){#reviewsTab{padding:14px 11px}.admin-review-card{padding:14px 12px}.admin-review-head strong{font-size:13px}.admin-review-text{font-size:13px}.admin-review-actions{align-items:stretch}.admin-review-actions .gold-btn{width:100%}}
+
+
+/* FINAL FIX: force high-contrast dark review cards in the admin dashboard */
+.admin-body #reviewsTab #adminReviewsList .admin-review-card{
+  background:#171510!important;
+  background-image:linear-gradient(145deg,#211e18,#11100e)!important;
+  color:#f7f1e5!important;
+  border:1px solid #a9803d!important;
+}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card *{box-sizing:border-box}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card .admin-review-head strong{color:#f5dfad!important}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card .admin-review-head small{color:#d0c3a8!important}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card .admin-review-text{
+  background:#0a0a09!important;color:#f7f1e5!important;border:1px solid #4b402d!important;
+}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card label{color:#ead7ac!important}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card textarea{
+  background:#090909!important;color:#fff!important;border:1px solid #80683f!important;
+}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card textarea::placeholder{color:#a99b80!important}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card .admin-review-actions small{color:#d4c39e!important}
+.admin-body #reviewsTab #adminReviewsList .admin-review-card .review-admin-stars{color:#e8bd59!important}
