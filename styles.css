@@ -243,3 +243,7 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .review-admin-reply strong:before{content:'✦';display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#e9e7fb;color:#7772b9;font-size:12px}
 .review-admin-reply p{margin:3px 0 0;color:#494761;font-family:'Hind Siliguri','Noto Serif Bengali',sans-serif;font-size:14px;font-weight:400;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere}
 @media(max-width:600px){.review-admin-reply{padding:12px 13px 12px 14px}.review-admin-reply strong{font-size:13px}.review-admin-reply p{font-size:13px;line-height:1.8}}
+
+
+/* Order confirmation actions */
+.order-success-panel .success-actions{display:grid;gap:10px}.order-success-panel .success-copy-btn{width:100%;padding:12px;border:1px solid #dcd8ef;border-radius:25px;background:#fff;color:#55527f;font-weight:700}.order-success-panel .success-dismiss{border:0;background:transparent;color:#77758b;padding:8px;font-size:12px}.order-success-panel .success-copy-btn:active,.order-success-panel .success-actions .gold-btn:active{transform:scale(.99)}
