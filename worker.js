@@ -46,8 +46,52 @@ async function handleDropbazar(request,env,url){
   return json(data,upstream.status);
  }catch(e){return json({error:"Could not connect to DropBazarBD. Please try again."},502)}
 }
+
+async function verifySupabaseSmsHook(request,env,rawBody){
+ if(!env.SEND_SMS_HOOK_SECRET)return false;
+ const id=request.headers.get("webhook-id")||"",timestamp=request.headers.get("webhook-timestamp")||"",signature=request.headers.get("webhook-signature")||"";
+ if(!id||!/^\\d{1,20}$/.test(timestamp)||!signature)return false;
+ const ts=Number(timestamp);if(!Number.isSafeInteger(ts)||Math.abs(Date.now()/1000-ts)>300)return false;
+ const secrets=String(env.SEND_SMS_HOOK_SECRET).split("|").map(s=>s.trim()).filter(Boolean);
+ const signed=id+"."+timestamp+"."+rawBody;
+ for(const secret of secrets){
+  try{
+   const encoded=secret.replace(/^v1,whsec_/,"");
+   const raw=Uint8Array.from(atob(encoded),c=>c.charCodeAt(0));
+   const key=await crypto.subtle.importKey("raw",raw,{name:"HMAC",hash:"SHA-256"},false,["sign"]);
+   const digest=await crypto.subtle.sign("HMAC",key,new TextEncoder().encode(signed));
+   const expected=btoa(String.fromCharCode(...new Uint8Array(digest)));
+   for(const item of signature.split(" ")){
+    const parts=item.split(",");if(parts.length!==2||parts[0]!=="v1")continue;
+    const given=parts[1];if(given.length!==expected.length)continue;
+    let mismatch=0;for(let i=0;i<given.length;i++)mismatch|=given.charCodeAt(i)^expected.charCodeAt(i);
+    if(mismatch===0)return true;
+   }
+  }catch(e){}
+ }
+ return false;
+}
+async function handleSupabaseSendSms(request,env){
+ if(request.method!=="POST")return json({error:"Method not allowed."},405);
+ if(!env.SENDMYSMS_USER||!env.SENDMYSMS_API_KEY||!env.SEND_SMS_HOOK_SECRET)return json({error:"SMS gateway is not configured."},503);
+ const rawBody=await request.text();
+ if(!await verifySupabaseSmsHook(request,env,rawBody))return json({error:"Invalid SMS hook signature."},401);
+ let payload;try{payload=JSON.parse(rawBody)}catch{return json({error:"Invalid request body."},400)}
+ const phone=String(payload.user?.phone||"").trim(),otp=String(payload.sms?.otp||"").trim();
+ if(!/^\\+8801[3-9]\\d{8}$/.test(phone)||!/^\\d{6}$/.test(otp))return json({error:"Invalid phone number or OTP."},400);
+ const form=new URLSearchParams({user:env.SENDMYSMS_USER,key:env.SENDMYSMS_API_KEY,to:phone.slice(1),msg:"Your Wajiha Fusion verification code is "+otp+". Valid for 5 minutes. Do not share this code."});
+ try{
+  const response=await fetch("https://sendmysms.net/api.php",{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded"},body:form.toString()});
+  const text=await response.text();let result;try{result=JSON.parse(text)}catch{return json({error:"SMS provider returned an invalid response."},502)}
+  if(!response.ok||String(result.status||"").toUpperCase()!=="OK")return json({error:"SMS could not be sent."},502);
+  return new Response(null,{status:200});
+ }catch(e){return json({error:"Could not connect to SMS provider."},502)}
+}
+
 export default {async fetch(request,env){
  const url=new URL(request.url);
+ if(url.pathname==="/api/auth/send-sms")return handleSupabaseSendSms(request,env);
+
  if(url.pathname==="/api/webhooks/dropshipping/dropbazar"&&request.method==="POST"){
   try{
    if(!env.DROPBAZAR_WEBHOOK_SECRET||!env.SUPABASE_SERVICE_ROLE_KEY)return json({error:"Webhook is not configured."},503);
