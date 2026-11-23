@@ -157,3 +157,8 @@
   .admin-icon-delete{width:36px;height:36px;min-width:36px;min-height:36px}
   .admin-review-buttons .admin-icon-delete{width:40px;height:40px;min-width:40px;min-height:40px}
 }
+
+/* Use a crisp inline SVG trash icon (independent of emoji font support) */
+.admin-icon-delete svg,.review-delete-btn svg{display:block;width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.admin-icon-delete{font-size:0!important}
+.admin-review-buttons .review-delete-btn{font-size:0!important}
