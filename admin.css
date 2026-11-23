@@ -83,3 +83,23 @@
 .supplier-item-body{padding:13px}.supplier-item h3{font-size:14px;color:#f0dba9;margin:0 0 8px}.supplier-item p{font-size:11px;color:#bdb39e;margin:5px 0}.supplier-item .supplier-prices{display:flex;justify-content:space-between;gap:8px;margin:10px 0;color:#e7c16e;font-size:12px}
 .supplier-item button{width:100%;margin-top:8px}.supplier-wallet{display:flex;gap:12px;flex-wrap:wrap;margin:14px 0}.supplier-wallet>div{flex:1;min-width:130px;padding:14px;border:1px solid #a9803d66;border-radius:9px;background:#111}.supplier-wallet b,.supplier-wallet small{display:block}.supplier-wallet b{color:#e8c678;font-size:18px}.supplier-wallet small{color:#a9a092;font-size:10px;margin-top:4px}.supplier-pager{display:flex;justify-content:center;align-items:center;gap:16px;margin:18px 0}.supplier-pager span{color:#d9c79f;font-size:12px}
 @media(max-width:700px){.supplier-controls{grid-template-columns:1fr 1fr}.supplier-controls input{grid-column:1/-1}.supplier-controls button{grid-column:1/-1}.supplier-results{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.supplier-item img{height:140px}.supplier-item-body{padding:9px}.supplier-item h3{font-size:12px}}
+
+
+/* Customer Reviews — readable, responsive admin layout */
+#reviewsTab{min-width:0;overflow:hidden}
+#adminReviewsList{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;min-width:0;margin-top:16px}
+#reviewsTab .muted{color:#b9b09e;line-height:1.7}
+.admin-review-card{min-width:0;width:100%;box-sizing:border-box;padding:17px 18px;margin:0;border:1px solid #78613c;background:linear-gradient(145deg,#211e18,#12110f);border-radius:13px;color:#f5efdf;box-shadow:0 7px 22px #0005}
+.admin-review-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;min-width:0}
+.admin-review-head>div{min-width:0;flex:1}
+.admin-review-head strong{display:block;color:#f1d99f;font-size:15px;line-height:1.5;overflow-wrap:anywhere}
+.admin-review-head small{display:block;color:#b9ad96;font-size:11px;line-height:1.6;margin-top:4px;overflow-wrap:anywhere}
+.review-admin-stars{flex:0 0 auto;color:#e8bd59;white-space:nowrap;letter-spacing:1px}
+.admin-review-text{margin:12px 0!important;padding:12px!important;border-radius:9px;background:#0b0b0a;color:#f5f1e8;font-size:14px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}
+.admin-review-card label{display:grid;gap:8px;color:#e4d3aa;font-size:12px;font-weight:700}
+.admin-review-card textarea{display:block;box-sizing:border-box;width:100%;min-width:0;min-height:92px;padding:12px;border:1px solid #75613f;border-radius:9px;background:#090909;color:#fff;font:14px/1.7 'Hind Siliguri','Noto Serif Bengali',sans-serif;resize:vertical}
+.admin-review-card textarea::placeholder{color:#928875}
+.admin-review-actions{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:12px}
+.admin-review-actions small{color:#c5b895;font-size:11px}
+.admin-review-actions .gold-btn{min-height:40px;padding:10px 16px;white-space:normal}
+@media(max-width:650px){#reviewsTab{padding:14px 11px}.admin-review-card{padding:14px 12px}.admin-review-head strong{font-size:13px}.admin-review-text{font-size:13px}.admin-review-actions{align-items:stretch}.admin-review-actions .gold-btn{width:100%}}
