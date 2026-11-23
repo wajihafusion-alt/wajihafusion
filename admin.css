@@ -133,3 +133,8 @@
 .review-delete-btn:hover{background:#642323;border-color:#df7777}
 .review-delete-btn:disabled{opacity:.55;cursor:wait}
 @media(max-width:650px){.admin-review-buttons{width:100%;display:grid;grid-template-columns:1fr}.admin-review-buttons button{width:100%}}
+
+/* Compact icon-only review delete control */
+.admin-review-buttons{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.admin-review-buttons .review-delete-btn{width:40px;height:40px;min-height:40px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-size:18px;line-height:1;border-radius:9px}
+@media(max-width:650px){.admin-review-buttons{width:auto;display:flex;grid-template-columns:none}.admin-review-buttons .gold-btn{flex:1}.admin-review-buttons .review-delete-btn{flex:0 0 40px;width:40px}}
