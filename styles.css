@@ -235,3 +235,11 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 
 .review-admin-reply{margin:10px 0 6px;padding:10px 12px;border-left:3px solid var(--gold2);background:rgba(212,175,55,.09);border-radius:0 8px 8px 0}.review-admin-reply strong{font-size:12px;color:var(--gold2)}.review-admin-reply p{margin:5px 0 0}
 .admin-review-card{padding:16px;margin:12px 0;border:1px solid var(--line);border-radius:12px;background:var(--panel)}.admin-review-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.admin-review-head small{display:block;color:var(--muted);margin-top:4px}.review-admin-stars{color:#c69b38}.admin-review-text{padding:10px 0;margin:6px 0;white-space:pre-wrap}.admin-review-card label{display:grid;gap:6px;font-size:13px}.admin-review-card textarea{width:100%;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--black);color:var(--text);font:inherit}.admin-review-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:10px}.admin-review-actions small{color:var(--muted)}
+
+
+/* Wajiha Fusion — elegant Bengali typography for admin review replies */
+.review-admin-reply{position:relative;margin:14px 0 8px;padding:14px 16px 13px 18px;border:1px solid #e5e1f7;border-left:4px solid #8984c9;border-radius:12px;background:linear-gradient(135deg,#f6f4ff 0%,#fff 100%);box-shadow:0 4px 14px rgba(75,68,135,.07)}
+.review-admin-reply strong{display:inline-flex;align-items:center;gap:7px;margin-bottom:5px;color:#5e599e;font-family:'Hind Siliguri','Noto Serif Bengali',sans-serif;font-size:14px;font-weight:700;letter-spacing:.1px}
+.review-admin-reply strong:before{content:'✦';display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#e9e7fb;color:#7772b9;font-size:12px}
+.review-admin-reply p{margin:3px 0 0;color:#494761;font-family:'Hind Siliguri','Noto Serif Bengali',sans-serif;font-size:14px;font-weight:400;line-height:1.85;white-space:pre-wrap;overflow-wrap:anywhere}
+@media(max-width:600px){.review-admin-reply{padding:12px 13px 12px 14px}.review-admin-reply strong{font-size:13px}.review-admin-reply p{font-size:13px;line-height:1.8}}
