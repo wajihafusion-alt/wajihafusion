@@ -125,3 +125,11 @@
 .admin-body #reviewsTab #adminReviewsList .admin-review-card textarea::placeholder{color:#a99b80!important}
 .admin-body #reviewsTab #adminReviewsList .admin-review-card .admin-review-actions small{color:#d4c39e!important}
 .admin-body #reviewsTab #adminReviewsList .admin-review-card .review-admin-stars{color:#e8bd59!important}
+
+
+/* Customer review delete action */
+.admin-review-buttons{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.review-delete-btn{min-height:40px;padding:10px 15px;border:1px solid #a65353;border-radius:8px;background:#351717;color:#ffd0d0;font:600 12px 'Hind Siliguri','Noto Serif Bengali',sans-serif;cursor:pointer}
+.review-delete-btn:hover{background:#642323;border-color:#df7777}
+.review-delete-btn:disabled{opacity:.55;cursor:wait}
+@media(max-width:650px){.admin-review-buttons{width:100%;display:grid;grid-template-columns:1fr}.admin-review-buttons button{width:100%}}
