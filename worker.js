@@ -136,12 +136,24 @@ export default {async fetch(request,env){
   try{
    if(!env.SUPABASE_SERVICE_ROLE_KEY)return json({error:"Order lookup is temporarily unavailable."},500);
    const input=await request.json().catch(()=>({})),orderNumber=String(input.order_number||"").trim(),phone=String(input.phone||"").trim(),digits=phone.replace(/[^0-9]/g,"");
-   if(!/^WF-[0-9]{10,16}$/.test(orderNumber)||digits.length<8||digits.length>15)return json({error:"সঠিক Order ID ও মোবাইল নম্বর দিন।"},400);
-   const q=SUPABASE_URL+"/rest/v1/customer_orders?order_number=eq."+encodeURIComponent(orderNumber)+"&customer_phone=eq."+encodeURIComponent(phone)+"&select=order_number,status,total,created_at&limit=1";
-   const r=await fetch(q,{headers:{"apikey":env.SUPABASE_SERVICE_ROLE_KEY,"Authorization":"Bearer "+env.SUPABASE_SERVICE_ROLE_KEY}});
-   if(!r.ok)throw new Error("Order lookup failed.");
-   const rows=await r.json();if(!rows.length)return json({error:"এই Order ID ও মোবাইল নম্বর দিয়ে অর্ডার পাওয়া যায়নি।"},404);
-   const o=rows[0];return json({order_number:o.order_number,status:o.status||"New",total:o.total,created_at:o.created_at});
+   if(!/^WF-[0-9]{10,16}$/.test(orderNumber)||digits.length<10||digits.length>13)return json({error:"সঠিক Order ID ও মোবাইল নম্বর দিন।"},400);
+   let local=digits;
+   if(local.startsWith("00880"))local=local.slice(2);
+   if(local.startsWith("8801")&&local.length===13)local="0"+local.slice(3);
+   if(local.startsWith("01")&&local.length===11){
+    const variants=[local,"+88"+local,"88"+local];
+    let rows=[];
+    for(const candidate of variants){
+     const q=SUPABASE_URL+"/rest/v1/customer_orders?order_number=eq."+encodeURIComponent(orderNumber)+"&customer_phone=eq."+encodeURIComponent(candidate)+"&select=order_number,status,total,created_at&limit=1";
+     const r=await fetch(q,{headers:{"apikey":env.SUPABASE_SERVICE_ROLE_KEY,"Authorization":"Bearer "+env.SUPABASE_SERVICE_ROLE_KEY}});
+     if(!r.ok)throw new Error("Order lookup failed.");
+     rows=await r.json();
+     if(rows.length)break;
+    }
+    if(!rows.length)return json({error:"এই Order ID ও মোবাইল নম্বর দিয়ে অর্ডার পাওয়া যায়নি।"},404);
+    const o=rows[0];return json({order_number:o.order_number,status:o.status||"New",total:o.total,created_at:o.created_at});
+   }
+   return json({error:"সঠিক বাংলাদেশি মোবাইল নম্বর দিন।"},400);
   }catch(e){return json({error:e.message||"Order lookup failed."},500)}
  }
  if(url.pathname.startsWith("/api/")){
