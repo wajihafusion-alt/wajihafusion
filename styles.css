@@ -335,3 +335,17 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .my-orders-nav-link{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:38px;padding:0 12px;border:1px solid var(--line);border-radius:24px;color:var(--cream);background:var(--panel);text-decoration:none;font:600 10px 'Manrope',sans-serif;letter-spacing:.06em;white-space:nowrap;transition:.2s}
 .my-orders-nav-link:hover{border-color:var(--gold2);color:var(--gold2)}
 @media(max-width:600px){.my-orders-nav-link{padding:0 8px;min-height:34px;font-size:9px;gap:4px}.header-actions{gap:6px}}
+
+
+/* Header hamburger menu: Account and My Orders */
+.header-menu-wrap{position:relative;display:flex;align-items:center}
+.menu-icon-btn{width:42px;height:42px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border:1px solid var(--line);border-radius:50%;background:var(--panel);cursor:pointer;padding:0}
+.menu-icon-btn span{display:block;width:17px;height:2px;border-radius:2px;background:var(--cream);transition:transform .2s,opacity .2s}
+.menu-icon-btn[aria-expanded="true"] span:first-child{transform:translateY(7px) rotate(45deg)}
+.menu-icon-btn[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-icon-btn[aria-expanded="true"] span:last-child{transform:translateY(-7px) rotate(-45deg)}
+.header-menu{position:absolute;right:0;top:calc(100% + 12px);z-index:40;width:205px;padding:8px;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px #0003;display:grid;gap:4px}
+.header-menu-item{display:flex;align-items:center;gap:12px;width:100%;padding:13px 12px;border:0;border-radius:9px;background:transparent;color:var(--cream);text-decoration:none;text-align:left;font:600 13px 'Hind Siliguri',sans-serif;cursor:pointer}
+.header-menu-item:hover{background:color-mix(in srgb,var(--gold2) 13%,transparent);color:var(--gold2)}
+.menu-item-icon{width:23px;text-align:center;font-size:18px;color:var(--gold2)}
+@media(max-width:650px){.menu-icon-btn{width:36px;height:36px}.header-menu{width:190px}.header-actions{gap:9px}}
