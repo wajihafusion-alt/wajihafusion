@@ -84,6 +84,9 @@ begin
   end if;
 
   if new.lucky_spin_id is not null then
+    if coalesce(new.subtotal,0) < 50 then
+      raise exception 'Lucky Wheel ব্যবহার করতে পণ্যের অর্ডার কমপক্ষে ৳৫০ হতে হবে।';
+    end if;
     if new.user_id is null or new.user_id <> auth.uid() then
       raise exception 'Lucky Wheel Discount ব্যবহার করতে নিজের অ্যাকাউন্টে লগইন করুন।';
     end if;
