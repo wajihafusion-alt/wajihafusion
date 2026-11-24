@@ -284,3 +284,21 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .account-mode-switch button.active{background:#fff;color:#514d86;box-shadow:0 2px 8px #302c5012}
 .account-back-btn{border:0;background:transparent;color:#7772b9;padding:8px;font:600 12px 'Hind Siliguri',sans-serif}
 .account-panel .hidden{display:none!important}
+
+/* Customer account profile */
+.account-profile-view{text-align:left}
+.profile-heading{display:flex;align-items:center;gap:14px;padding:5px 0 18px;border-bottom:1px solid #eceaf4;margin-bottom:18px}
+.profile-avatar{width:54px;height:54px;flex:0 0 54px;display:grid;place-items:center;border-radius:50%;background:#f0effa;color:#7772b9;font-size:26px}
+.profile-kicker{margin:0 0 4px;color:#8985b5;font:700 9px 'Manrope',sans-serif;letter-spacing:.16em}
+.profile-heading h2{font-size:22px!important;text-align:left}
+.profile-heading .account-intro{margin:4px 0 0;text-align:left;font-size:11px}
+.account-profile-form{display:grid;gap:11px;text-align:left}
+.account-profile-form h3{margin:4px 0 0;color:#383650;font:700 14px 'Hind Siliguri',sans-serif}
+.account-profile-form label{display:grid;gap:5px;color:#55536d;font:600 11px 'Hind Siliguri',sans-serif}
+.account-profile-form input,.account-profile-form select,.account-profile-form textarea{width:100%;padding:11px 12px;border:1px solid #e1dfed;border-radius:9px;background:#fbfaff;color:#292840;font:13px 'Manrope','Hind Siliguri',sans-serif;outline:none}
+.account-profile-form input:focus,.account-profile-form select:focus,.account-profile-form textarea:focus{border-color:#8985c5;box-shadow:0 0 0 3px #8985c51c}
+.account-profile-form input[readonly]{background:#f2f1f7;color:#77758b}
+.profile-section-rule{height:1px;background:#eceaf4;margin:4px 0}
+.account-profile-form .gold-btn{border-radius:24px;margin-top:3px}
+.profile-orders-btn,.profile-logout-btn{width:100%;margin-top:11px;padding:12px;border:1px solid #dedcec;border-radius:24px;background:#fff;color:#625e92;font:700 11px 'Manrope','Hind Siliguri',sans-serif}
+.profile-logout-btn{border-color:#f0dede;color:#a24c58}
