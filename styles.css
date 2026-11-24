@@ -358,3 +358,20 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   .shop-section{padding-top:22px!important}
   .section-heading{margin-bottom:18px!important}
 }
+
+
+/* Referral reward banner — matching the lavender storefront identity */
+.referral-promo{position:relative;isolation:isolate;overflow:hidden;margin:22px auto 8px;width:min(1120px,92%);border-radius:22px;background:linear-gradient(125deg,#292840 0%,#45416f 55%,#7772b9 100%);color:#fff;box-shadow:0 14px 34px rgba(48,43,93,.16)}
+.referral-promo-inner{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:30px 22px 28px}
+.referral-promo-kicker{font:800 9px 'Manrope',sans-serif;letter-spacing:.28em;color:#d4d1ff}
+.referral-promo h2{font:700 clamp(27px,4vw,42px)/1.1 'Manrope',sans-serif;letter-spacing:.025em;margin:10px 0 7px;color:#fff}
+.referral-promo h2 strong{color:#ffe28b}
+.referral-promo h3{font:600 clamp(18px,2.6vw,24px) 'Hind Siliguri',sans-serif;margin:2px 0 7px;color:#f0eeff}
+.referral-promo p{font:400 14px/1.7 'Hind Siliguri',sans-serif;margin:0 0 18px;color:#e8e6ff}
+.referral-promo p strong{color:#ffe28b;font-weight:700}
+.referral-promo-cta{display:inline-flex;align-items:center;justify-content:center;gap:12px;border:0;border-radius:28px;padding:13px 23px;background:#d2cffb;color:#292840;font:800 10px 'Manrope',sans-serif;letter-spacing:.08em;box-shadow:0 6px 16px #17152c40;transition:transform .2s,background .2s}
+.referral-promo-cta:hover{background:#fff;transform:translateY(-2px)}
+.referral-promo-decoration{position:absolute;z-index:0;color:#c9c5ff;opacity:.18;line-height:1}
+.referral-promo-decoration-one{font-size:100px;left:5%;top:-15px}
+.referral-promo-decoration-two{font-size:130px;right:5%;bottom:-48px}
+@media(max-width:650px){.referral-promo{width:92%;margin:14px auto 5px;border-radius:17px}.referral-promo-inner{padding:23px 15px 21px}.referral-promo-kicker{font-size:8px}.referral-promo h2{font-size:29px;margin:8px 0 5px}.referral-promo h3{font-size:19px}.referral-promo p{font-size:12px;line-height:1.65;max-width:310px;margin-bottom:14px}.referral-promo-cta{padding:12px 17px;font-size:9px}.referral-promo-decoration-one{font-size:65px;left:2%;top:-5px}.referral-promo-decoration-two{font-size:85px;right:2%;bottom:-30px}}
