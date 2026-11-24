@@ -24,7 +24,6 @@
   const headerMenu=$('#headerMenu'),menuToggle=$('#menuToggle');
   menuToggle.addEventListener('click',()=>{const opening=headerMenu.classList.contains('hidden');headerMenu.classList.toggle('hidden',!opening);menuToggle.setAttribute('aria-expanded',String(opening))});
   document.addEventListener('click',e=>{if(!e.target.closest('.header-menu-wrap')){headerMenu.classList.add('hidden');menuToggle.setAttribute('aria-expanded','false')}});
-  $('#referralBannerCta').addEventListener('click',()=>$('#accountToggle').click());
   $('#accountToggle').addEventListener('click',async()=>{headerMenu.classList.add('hidden');menuToggle.setAttribute('aria-expanded','false');accountModal.classList.remove('hidden');await refreshAccountView();if(!$('#accountLoggedInView').classList.contains('hidden'))return;setAccountMode('register')});
   document.querySelectorAll('[data-close-account]').forEach(b=>b.addEventListener('click',()=>accountModal.classList.add('hidden')));
   document.querySelectorAll('[data-account-mode]').forEach(b=>b.addEventListener('click',()=>setAccountMode(b.dataset.accountMode)));
