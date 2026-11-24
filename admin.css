@@ -168,3 +168,33 @@
 .admin-icon-delete .delete-icon-image{display:block;width:21px;height:21px;object-fit:contain}
 .product-delete-text{min-height:34px;padding:7px 10px!important;border:1px solid #a65353!important;border-radius:7px!important;background:#351717!important;color:#ffd0d0!important;font:700 10px Arial,sans-serif!important;letter-spacing:.5px;cursor:pointer}
 .product-delete-text:hover{background:#642323!important;border-color:#df7777!important}
+
+
+/* Referral & Wallet: dark cards and cleaner Bangla typography */
+.admin-body #referralsTab,
+.admin-body #referralsTab p,
+.admin-body #referralsTab small,
+.admin-body #referralsTab .admin-referral-table,
+.admin-body #referralsTab .admin-referral-table article,
+.admin-body #referralsTab .admin-referral-table article *{
+  font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif!important;
+}
+.admin-body #referralsTab .admin-referral-table article{
+  background:linear-gradient(145deg,#201d17,#11100e)!important;
+  color:#eee5d2!important;
+  border:1px solid #9b793f!important;
+  border-radius:13px!important;
+  box-shadow:0 7px 22px #0005;
+}
+.admin-body #referralsTab .admin-referral-table article b{
+  color:#e6c77f!important;
+  font-size:16px;
+}
+.admin-body #referralsTab .admin-referral-table article strong{
+  color:#83c99a!important;
+}
+.admin-body #referralsTab .admin-referral-table article small{
+  color:#c4b99f!important;
+}
+.admin-body #referralsTab .muted{color:#c4b99f!important;line-height:1.8}
+.admin-body #referralsTab h2{font-family:'Hind Siliguri','Noto Sans Bengali',sans-serif!important}
