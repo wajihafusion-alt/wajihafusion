@@ -73,7 +73,14 @@ async function verifySupabaseSmsHook(request,env,rawBody){
 }
 async function handleSupabaseSendSms(request,env){
  if(request.method!=="POST")return json({error:"Method not allowed."},405);
- if(!env.SENDMYSMS_USER||!env.SENDMYSMS_API_KEY||!env.SEND_SMS_HOOK_SECRET)return json({error:"SMS gateway is not configured."},503);
+ const smsConfig = {
+  SENDMYSMS_USER: Boolean(env.SENDMYSMS_USER && String(env.SENDMYSMS_USER).trim()),
+  SENDMYSMS_API_KEY: Boolean(env.SENDMYSMS_API_KEY && String(env.SENDMYSMS_API_KEY).trim()),
+  SEND_SMS_HOOK_SECRET: Boolean(env.SEND_SMS_HOOK_SECRET && String(env.SEND_SMS_HOOK_SECRET).trim())
+ };
+ console.log("SMS configuration presence:", smsConfig);
+ const missingSmsConfig = Object.entries(smsConfig).filter(([, present]) => !present).map(([name]) => name);
+ if(missingSmsConfig.length)return json({error:"SMS gateway is not configured.",missing:missingSmsConfig},503);
  const rawBody=await request.text();
  if(!await verifySupabaseSmsHook(request,env,rawBody))return json({error:"Invalid SMS hook signature."},401);
  let payload;try{payload=JSON.parse(rawBody)}catch{return json({error:"Invalid request body."},400)}
