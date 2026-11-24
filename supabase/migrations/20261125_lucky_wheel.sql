@@ -105,6 +105,9 @@ begin
   if v_wheel_discount > 50 then
     raise exception 'Lucky Wheel Discount সীমা অতিক্রম করেছে।';
   end if;
+  if v_wheel_discount > coalesce(new.subtotal,0) then
+    raise exception 'Lucky Wheel Discount ব্যবহার করতে পণ্যের মূল্য অন্তত জেতা Discount-এর সমান হতে হবে।';
+  end if;
 
   new.lucky_wheel_discount := v_wheel_discount;
   new.discount := coalesce(new.discount,0) + v_wheel_discount;
