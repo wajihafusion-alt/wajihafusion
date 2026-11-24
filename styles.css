@@ -349,3 +349,12 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .header-menu-item:hover{background:color-mix(in srgb,var(--gold2) 13%,transparent);color:var(--gold2)}
 .menu-item-icon{width:23px;text-align:center;font-size:18px;color:var(--gold2)}
 @media(max-width:650px){.menu-icon-btn{width:36px;height:36px}.header-menu{width:190px}.header-actions{gap:9px}}
+
+
+/* Mobile spacing cleanup: remove oversized gaps between storefront sections */
+@media(max-width:650px){
+  .hero{margin-top:0!important}
+  .category-bar-wrap{margin:8px auto 0!important;padding:0 0 4px!important}
+  .shop-section{padding-top:22px!important}
+  .section-heading{margin-bottom:18px!important}
+}
