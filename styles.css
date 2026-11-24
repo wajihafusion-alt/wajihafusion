@@ -377,3 +377,12 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .lucky-wheel-pointer{position:absolute;top:-12px;left:calc(50% - 12px);color:#800020;font-size:25px;z-index:2;text-shadow:0 1px 2px #fff}
 .lucky-wheel-note{text-align:center;min-height:22px;margin:9px 0 0;font-weight:700;color:#800020;font-size:14px}
 #spinLuckyWheelBtn:disabled{opacity:.65;cursor:not-allowed}
+
+.lucky-wheel-graphic{position:relative;display:block;overflow:hidden;background:conic-gradient(from -30deg,#800020 0 60deg,#d4af37 60deg 120deg,#fff1dc 120deg 180deg,#800020 180deg 240deg,#d4af37 240deg 300deg,#fff1dc 300deg 360deg)}
+.lucky-wheel-graphic span{position:absolute;width:48px;text-align:center;font-weight:900;font-size:14px;top:calc(50% - 9px);left:calc(50% - 24px)}
+.lucky-wheel-graphic span:nth-child(1){transform:translateY(-53px)}
+.lucky-wheel-graphic span:nth-child(2){transform:translate(46px,-26px)}
+.lucky-wheel-graphic span:nth-child(3){transform:translate(46px,27px)}
+.lucky-wheel-graphic span:nth-child(4){transform:translateY(53px)}
+.lucky-wheel-graphic span:nth-child(5){transform:translate(-46px,27px)}
+.lucky-wheel-graphic span:nth-child(6){transform:translate(-46px,-26px)}
