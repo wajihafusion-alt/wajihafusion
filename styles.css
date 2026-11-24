@@ -358,4 +358,12 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   .shop-section{padding-top:22px!important}
   .section-heading{margin-bottom:18px!important}
 }
-\n\n/* Manual hero banner navigation arrows */\n.hero{position:relative}\n.hero-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:42px;height:42px;border:1px solid rgba(255,255,255,.75);border-radius:50%;background:rgba(39,36,75,.58);color:#fff;font-size:30px;line-height:1;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(5px);transition:background .2s,transform .2s}\n.hero-arrow:hover{background:rgba(89,82,158,.9);transform:translateY(-50%) scale(1.06)}\n.hero-arrow-prev{left:14px}.hero-arrow-next{right:14px}\n.hero-arrow[hidden]{display:none!important}\n@media(max-width:650px){.hero-arrow{width:32px;height:32px;font-size:23px}.hero-arrow-prev{left:7px}.hero-arrow-next{right:7px}}\n
+
+
+/* Manual hero banner navigation arrows */
+.hero{position:relative}
+.hero-arrow{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:42px;height:42px;border:1px solid rgba(255,255,255,.75);border-radius:50%;background:rgba(39,36,75,.58);color:#fff;font-size:30px;line-height:1;display:grid;place-items:center;cursor:pointer;backdrop-filter:blur(5px);transition:background .2s,transform .2s}
+.hero-arrow:hover{background:rgba(89,82,158,.9);transform:translateY(-50%) scale(1.06)}
+.hero-arrow-prev{left:14px}.hero-arrow-next{right:14px}
+.hero-arrow[hidden]{display:none!important}
+@media(max-width:650px){.hero-arrow{width:32px;height:32px;font-size:23px}.hero-arrow-prev{left:7px}.hero-arrow-next{right:7px}}
