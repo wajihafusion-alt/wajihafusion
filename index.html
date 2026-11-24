@@ -46,7 +46,7 @@
   <form id="accountProfileForm" class="account-profile-form">
     <h3>ব্যক্তিগত তথ্য</h3>
     <label>আপনার নাম<input id="profileFullName" name="full_name" type="text" maxlength="80" placeholder="আপনার নাম লিখুন" required></label>
-    <label>মোবাইল নম্বর<input id="profilePhone" type="tel" readonly></label>
+    <label>মোবাইল নম্বর<input id="profilePhone" name="customer_phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="01XXXXXXXXX" maxlength="14"></label>
     <div class="profile-section-rule"></div><h3>Referral ও Wallet</h3><div class="referral-wallet-panel"><p>আপনার Referral Code</p><div class="referral-code-line"><strong id="myReferralCode">লোড হচ্ছে...</strong><button id="copyReferralCode" type="button">কপি</button></div><p>Wallet Balance: <b id="myWalletBalance">৳0</b></p><div id="profileReferralApplyWrap"><label>বন্ধুর Referral Code<input id="profileReferralInput" maxlength="20" placeholder="Referral Code লিখুন"></label><button id="applyProfileReferral" type="button">Referral Code Apply</button><p id="profileReferralNotice"></p></div><small id="myReferralStatus">বন্ধুকে কোড দিন। তার প্রথম অর্ডার Delivered হলে দুজনেই ৳৫০ পাবেন। Wallet-এর টাকা Withdraw করা যাবে না, শুধু অর্ডারে ব্যবহার করা যাবে।</small></div><div class="profile-section-rule"></div>
     <h3>ডিফল্ট ডেলিভারি ঠিকানা</h3>
     <label>ডেলিভারি এলাকা<select id="profileDeliveryArea" name="delivery_area"><option value="">এলাকা নির্বাচন করুন</option><option value="inside">ঢাকার ভিতরে</option><option value="outside">ঢাকার বাইরে</option></select></label>
