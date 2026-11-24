@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#f4f3fb"><meta name="description" content="Wajiha Fusion — premium fashion collection">
   <title>Wajiha Fusion | Premium Fashion</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css?v=20261124-referralwallet3">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css?v=20261124-myorders1">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
@@ -56,8 +56,9 @@
     <button id="profileSaveBtn" class="gold-btn full" type="submit">তথ্য সংরক্ষণ করুন</button>
     <p id="profileNotice" class="account-register-notice" aria-live="polite">আপনার ঠিকানা পরের অর্ডারে ব্যবহার করতে পারবেন।</p>
   </form>
-  <button id="profileTrackOrders" class="profile-orders-btn" type="button">আমার অর্ডার ট্র্যাক করুন →</button>
+  <button id="profileTrackOrders" class="profile-orders-btn" type="button">আমার অর্ডার দেখুন →</button>
+  <div id="myOrdersView" class="my-orders-view hidden"><button id="myOrdersBack" class="my-orders-back" type="button">← প্রোফাইলে ফিরে যান</button><div class="my-orders-heading"><p class="eyebrow">WAJIHA FUSION</p><h2>আমার অর্ডার</h2><p>আপনার সব অর্ডারের আপডেট এখানে দেখুন।</p></div><div id="myOrdersTabs" class="my-orders-tabs"><button type="button" class="active" data-order-filter="all">সব</button><button type="button" data-order-filter="pending">Pending</button><button type="button" data-order-filter="confirmed">Confirmed</button><button type="button" data-order-filter="processing">Processing</button><button type="button" data-order-filter="shipped">Shipped</button><button type="button" data-order-filter="delivered">Delivered</button><button type="button" data-order-filter="cancelled">Cancelled</button></div><div id="myOrdersList" class="my-orders-list"><p class="my-orders-empty">অর্ডার লোড হচ্ছে...</p></div></div>
   <button id="accountLogout" class="profile-logout-btn" type="button">LOG OUT</button>
 </div></section></div>\n  <div id="toast" class="toast" role="status"></div>
-  <script src="config.js"></script><script src="app.js?v=20261124-profilephone2"></script>
+  <script src="config.js"></script><script src="app.js?v=20261124-myorders1"></script>
 </body></html>
