@@ -84,9 +84,15 @@ async function handleSupabaseSendSms(request,env){
  const rawBody=await request.text();
  if(!await verifySupabaseSmsHook(request,env,rawBody))return json({error:"Invalid SMS hook signature."},401);
  let payload;try{payload=JSON.parse(rawBody)}catch{return json({error:"Invalid request body."},400)}
- const phone=String(payload.user?.phone||"").trim(),otp=String(payload.sms?.otp||"").trim();
- if(!/^\+8801[3-9]\d{8}$/.test(phone)||!/^\d{6}$/.test(otp))return json({error:"Invalid phone number or OTP."},400);
- const form=new URLSearchParams({user:env.SENDMYSMS_USER,key:env.SENDMYSMS_API_KEY,to:phone.slice(1),msg:"Your Wajiha Fusion verification code is "+otp+". Valid for 5 minutes. Do not share this code."});
+ const phoneInput=String(payload.user?.phone||"").trim();
+ const otp=String(payload.sms?.otp||"").trim();
+ const phoneDigits=phoneInput.replace(/\D/g,"");
+ const bdPhone=phoneDigits.startsWith("880")?phoneDigits:(phoneDigits.startsWith("0")?"88"+phoneDigits:"880"+phoneDigits);
+ const phoneValid=/^8801[3-9]\d{8}$/.test(bdPhone);
+ const otpValid=/^\d{4,10}$/.test(otp);
+ console.log("SMS payload validation:",{phonePresent:Boolean(phoneInput),phoneLength:phoneDigits.length,phoneValid,otpPresent:Boolean(otp),otpLength:otp.length,otpValid});
+ if(!phoneValid||!otpValid)return json({error:"Invalid phone number or OTP format.",phoneValid,otpValid},400);
+ const form=new URLSearchParams({user:env.SENDMYSMS_USER,key:env.SENDMYSMS_API_KEY,to:bdPhone,msg:"Your Wajiha Fusion verification code is "+otp+". Valid for 5 minutes. Do not share this code."});
  try{
   const response=await fetch("https://sendmysms.net/api.php",{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded"},body:form.toString()});
   const text=await response.text();let result;try{result=JSON.parse(text)}catch{return json({error:"SMS provider returned an invalid response."},502)}
