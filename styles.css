@@ -302,3 +302,5 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .account-profile-form .gold-btn{border-radius:24px;margin-top:3px}
 .profile-orders-btn,.profile-logout-btn{width:100%;margin-top:11px;padding:12px;border:1px solid #dedcec;border-radius:24px;background:#fff;color:#625e92;font:700 11px 'Manrope','Hind Siliguri',sans-serif}
 .profile-logout-btn{border-color:#f0dede;color:#a24c58}
+
+.profile-heading h2{font-size:30px!important;line-height:1.25;text-align:left;font-weight:800}
