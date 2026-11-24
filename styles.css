@@ -367,3 +367,13 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .hero-arrow-prev{left:14px}.hero-arrow-next{right:14px}
 .hero-arrow[hidden]{display:none!important}
 @media(max-width:650px){.hero-arrow{width:32px;height:32px;font-size:23px}.hero-arrow-prev{left:7px}.hero-arrow-next{right:7px}}
+
+/* Fixed-amount Lucky Wheel */
+.lucky-wheel-checkout{margin:18px 0;padding:18px;border:1px solid rgba(128,0,32,.2);border-radius:18px;background:linear-gradient(135deg,#fff8ed,#fff)}
+.lucky-wheel-copy{text-align:center}.lucky-wheel-kicker{font-size:10px;letter-spacing:2px;color:#800020;font-weight:800}.lucky-wheel-copy h3{margin:6px 0;font-size:22px;color:#800020}.lucky-wheel-copy p{margin:4px 0;color:#3b241c;font-weight:700}.lucky-wheel-copy small{color:#79675d}
+.lucky-wheel-visual{position:relative;width:176px;height:176px;margin:16px auto 12px}
+.lucky-wheel-graphic{width:100%;height:100%;border-radius:50%;border:7px solid #d4af37;box-shadow:0 5px 18px #6e3b242b;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);align-items:center;justify-items:center;background:conic-gradient(#800020 0 60deg,#d4af37 60deg 120deg,#fff1dc 120deg 180deg,#800020 180deg 240deg,#d4af37 240deg 300deg,#fff1dc 300deg 360deg);transition:transform 3.2s cubic-bezier(.12,.75,.16,1)}
+.lucky-wheel-graphic span{font-weight:900;font-size:15px;color:#fff;text-shadow:0 1px 2px #3b241c;z-index:1}.lucky-wheel-graphic span:nth-child(even){color:#4b1c1c;text-shadow:none}
+.lucky-wheel-pointer{position:absolute;top:-12px;left:calc(50% - 12px);color:#800020;font-size:25px;z-index:2;text-shadow:0 1px 2px #fff}
+.lucky-wheel-note{text-align:center;min-height:22px;margin:9px 0 0;font-weight:700;color:#800020;font-size:14px}
+#spinLuckyWheelBtn:disabled{opacity:.65;cursor:not-allowed}
