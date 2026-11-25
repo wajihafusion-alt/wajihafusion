@@ -630,3 +630,12 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .lucky-wheel-graphic span:nth-child(7){transform:translate(-46px,36px);color:#fff8e8;text-shadow:0 1px 2px #4b0013}
 .lucky-wheel-graphic span:nth-child(8){transform:translate(-61px,-10px);color:#4b1c1c;text-shadow:0 1px 1px #fff4d8}
 .lucky-wheel-graphic span:nth-child(9){transform:translate(-46px,-47px);color:#4b1c1c;text-shadow:0 1px 1px #fff}
+
+
+/* Lucky Wheel prize amount text only */
+.lucky-wheel-graphic span{
+  font-family:'Hind Siliguri',sans-serif;
+  font-size:clamp(15px,4vw,18px);
+  font-weight:800;
+  letter-spacing:.15px;
+}
