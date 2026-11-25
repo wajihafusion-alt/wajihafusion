@@ -605,3 +605,28 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   font-family:'DM Sans','Hind Siliguri',sans-serif;
   letter-spacing:2px;
 }
+
+
+/* Final wheel label polish: larger, centered and high-contrast */
+.lucky-wheel-graphic span{
+  width:52px;
+  left:calc(50% - 26px);
+  top:calc(50% - 10px);
+  font-family:'Hind Siliguri',sans-serif;
+  font-size:clamp(13px,3.5vw,16px);
+  font-weight:800;
+  line-height:1.15;
+  text-align:center;
+  white-space:nowrap;
+  text-shadow:none;
+  z-index:2;
+}
+.lucky-wheel-graphic span:nth-child(1){transform:translate(0,-61px);color:#fff8e8;text-shadow:0 1px 2px #4b0013}
+.lucky-wheel-graphic span:nth-child(2){transform:translate(46px,-47px);color:#4b1c1c;text-shadow:0 1px 1px #fff4d8}
+.lucky-wheel-graphic span:nth-child(3){transform:translate(61px,-10px);color:#4b1c1c;text-shadow:0 1px 1px #fff}
+.lucky-wheel-graphic span:nth-child(4){transform:translate(46px,36px);color:#fff8e8;text-shadow:0 1px 2px #4b0013}
+.lucky-wheel-graphic span:nth-child(5){transform:translate(16px,59px);color:#4b1c1c;text-shadow:0 1px 1px #fff4d8}
+.lucky-wheel-graphic span:nth-child(6){transform:translate(-16px,59px);color:#4b1c1c;text-shadow:0 1px 1px #fff}
+.lucky-wheel-graphic span:nth-child(7){transform:translate(-46px,36px);color:#fff8e8;text-shadow:0 1px 2px #4b0013}
+.lucky-wheel-graphic span:nth-child(8){transform:translate(-61px,-10px);color:#4b1c1c;text-shadow:0 1px 1px #fff4d8}
+.lucky-wheel-graphic span:nth-child(9){transform:translate(-46px,-47px);color:#4b1c1c;text-shadow:0 1px 1px #fff}
