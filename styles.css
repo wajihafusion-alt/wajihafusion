@@ -510,3 +510,20 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
  .lucky-wheel-graphic span:nth-child(5){transform:translate(-57px,33px)}
  .lucky-wheel-graphic span:nth-child(6){transform:translate(-57px,-33px)}
 }
+
+
+/* Animated marquee bulbs around the Lucky Wheel */
+@keyframes luckyBulbPulse{
+  0%,100%{filter:brightness(.9);opacity:.72;box-shadow:0 0 3px 1px rgba(255,226,143,.55)}
+  50%{filter:brightness(1.7);opacity:1;box-shadow:0 0 9px 3px rgba(255,210,105,.95)}
+}
+.lucky-wheel-visual:before{
+  background:repeating-conic-gradient(from 0deg,rgba(255,249,210,1) 0deg 2deg,transparent 2deg 15deg);
+  animation:luckyBulbPulse 1.15s ease-in-out infinite;
+}
+.lucky-wheel-visual:after{
+  animation:luckyBulbPulse .85s ease-in-out infinite reverse;
+}
+@media(prefers-reduced-motion:reduce){
+  .lucky-wheel-visual:before,.lucky-wheel-visual:after{animation:none}
+}
