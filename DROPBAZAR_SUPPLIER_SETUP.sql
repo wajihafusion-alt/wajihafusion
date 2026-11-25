@@ -7,6 +7,7 @@ ALTER TABLE public.products
   ADD COLUMN IF NOT EXISTS supplier_group_id bigint,
   ADD COLUMN IF NOT EXISTS supplier_cost_price integer,
   ADD COLUMN IF NOT EXISTS supplier_suggested_price integer,
+  ADD COLUMN IF NOT EXISTS manual_purchase_cost numeric(12,2),
   ADD COLUMN IF NOT EXISTS supplier_variants jsonb NOT NULL DEFAULT '[]'::jsonb;
 
 CREATE UNIQUE INDEX IF NOT EXISTS products_supplier_product_unique
