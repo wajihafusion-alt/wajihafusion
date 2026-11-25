@@ -639,3 +639,13 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   font-weight:800;
   letter-spacing:.15px;
 }
+
+
+/* Lucky Wheel prize price text — elegant English serif only */
+.lucky-wheel-graphic span{
+  font-family:'Playfair Display',Georgia,serif;
+  font-weight:800;
+  font-size:clamp(15px,4vw,18px);
+  letter-spacing:.35px;
+  font-variant-numeric:lining-nums;
+}
