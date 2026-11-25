@@ -527,3 +527,17 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 @media(prefers-reduced-motion:reduce){
   .lucky-wheel-visual:before,.lucky-wheel-visual:after{animation:none}
 }
+
+
+/* Nine-segment premium Lucky Wheel */
+.lucky-wheel-graphic{background:conic-gradient(from -20deg,#800020 0 40deg,#d4af37 40deg 80deg,#fff1dc 80deg 120deg,#800020 120deg 160deg,#d4af37 160deg 200deg,#fff1dc 200deg 240deg,#800020 240deg 280deg,#d4af37 280deg 320deg,#fff1dc 320deg 360deg)}
+.lucky-wheel-graphic span{top:calc(50% - 9px);left:calc(50% - 24px);width:48px;font-size:clamp(11px,3vw,15px)}
+.lucky-wheel-graphic span:nth-child(1){transform:translate(0,-76px)}
+.lucky-wheel-graphic span:nth-child(2){transform:translate(49px,-58px)}
+.lucky-wheel-graphic span:nth-child(3){transform:translate(75px,-13px)}
+.lucky-wheel-graphic span:nth-child(4){transform:translate(65px,40px)}
+.lucky-wheel-graphic span:nth-child(5){transform:translate(0,70px)}
+.lucky-wheel-graphic span:nth-child(6){transform:translate(-65px,40px)}
+.lucky-wheel-graphic span:nth-child(7){transform:translate(-75px,-13px)}
+.lucky-wheel-graphic span:nth-child(8){transform:translate(-49px,-58px)}
+.lucky-wheel-graphic span:nth-child(9){transform:translate(0,-2px);font-size:12px}
