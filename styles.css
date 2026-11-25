@@ -649,3 +649,15 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
   letter-spacing:.35px;
   font-variant-numeric:lining-nums;
 }
+
+
+/* Lucky Wheel — rotate each price label to follow its own 40-degree sector */
+.lucky-wheel-graphic span:nth-child(1){transform:translate(0,-61px) rotate(-90deg)}
+.lucky-wheel-graphic span:nth-child(2){transform:translate(46px,-47px) rotate(-50deg)}
+.lucky-wheel-graphic span:nth-child(3){transform:translate(61px,-10px) rotate(-10deg)}
+.lucky-wheel-graphic span:nth-child(4){transform:translate(46px,36px) rotate(30deg)}
+.lucky-wheel-graphic span:nth-child(5){transform:translate(16px,59px) rotate(70deg)}
+.lucky-wheel-graphic span:nth-child(6){transform:translate(-16px,59px) rotate(110deg)}
+.lucky-wheel-graphic span:nth-child(7){transform:translate(-46px,36px) rotate(150deg)}
+.lucky-wheel-graphic span:nth-child(8){transform:translate(-61px,-10px) rotate(190deg)}
+.lucky-wheel-graphic span:nth-child(9){transform:translate(-46px,-47px) rotate(230deg)}
