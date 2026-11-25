@@ -386,3 +386,59 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .lucky-wheel-graphic span:nth-child(4){transform:translateY(53px)}
 .lucky-wheel-graphic span:nth-child(5){transform:translate(-46px,27px)}
 .lucky-wheel-graphic span:nth-child(6){transform:translate(-46px,-26px)}
+
+
+/* Wajiha Fusion — premium Lucky Wheel finish */
+.lucky-wheel-checkout{
+  position:relative;isolation:isolate;overflow:hidden;
+  margin:22px 0;padding:24px 18px 22px;
+  border:1px solid rgba(184,145,48,.62);border-radius:24px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(255,231,170,.48),transparent 48%),linear-gradient(145deg,#fffdf7 0%,#f8f0df 52%,#fff 100%);
+  box-shadow:0 14px 34px rgba(53,29,17,.09),inset 0 1px 0 #fff;
+}
+.lucky-wheel-checkout:before,.lucky-wheel-checkout:after{
+  content:"✦";position:absolute;color:rgba(184,145,48,.34);font-size:20px;pointer-events:none
+}
+.lucky-wheel-checkout:before{top:18px;left:18px}
+.lucky-wheel-checkout:after{right:18px;bottom:18px}
+.lucky-wheel-kicker{display:inline-block;padding:6px 13px;border:1px solid rgba(184,145,48,.38);border-radius:99px;background:rgba(255,255,255,.68);font-size:9px;letter-spacing:2.6px;color:#8a6420;font-weight:900}
+.lucky-wheel-copy h3{margin:10px 0 8px;font-family:Georgia,serif;font-size:clamp(24px,6vw,30px);letter-spacing:.2px;color:#720d2b;text-shadow:0 1px #fff}
+.lucky-wheel-copy p{max-width:390px;margin:0 auto 7px;font-size:15px;line-height:1.55;color:#35231d;font-weight:800}
+.lucky-wheel-copy small{display:block;margin:7px auto 0;max-width:330px;font-size:12px;line-height:1.6;color:#786b5e}
+.lucky-wheel-visual{width:min(76vw,238px);height:min(76vw,238px);margin:24px auto 20px;padding:5px;border-radius:50%;background:linear-gradient(135deg,#fff4c9 0%,#b88b25 22%,#f9e7a0 42%,#8d641b 65%,#e7c65c 84%,#fff8db 100%);box-shadow:0 12px 24px rgba(66,38,14,.2),0 0 0 1px rgba(128,91,24,.22)}
+.lucky-wheel-graphic{
+  position:relative;display:block;overflow:hidden;width:100%;height:100%;border:4px solid #fff1c4;border-radius:50%;
+  background:conic-gradient(from -30deg,#760b2b 0 60deg,#e2bd4e 60deg 120deg,#fff3dc 120deg 180deg,#760b2b 180deg 240deg,#e2bd4e 240deg 300deg,#fff3dc 300deg 360deg);
+  box-shadow:inset 0 0 0 1px rgba(94,57,13,.3),inset 0 0 24px rgba(54,25,12,.18),0 2px 5px rgba(0,0,0,.18);
+  transition:transform 3.2s cubic-bezier(.12,.75,.16,1)
+}
+.lucky-wheel-graphic:after{
+  content:"";position:absolute;z-index:2;left:50%;top:50%;width:23%;height:23%;transform:translate(-50%,-50%);border-radius:50%;
+  background:radial-gradient(circle at 35% 28%,#fff9df 0 7%,#e8ca72 28%,#9d7424 58%,#fff0b8 72%,#8c621c 100%);
+  border:3px solid #fff0bf;box-shadow:0 2px 9px rgba(36,17,7,.38),inset 0 1px 4px #fff
+}
+.lucky-wheel-graphic span{position:absolute;z-index:3;top:calc(50% - 9px);left:calc(50% - 24px);width:48px;text-align:center;font-size:clamp(13px,3.6vw,16px);font-weight:900;color:#fff9e9;text-shadow:0 2px 3px rgba(38,12,14,.8)}
+.lucky-wheel-graphic span:nth-child(even){color:#542b1a;text-shadow:0 1px 1px rgba(255,255,255,.85)}
+.lucky-wheel-graphic span:nth-child(1){transform:translateY(-72px)}
+.lucky-wheel-graphic span:nth-child(2){transform:translate(62px,-36px)}
+.lucky-wheel-graphic span:nth-child(3){transform:translate(62px,36px)}
+.lucky-wheel-graphic span:nth-child(4){transform:translateY(72px)}
+.lucky-wheel-graphic span:nth-child(5){transform:translate(-62px,36px)}
+.lucky-wheel-graphic span:nth-child(6){transform:translate(-62px,-36px)}
+.lucky-wheel-pointer{top:-15px;left:calc(50% - 15px);font-size:0;width:30px;height:34px;display:grid;place-items:center;color:transparent;filter:drop-shadow(0 3px 3px rgba(0,0,0,.3))}
+.lucky-wheel-pointer:before{content:"";width:0;height:0;border-left:13px solid transparent;border-right:13px solid transparent;border-top:29px solid #8a1231;filter:drop-shadow(0 0 0 #f8e5a1)}
+.lucky-wheel-pointer:after{content:"";position:absolute;top:0;width:9px;height:9px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#e7c35b 55%,#8e671c);border:1px solid #fff1bd}
+#spinLuckyWheelBtn{min-height:54px;border:1px solid #c49a3b;border-radius:999px;background:linear-gradient(135deg,#7b102e 0%,#a31b3d 48%,#650b27 100%);color:#fff8e8;font-weight:900;letter-spacing:2px;box-shadow:0 7px 16px rgba(111,13,42,.23),inset 0 1px 0 rgba(255,255,255,.24);transition:transform .2s,box-shadow .2s,filter .2s}
+#spinLuckyWheelBtn:not(:disabled):active{transform:translateY(1px) scale(.99);box-shadow:0 3px 8px rgba(111,13,42,.2)}
+#spinLuckyWheelBtn:disabled{opacity:.58;filter:grayscale(.15)}
+.lucky-wheel-note{margin-top:13px;font-size:14px;letter-spacing:.1px;color:#78102d}
+@media(max-width:380px){
+ .lucky-wheel-checkout{padding:20px 13px}
+ .lucky-wheel-visual{width:218px;height:218px}
+ .lucky-wheel-graphic span:nth-child(1){transform:translateY(-65px)}
+ .lucky-wheel-graphic span:nth-child(2){transform:translate(56px,-32px)}
+ .lucky-wheel-graphic span:nth-child(3){transform:translate(56px,32px)}
+ .lucky-wheel-graphic span:nth-child(4){transform:translateY(65px)}
+ .lucky-wheel-graphic span:nth-child(5){transform:translate(-56px,32px)}
+ .lucky-wheel-graphic span:nth-child(6){transform:translate(-56px,-32px)}
+}
