@@ -560,3 +560,48 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .lucky-wheel-graphic span:nth-child(7){transform:translate(-49px,27px)}
 .lucky-wheel-graphic span:nth-child(8){transform:translate(-56px,-10px)}
 .lucky-wheel-graphic span:nth-child(9){transform:translate(-44px,-36px)}
+
+
+/* Premium typography for Lucky Wheel */
+.lucky-wheel-checkout,
+.lucky-wheel-checkout button,
+.lucky-wheel-checkout p,
+.lucky-wheel-checkout small{
+  font-family:'Hind Siliguri','DM Sans',sans-serif;
+}
+.lucky-wheel-kicker{
+  font-family:'DM Sans',sans-serif;
+  letter-spacing:2.4px;
+}
+.lucky-wheel-copy h3{
+  font-family:'Playfair Display','Hind Siliguri',serif;
+  font-size:clamp(27px,7vw,34px);
+  line-height:1.2;
+  letter-spacing:.2px;
+  font-weight:700;
+}
+.lucky-wheel-copy p{
+  font-size:clamp(17px,4.2vw,20px);
+  line-height:1.55;
+  font-weight:700;
+}
+.lucky-wheel-copy small{
+  display:block;
+  font-size:15px;
+  line-height:1.75;
+  font-weight:400;
+}
+.lucky-wheel-graphic span{
+  font-family:'Hind Siliguri',sans-serif;
+  font-weight:700;
+  line-height:1;
+}
+.lucky-wheel-note{
+  font-family:'Hind Siliguri',sans-serif;
+  font-size:17px;
+  line-height:1.5;
+}
+#spinLuckyWheelBtn{
+  font-family:'DM Sans','Hind Siliguri',sans-serif;
+  letter-spacing:2px;
+}
