@@ -541,3 +541,22 @@ body{background:#fbfaff;color:#25243a;font-family:'Manrope','DM Sans',sans-serif
 .lucky-wheel-graphic span:nth-child(7){transform:translate(-75px,-13px)}
 .lucky-wheel-graphic span:nth-child(8){transform:translate(-49px,-58px)}
 .lucky-wheel-graphic span:nth-child(9){transform:translate(0,-2px);font-size:12px}
+
+
+/* Fix: keep all nine prize labels fully inside the wheel */
+.lucky-wheel-graphic span{
+  left:calc(50% - 21px);
+  width:42px;
+  top:calc(50% - 9px);
+  white-space:nowrap;
+  font-size:clamp(10px,2.8vw,13px);
+}
+.lucky-wheel-graphic span:nth-child(1){transform:translate(0,-57px)}
+.lucky-wheel-graphic span:nth-child(2){transform:translate(44px,-36px)}
+.lucky-wheel-graphic span:nth-child(3){transform:translate(56px,-10px)}
+.lucky-wheel-graphic span:nth-child(4){transform:translate(49px,27px)}
+.lucky-wheel-graphic span:nth-child(5){transform:translate(20px,53px)}
+.lucky-wheel-graphic span:nth-child(6){transform:translate(-20px,53px)}
+.lucky-wheel-graphic span:nth-child(7){transform:translate(-49px,27px)}
+.lucky-wheel-graphic span:nth-child(8){transform:translate(-56px,-10px)}
+.lucky-wheel-graphic span:nth-child(9){transform:translate(-44px,-36px)}
