@@ -1,0 +1,5 @@
+const CACHE_NAME='wf-store-v1';
+const SHELL=['/','/index.html','/styles.css','/app.js','/config.js','/manifest.webmanifest','/wf-icon.svg'];
+self.addEventListener('install',event=>{event.waitUntil((async()=>{const cache=await caches.open(CACHE_NAME);await Promise.allSettled(SHELL.map(async path=>{const response=await fetch(path,{cache:'reload'});if(response.ok)await cache.put(path,response)}));await self.skipWaiting()})())});
+self.addEventListener('activate',event=>{event.waitUntil((async()=>{const keys=await caches.keys();await Promise.all(keys.filter(k=>k.startsWith('wf-store-')&&k!==CACHE_NAME).map(k=>caches.delete(k)));await self.clients.claim()})())});
+self.addEventListener('fetch',event=>{const request=event.request,url=new URL(request.url);if(request.method!=='GET'||url.origin!==self.location.origin||url.pathname.startsWith('/api/'))return;event.respondWith((async()=>{const cache=await caches.open(CACHE_NAME);try{const response=await fetch(request);if(response.ok&&response.type==='basic')cache.put(request,response.clone());return response}catch(error){const cached=await cache.match(request);if(cached)return cached;throw error}})())});
