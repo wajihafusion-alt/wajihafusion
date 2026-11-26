@@ -19,3 +19,19 @@ insert into public.wf_help_faqs(category,question,answer,keywords,sort_order) va
 ('Payment','কীভাবে Payment করব?','বর্তমানে Cash on Delivery (COD) পদ্ধতিতে অর্ডার করা যায়। পণ্য হাতে পেয়ে মূল্য পরিশোধ করুন।','payment cod cash',110),
 ('Support','আরও সাহায্য লাগলে কী করব?','আরও সাহায্যের জন্য Website-এর Contact on WhatsApp লিংক ব্যবহার করুন।','support help contact whatsapp',120)
 on conflict do nothing;
+-- Wajiha Fusion FAQ + Customer/Admin conversation
+create table if not exists public.wf_help_messages(
+ id uuid primary key default gen_random_uuid(),
+ user_id uuid not null references auth.users(id) on delete cascade,
+ thread_id uuid not null,
+ sender text not null check(sender in ('customer','admin')),
+ message text not null check(char_length(message) between 1 and 1000),
+ created_at timestamptz not null default now()
+);
+alter table public.wf_help_messages enable row level security;
+drop policy if exists "Customers and admins read help messages" on public.wf_help_messages;
+create policy "Customers and admins read help messages" on public.wf_help_messages for select to authenticated using(user_id=auth.uid() or public.is_admin());
+drop policy if exists "Customers and admins send help messages" on public.wf_help_messages;
+create policy "Customers and admins send help messages" on public.wf_help_messages for insert to authenticated with check((sender='customer' and user_id=auth.uid()) or (sender='admin' and public.is_admin()));
+create index if not exists wf_help_messages_thread_idx on public.wf_help_messages(thread_id,created_at);
+create index if not exists wf_help_messages_user_idx on public.wf_help_messages(user_id,created_at desc);
