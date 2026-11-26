@@ -73,14 +73,8 @@ async function verifySupabaseSmsHook(request,env,rawBody){
 }
 async function handleSupabaseSendSms(request,env){
  if(request.method!=="POST")return json({error:"Method not allowed."},405);
- const smsConfig = {
-  SENDMYSMS_USER: Boolean(env.SENDMYSMS_USER && String(env.SENDMYSMS_USER).trim()),
-  SENDMYSMS_API_KEY: Boolean(env.SENDMYSMS_API_KEY && String(env.SENDMYSMS_API_KEY).trim()),
-  SEND_SMS_HOOK_SECRET: Boolean(env.SEND_SMS_HOOK_SECRET && String(env.SEND_SMS_HOOK_SECRET).trim())
- };
- console.log("SMS configuration presence:", smsConfig);
- const missingSmsConfig = Object.entries(smsConfig).filter(([, present]) => !present).map(([name]) => name);
- if(missingSmsConfig.length)return json({error:"SMS gateway is not configured.",missing:missingSmsConfig},503);
+ if(!env.NISHCHIT_API_KEY||!String(env.NISHCHIT_API_KEY).trim())return json({error:"Nishchit API key is not configured."},503);
+ if(!env.SEND_SMS_HOOK_SECRET||!String(env.SEND_SMS_HOOK_SECRET).trim())return json({error:"SMS hook secret is not configured."},503);
  const rawBody=await request.text();
  if(!await verifySupabaseSmsHook(request,env,rawBody))return json({error:"Invalid SMS hook signature."},401);
  let payload;try{payload=JSON.parse(rawBody)}catch{return json({error:"Invalid request body."},400)}
@@ -91,14 +85,25 @@ async function handleSupabaseSendSms(request,env){
  const phoneValid=/^8801[3-9]\d{8}$/.test(bdPhone);
  const otpValid=/^\d{4,10}$/.test(otp);
  console.log("SMS payload validation:",{phonePresent:Boolean(phoneInput),phoneLength:phoneDigits.length,phoneValid,otpPresent:Boolean(otp),otpLength:otp.length,otpValid});
- if(!phoneValid||!otpValid)return json({error:"Invalid phone number or OTP format.",phoneValid,otpValid},400);
- const form=new URLSearchParams({user:env.SENDMYSMS_USER,key:env.SENDMYSMS_API_KEY,to:bdPhone,msg:"Your Wajiha Fusion verification code is "+otp+". Valid for 5 minutes. Do not share this code."});
+ if(!phoneValid||!otpValid)return json({error:"Invalid phone number or OTP format."},400);
+ const message="Your Wajiha Fusion verification code is "+otp+". Valid for 5 minutes. Do not share this code.";
  try{
-  const response=await fetch("https://sendmysms.net/api.php",{method:"POST",headers:{"content-type":"application/x-www-form-urlencoded"},body:form.toString()});
-  const text=await response.text();let result;try{result=JSON.parse(text)}catch{return json({error:"SMS provider returned an invalid response."},502)}
-  if(!response.ok||String(result.status||"").toUpperCase()!=="OK")return json({error:"SMS could not be sent."},502);
+  const response=await fetch("https://api.nishchit.tech/v1/messages",{
+   method:"POST",
+   headers:{"Authorization":"Bearer "+env.NISHCHIT_API_KEY,"Content-Type":"application/json","Accept":"application/json"},
+   body:JSON.stringify({to:"+"+bdPhone,body:message})
+  });
+  const responseText=await response.text();
+  if(!response.ok){
+   console.log("Nishchit SMS request failed:",response.status,responseText.slice(0,300));
+   return json({error:"SMS could not be sent."},502);
+  }
+  console.log("Nishchit SMS API accepted request.");
   return json({},200);
- }catch(e){return json({error:"Could not connect to SMS provider."},502)}
+ }catch(e){
+  console.log("Could not connect to Nishchit SMS provider.");
+  return json({error:"Could not connect to Nishchit SMS provider."},502);
+ }
 }
 
 export default {async fetch(request,env){
