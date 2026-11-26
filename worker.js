@@ -73,7 +73,8 @@ async function verifySupabaseSmsHook(request,env,rawBody){
 }
 async function handleSupabaseSendSms(request,env){
  if(request.method!=="POST")return json({error:"Method not allowed."},405);
- if(!env.NISHCHIT_API_KEY||!String(env.NISHCHIT_API_KEY).trim())return json({error:"Nishchit API key is not configured."},503);
+ if(!env.SENDMYSMS_API_KEY||!String(env.SENDMYSMS_API_KEY).trim())return json({error:"SendMySMS API key is not configured in Cloudflare Secret SENDMYSMS_API_KEY."},503);
+ if(!env.SENDMYSMS_USERNAME||!String(env.SENDMYSMS_USERNAME).trim())return json({error:"SendMySMS username is not configured in Cloudflare Secret SENDMYSMS_USERNAME."},503);
  if(!env.SEND_SMS_HOOK_SECRET||!String(env.SEND_SMS_HOOK_SECRET).trim())return json({error:"SMS hook secret is not configured."},503);
  const rawBody=await request.text();
  if(!await verifySupabaseSmsHook(request,env,rawBody))return json({error:"Invalid SMS hook signature."},401);
@@ -88,21 +89,23 @@ async function handleSupabaseSendSms(request,env){
  if(!phoneValid||!otpValid)return json({error:"Invalid phone number or OTP format."},400);
  const message="Your Wajiha Fusion verification code is "+otp+". Valid for 5 minutes. Do not share this code.";
  try{
-  const response=await fetch("https://api.nishchit.tech/v1/messages",{
+  const form=new URLSearchParams({user:String(env.SENDMYSMS_USERNAME).trim(),key:String(env.SENDMYSMS_API_KEY).trim(),to:"0"+bdPhone.slice(3),msg:message});
+  const response=await fetch("https://sendmysms.net/api.php",{
    method:"POST",
-   headers:{"Authorization":"Bearer "+env.NISHCHIT_API_KEY,"Content-Type":"application/json","Accept":"application/json"},
-   body:JSON.stringify({to:"+"+bdPhone,body:message})
+   headers:{"Content-Type":"application/x-www-form-urlencoded","Accept":"application/json"},
+   body:form.toString()
   });
   const responseText=await response.text();
-  if(!response.ok){
-   console.log("Nishchit SMS request failed:",response.status,responseText.slice(0,300));
-   return json({error:"SMS could not be sent."},502);
+  let result;try{result=JSON.parse(responseText)}catch{result=null}
+  if(!response.ok||result?.status!=="OK"){
+   console.log("SendMySMS request failed:",response.status,String(result?.response||responseText).slice(0,300));
+   return json({error:"SendMySMS could not accept the SMS request."},502);
   }
-  console.log("Nishchit SMS API accepted request.");
+  console.log("SendMySMS API accepted request.");
   return json({},200);
  }catch(e){
-  console.log("Could not connect to Nishchit SMS provider.");
-  return json({error:"Could not connect to Nishchit SMS provider."},502);
+  console.log("Could not connect to SendMySMS.");
+  return json({error:"Could not connect to SendMySMS provider."},502);
  }
 }
 
