@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f4f3fb"><meta name="description" content="Wajiha Fusion — premium fashion collection">
+  <meta name="theme-color" content="#6b3fa0"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="/manifest.webmanifest"><meta name="description" content="Wajiha Fusion — premium fashion collection">
   <title>Wajiha Fusion | Premium Fashion</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css?v=20261126-phonepass1">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -57,8 +57,9 @@
     <button id="profileSaveBtn" class="gold-btn full" type="submit">তথ্য সংরক্ষণ করুন</button>
     <p id="profileNotice" class="account-register-notice" aria-live="polite">আপনার ঠিকানা পরের অর্ডারে ব্যবহার করতে পারবেন।</p>
   </form>
+  <form id="changePasswordForm" class="account-profile-form" style="margin-top:22px"><div class="profile-section-rule"></div><h3>Password পরিবর্তন</h3><label>বর্তমান Password<input id="oldAccountPassword" type="password" autocomplete="current-password" minlength="8" required placeholder="পুরোনো Password"></label><label>নতুন Password<input id="newAccountPassword" type="password" autocomplete="new-password" minlength="8" required placeholder="নতুন Password (কমপক্ষে ৮ অক্ষর)"></label><button id="changePasswordSubmit" class="gold-btn full" type="submit">Password পরিবর্তন করুন</button><p id="changePasswordNotice" class="account-register-notice" aria-live="polite">পুরোনো Password যাচাই করে নতুন Password সংরক্ষণ হবে। OTP লাগবে না।</p></form>
   <button id="profileTrackOrders" class="profile-orders-btn" type="button">আমার অর্ডার দেখুন →</button>
   <button id="accountLogout" class="profile-logout-btn" type="button">LOG OUT</button>
 </div></section></div>\n  <div id="toast" class="toast" role="status"></div>
   <script src="config.js"></script><script src="app.js?v=20261126-phonepass1"></script>
-<script src="faq-assistant.js?v=20261126-chat1"></script></body></html>
+<script src="faq-assistant.js?v=20261126-chat1"></script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(err=>console.warn("PWA service worker:",err)));}</script></body></html>
