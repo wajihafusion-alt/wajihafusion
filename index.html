@@ -4,7 +4,7 @@
   <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#6b3fa0"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><link rel="manifest" href="/manifest.webmanifest"><meta name="description" content="Wajiha Fusion — premium fashion collection">
   <title>Wajiha Fusion | Premium Fashion</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css?v=20261126-phonepass1">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Noto+Serif+Bengali:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="styles.css?v=20261127-specialoffers1">
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>.forgot-password-link{display:block;width:100%;margin:10px 0 2px;padding:10px;border:0;background:transparent;color:var(--gold2,#800020);font:700 14px inherit;text-decoration:underline;cursor:pointer}.forgot-password-link:disabled{opacity:.6;cursor:wait}</style>
@@ -20,6 +20,23 @@
     
     
     <section id="shop" class="shop-section"><div class="section-heading"><div><p class="eyebrow">THE EDIT</p><h2>New Arrivals</h2></div><div class="shop-tools"><input id="searchInput" class="search-input" placeholder="Search products..." aria-label="Search products"><select id="sortSelect" aria-label="Sort products"><option value="newest">Newest</option><option value="low">Price: Low to High</option><option value="high">Price: High to Low</option></select></div></div><div id="subCategoryNav" class="sub-category-nav"></div><div id="productGrid" class="product-grid"><div class="loading">Loading collection...</div></div><p id="emptyState" class="empty-state hidden">No products found. Please check back soon.</p></section>
+    <section id="specialOffers" class="special-offers" aria-label="Special offers">
+      <div class="special-offers-heading"><p class="eyebrow">EXCLUSIVE REWARDS</p><h2>Special Offers</h2><p>More reasons to enjoy shopping with Wajiha Fusion</p></div>
+      <div class="special-offer-grid">
+        <a class="special-offer-card referral-offer-card" href="#account" id="homeReferralOffer">
+          <span class="offer-card-kicker">SHARE THE LOVE</span><span class="offer-art referral-art" aria-hidden="true"><i>✦</i><b>🎁</b><em>৳</em></span>
+          <span class="offer-card-title">REFER &amp; EARN</span><strong class="offer-card-amount">৳৫০ + ৳৫০</strong>
+          <span class="offer-card-copy">বন্ধুর প্রথম অর্ডার Delivered হলে দুজনেই পাবেন ৳৫০ করে বোনাস।</span>
+          <span class="offer-card-cta">GET YOUR REFERRAL CODE <b>→</b></span>
+        </a>
+        <a class="special-offer-card mystery-offer-card" href="#shop" id="homeMysteryOffer">
+          <span class="offer-card-kicker">A LITTLE MAGIC FOR YOU</span><span class="offer-art mystery-art" aria-hidden="true"><i>✦</i><b>🎁</b><em>✧</em></span>
+          <span class="offer-card-title">MYSTERY BOX</span><strong class="offer-card-amount">OPEN YOUR SURPRISE</strong>
+          <span class="offer-card-copy">লগইন করে checkout-এ ৳৫০ বা তার বেশি পণ্যের অর্ডারে খুলুন Mystery Box। জিততে পারেন ৳০–৳৭০ Discount!</span>
+          <span class="offer-card-cta">EXPLORE COLLECTION <b>→</b></span>
+        </a>
+      </div>
+    </section>
     <section class="editorial-banners"><a href="#shop" class="editorial-card editorial-one"><span>THE NEW SEASON</span><strong>Refresh Your<br>Wardrobe</strong><small>EXPLORE THE COLLECTION →</small></a><a href="#shop" class="editorial-card editorial-two"><span>EFFORTLESS STYLE</span><strong>Everyday<br>Elegance</strong><small>DISCOVER MORE →</small></a><a href="#shop" class="editorial-card editorial-three"><span>CURATED FOR YOU</span><strong>Find Your<br>Signature Look</strong><small>SHOP NOW →</small></a></section>
     <section class="brand-note"><p class="eyebrow">THE WAJIHA FUSION EDIT</p><h2>A brighter you, every day.</h2><p>Thoughtfully selected fashion for your everyday moments and special occasions. Discover pieces that feel as good as they look.</p></section>
     
@@ -64,5 +81,5 @@
   <button id="accountLogout" class="profile-logout-btn" type="button">LOG OUT</button>
 </div></section></div>
   <div id="toast" class="toast" role="status"></div>
-  <script src="config.js"></script><script src="app.js?v=20261126-phonepass1"></script>
+  <script src="config.js"></script><script src="app.js?v=20261127-specialoffers1"></script>
 <script src="faq-assistant.js?v=20261126-chat1"></script><script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("/sw.js").catch(err=>console.warn("PWA service worker:",err)));}</script></body></html>
