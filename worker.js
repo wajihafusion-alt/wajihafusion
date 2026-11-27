@@ -169,5 +169,29 @@ export default {async fetch(request,env){
   if(url.pathname.startsWith("/api/dropbazar/"))return handleDropbazar(request,env,url);
   return json({error:"Not found."},404);
  }
- return env.ASSETS.fetch(request);
+
+ const assetResponse=await env.ASSETS.fetch(request);
+ if(request.method!=="GET"||!["/","/index.html"].includes(url.pathname)||!assetResponse.ok)return assetResponse;
+ let page=await assetResponse.text();
+ if(!page.includes('id="specialOffers"')){
+  const offers=`
+  <section id="specialOffers" class="special-offers" aria-label="Special offers">
+   <div class="special-offers-heading"><p class="eyebrow">EXCLUSIVE REWARDS</p><h2>Special Offers</h2><p>More reasons to enjoy shopping with Wajiha Fusion</p></div>
+   <div class="special-offer-grid">
+    <a class="special-offer-card referral-offer-card" href="#account" id="homeReferralOffer"><span class="offer-card-kicker">SHARE THE LOVE</span><span class="offer-art referral-art" aria-hidden="true"><i>✦</i><b>🎁</b><em>৳</em></span><span class="offer-card-title">REFER &amp; EARN</span><strong class="offer-card-amount">৳৫০ + ৳৫০</strong><span class="offer-card-copy">বন্ধুর প্রথম অর্ডার Delivered হলে দুজনেই পাবেন ৳৫০ করে বোনাস।</span><span class="offer-card-cta">GET YOUR REFERRAL CODE <b>→</b></span></a>
+    <a class="special-offer-card mystery-offer-card" href="#shop" id="homeMysteryOffer"><span class="offer-card-kicker">A LITTLE MAGIC FOR YOU</span><span class="offer-art mystery-art" aria-hidden="true"><i>✦</i><b>🎁</b><em>✧</em></span><span class="offer-card-title">MYSTERY BOX</span><strong class="offer-card-amount">OPEN YOUR SURPRISE</strong><span class="offer-card-copy">লগইন করে checkout-এ ৳৫০ বা তার বেশি পণ্যের অর্ডারে খুলুন Mystery Box। জিততে পারেন ৳০–৳৭০ Discount!</span><span class="offer-card-cta">EXPLORE COLLECTION <b>→</b></span></a>
+   </div>
+  </section>`;
+  const styles=`<style id="wf-special-offers-style">
+  .special-offers{padding:76px 6vw 82px;background:var(--black);color:var(--cream)}.special-offers-heading{text-align:center;margin:0 auto 30px;max-width:560px}.special-offers-heading .eyebrow{margin:0 0 10px}.special-offers-heading h2{font:600 clamp(28px,3.5vw,42px)/1.15 'Playfair Display',serif;margin:0 0 9px;color:var(--cream)}.special-offers-heading>p:last-child{margin:0;color:var(--muted);font-size:13px}
+  .special-offer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:1120px;margin:auto}.special-offer-card{position:relative;isolation:isolate;overflow:hidden;min-height:310px;border-radius:20px;padding:28px 30px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;text-decoration:none;box-shadow:0 16px 38px rgba(0,0,0,.16);transition:transform .25s,box-shadow .25s}.special-offer-card:hover{transform:translateY(-4px);box-shadow:0 22px 44px rgba(0,0,0,.24)}
+  .referral-offer-card{background:linear-gradient(120deg,#f2e9fb,#e8d9f7 58%,#d7c0ed);color:#39214e;border:1px solid #e1d0f2}.mystery-offer-card{background:radial-gradient(circle at 78% 18%,rgba(199,158,83,.22),transparent 32%),linear-gradient(125deg,#241532,#3d2454 58%,#21132e);color:#fff;border:1px solid rgba(226,196,135,.48)}
+  .offer-card-kicker{font-size:9px;font-weight:800;letter-spacing:.2em;opacity:.78;position:relative;z-index:1}.offer-card-title{font:700 14px 'Manrope',sans-serif;letter-spacing:.16em;margin-top:18px;position:relative;z-index:1}.offer-card-amount{font:700 clamp(22px,2.6vw,31px)/1.2 'Playfair Display',serif;margin:5px 0 9px;position:relative;z-index:1;color:inherit}.mystery-offer-card .offer-card-amount{font-size:clamp(17px,2vw,25px);color:#f3d99f}.offer-card-copy{font-family:'Hind Siliguri','DM Sans',sans-serif;font-size:13px;line-height:1.75;max-width:390px;position:relative;z-index:1;opacity:.88}.offer-card-cta{font-size:9px;font-weight:800;letter-spacing:.13em;margin-top:19px;display:flex;align-items:center;gap:10px;position:relative;z-index:1}.offer-card-cta b{font-size:17px;transition:transform .2s}.special-offer-card:hover .offer-card-cta b{transform:translateX(4px)}
+  .offer-art{position:absolute;right:28px;top:50%;transform:translateY(-50%);width:148px;height:148px;border-radius:50%;display:grid;place-items:center;z-index:0}.offer-art b{font-size:76px;filter:drop-shadow(0 12px 12px rgba(0,0,0,.18));transform:rotate(-7deg)}.offer-art i,.offer-art em{position:absolute;font-style:normal;font-size:24px;color:#9b70bd}.offer-art i{top:9px;right:17px}.offer-art em{bottom:14px;left:8px;font-size:30px}.referral-art{background:radial-gradient(circle,#fff9ff,rgba(255,255,255,.22) 68%,transparent 70%)}.mystery-art{background:radial-gradient(circle,rgba(229,193,121,.22),rgba(229,193,121,.04) 66%,transparent 68%)}.mystery-art i,.mystery-art em{color:#e8c77f}
+  @media(max-width:700px){.special-offers{padding:48px 16px 54px}.special-offers-heading{margin-bottom:22px}.special-offer-grid{grid-template-columns:1fr;gap:14px}.special-offer-card{min-height:270px;padding:23px 22px;border-radius:16px}.offer-art{right:13px;width:116px;height:116px;opacity:.9}.offer-art b{font-size:62px}.offer-card-copy{max-width:75%;font-size:12px}.offer-card-title{margin-top:14px}.offer-card-cta{margin-top:15px}}@media(max-width:390px){.special-offer-card{min-height:286px}.offer-art{top:24px;right:8px;transform:none;width:94px;height:94px}.offer-art b{font-size:52px}.offer-card-copy{max-width:100%;padding-right:35px}}
+  </style>`;
+  page=page.replace('<section class="editorial-banners">',offers+'<section class="editorial-banners">').replace('</head>',styles+'</head>');
+  page=page.replace('</body>','<script>document.getElementById("homeReferralOffer")?.addEventListener("click",function(e){e.preventDefault();document.getElementById("accountToggle")?.click()});</script></body>');
+ }
+ return new Response(page,{status:assetResponse.status,statusText:assetResponse.statusText,headers:new Headers(assetResponse.headers)});
 }};
