@@ -173,6 +173,8 @@ export default {async fetch(request,env){
  const assetResponse=await env.ASSETS.fetch(request);
  if(request.method!=="GET"||!["/","/index.html"].includes(url.pathname)||!assetResponse.ok)return assetResponse;
  let page=await assetResponse.text();
+ const verificationTag='<meta name="google-site-verification" content="HfrEUhkcJdrzSWSBHIedf03WQ-A-iMOIqaUqLlOatcM" />';
+ if(!page.includes('google-site-verification'))page=page.replace('</head>',verificationTag+'</head>');
  if(!page.includes('id="specialOffers"')){
   const offers=`
   <section id="specialOffers" class="special-offers" aria-label="Special offers">
