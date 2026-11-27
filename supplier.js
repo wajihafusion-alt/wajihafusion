@@ -5,10 +5,20 @@
  const money=n=>"৳"+Number(n||0).toLocaleString("en-BD");
  const msg=s=>{$("#supplierMessage").textContent=s};
  async function api(path){
-  const {data:{session}}=await db.auth.getSession();if(!session?.access_token)throw new Error("Admin login প্রয়োজন।");
+  const {data:{session}}=await db.auth.getSession();
+  if(!session?.access_token)throw new Error("Admin login প্রয়োজন।");
   const r=await fetch(path,{headers:{Authorization:"Bearer "+session.access_token,Accept:"application/json"}});
-  const body=await r.json().catch(()=>({}));
-  if(!r.ok||body.success===false)throw new Error(body.message||body.error||("Supplier API error: "+r.status));
+  const raw=await r.text();
+  let body={};
+  try{body=raw?JSON.parse(raw):{};}catch{body={message:raw.slice(0,500)||"Empty response"};}
+  const details=[];
+  if(typeof body.message==="string")details.push(body.message);
+  if(typeof body.error==="string")details.push(body.error);
+  if(Array.isArray(body.errors))body.errors.forEach(x=>{if(typeof x==="string")details.push(x);else if(x?.message)details.push(x.message);else if(x?.detail)details.push(x.detail);});
+  if(Array.isArray(body.messages))body.messages.forEach(x=>{if(typeof x==="string")details.push(x);else if(x?.message)details.push(x.message);});
+  if(body.data?.message)details.push(body.data.message);
+  const detail=[...new Set(details)].join(" | ")||raw.slice(0,500)||"No response details";
+  if(!r.ok||body.success===false)throw new Error("HTTP "+r.status+" — "+detail.slice(0,700));
   return body.data??body;
  }
  function dataArray(x){if(Array.isArray(x))return x;if(Array.isArray(x?.data))return x.data;if(Array.isArray(x?.items))return x.items;if(Array.isArray(x?.categories))return x.categories;if(Array.isArray(x?.products))return x.products;if(Array.isArray(x?.posts))return x.posts;return []}
